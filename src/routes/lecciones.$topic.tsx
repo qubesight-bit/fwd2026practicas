@@ -2,9 +2,9 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { lessons, type LessonSlug } from "@/lib/lesson-content";
 
 export const Route = createFileRoute("/lecciones/$topic")({
-  head: ({ loaderData }) => {
-    if (!loaderData) return { meta: [{ title: "Lección no encontrada" }, { name: "robots", content: "noindex" }] };
-    const l = loaderData;
+  head: (ctx) => {
+    const l = ctx.loaderData as { slug: LessonSlug; title: string; description: string } | undefined;
+    if (!l) return { meta: [{ title: "Lección no encontrada" }, { name: "robots", content: "noindex" }] };
     return {
       meta: [
         { title: `${l.title} — Lecciones` },
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/lecciones/$topic")({
 });
 
 function LessonPage() {
-  const { slug } = Route.useLoaderData();
+  const { slug } = Route.useLoaderData() as { slug: LessonSlug };
   const lesson = lessons[slug];
   const order: LessonSlug[] = ["dns", "operadores", "fundamentos", "terminal", "html", "frontend"];
   const idx = order.indexOf(slug);
