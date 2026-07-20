@@ -249,6 +249,7 @@ function Simulator() {
       </div>
 
       {/* Exercises */}
+      <EjerciciosCodigo />
       <Ejercicios />
     </div>
   );
