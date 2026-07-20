@@ -1,153 +1,117 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
-import { ScaledSlide } from "@/components/ScaledSlide";
-import slides from "@/lib/slides-data";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: Deck,
+  head: () => ({
+    meta: [
+      { title: "Redes y Fundamentos — Aprende jugando" },
+      { name: "description", content: "Hub de lecciones interactivas sobre DNS, HTTP, HTML, terminal, operadores lógicos y fundamentos de programación. Con simulador y quiz." },
+    ],
+  }),
+  component: Home,
 });
 
-function Deck() {
-  const [i, setI] = useState(0);
-  const [showGrid, setShowGrid] = useState(false);
-  const total = slides.length;
+const topics = [
+  { slug: "dns",         num: "01", title: "DNS y cómo viaja una URL",           desc: "La guía telefónica de internet, explicada con dibujos.", tag: "Redes" },
+  { slug: "operadores",  num: "02", title: "Operadores lógicos y tabla de verdad", desc: "AND, OR, NOT — con el ejemplo del helado 🍦.",           tag: "Lógica" },
+  { slug: "fundamentos", num: "03", title: "Fundamentos de programación",         desc: "Variables, condicionales, bucles y funciones.",         tag: "Base" },
+  { slug: "terminal",    num: "04", title: "Comandos de la terminal",             desc: "Windows, Mac y Linux — lado a lado.",                    tag: "Sistema" },
+  { slug: "html",        num: "05", title: "HTML — el esqueleto de la web",       desc: "Etiquetas, atributos y por qué todo va dentro de body.", tag: "Frontend" },
+  { slug: "frontend",    num: "06", title: "Frontend, DOM y renderizado",         desc: "La trinidad HTML · CSS · JS y precisiones clave.",       tag: "Frontend" },
+];
 
-  const go = useCallback((n: number) => setI((c) => Math.max(0, Math.min(total - 1, n ?? c))), [total]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); go(i + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(i - 1); }
-      else if (e.key === "Home") go(0);
-      else if (e.key === "End") go(total - 1);
-      else if (e.key.toLowerCase() === "g") setShowGrid((v) => !v);
-      else if (e.key === "f" || e.key === "F5") {
-        e.preventDefault();
-        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
-        else document.exitFullscreen?.();
-      }
-      else if (e.key === "Escape") setShowGrid(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [i, go, total]);
-
-  useEffect(() => {
-    document.title = `${i + 1}/${total} — ${slides[i].title}`;
-  }, [i, total]);
-
-  const slide = slides[i];
-
+function Home() {
   return (
-    <main className="fixed inset-0 bg-background text-foreground overflow-hidden">
-      {/* Slide canvas */}
-      <div className="absolute inset-0">
-        <ScaledSlide key={slide.id}>{slide.render()}</ScaledSlide>
-      </div>
-
-      {/* Click zones for tap navigation */}
-      <button
-        aria-label="Previous slide"
-        onClick={() => go(i - 1)}
-        className="absolute left-0 top-0 h-full w-1/4 z-10 cursor-w-resize opacity-0"
-      />
-      <button
-        aria-label="Next slide"
-        onClick={() => go(i + 1)}
-        className="absolute right-0 top-0 h-full w-1/4 z-10 cursor-e-resize opacity-0"
-      />
-
-      {/* Bottom pill: nav + progress */}
-      <div className="absolute left-1/2 bottom-6 -translate-x-1/2 z-20 flex items-center gap-2 rounded-full px-2 py-2 hair backdrop-blur-md"
-           style={{ background: "oklch(0.14 0.012 55 / 0.7)" }}>
-        <button
-          onClick={() => go(i - 1)}
-          disabled={i === 0}
-          className="rounded-full px-4 py-2 slide-mono text-xs uppercase tracking-widest disabled:opacity-30 hover:bg-white/5 transition"
-        >
-          ←
-        </button>
-        <div className="flex items-center gap-1 px-2">
-          {slides.map((s, idx) => (
-            <button
-              key={s.id}
-              onClick={() => go(idx)}
-              aria-label={`Slide ${idx + 1}`}
-              className="h-1.5 rounded-full transition-all"
-              style={{
-                width: idx === i ? 28 : 8,
-                background: idx === i ? "var(--signal)" : "oklch(1 0 0 / 0.25)",
-              }}
-            />
-          ))}
-        </div>
-        <span className="slide-mono text-xs px-3" style={{ letterSpacing: "0.15em", color: "oklch(0.72 0.02 70)" }}>
-          {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-        </span>
-        <button
-          onClick={() => go(i + 1)}
-          disabled={i === total - 1}
-          className="rounded-full px-4 py-2 slide-mono text-xs uppercase tracking-widest disabled:opacity-30 hover:bg-white/5 transition"
-        >
-          →
-        </button>
-        <div className="w-px h-6 mx-1" style={{ background: "var(--hair)" }} />
-        <button
-          onClick={() => setShowGrid(true)}
-          className="rounded-full px-4 py-2 slide-mono text-xs uppercase tracking-widest hover:bg-white/5 transition"
-          title="Overview (G)"
-        >
-          Vista
-        </button>
-      </div>
-
-      {/* Top-left brand */}
-      <div className="absolute top-6 left-8 z-20 slide-mono text-xs" style={{ letterSpacing: "0.2em", color: "oklch(0.6 0.02 70)" }}>
-        REDES · FRONTEND · <span style={{ color: "var(--signal)" }}>GUÍA VISUAL</span>
-      </div>
-
-      {/* Top-right hint */}
-      <div className="absolute top-6 right-8 z-20 slide-mono text-[10px]" style={{ letterSpacing: "0.2em", color: "oklch(0.55 0.02 70)" }}>
-        ← / → NAVEGAR · G VISTA · F PANTALLA COMPLETA
-      </div>
-
-      {/* Grid overview */}
-      {showGrid && (
-        <div className="absolute inset-0 z-30 backdrop-blur-xl overflow-auto" style={{ background: "oklch(0.14 0.012 55 / 0.92)" }}>
-          <div className="max-w-[1600px] mx-auto p-16">
-            <div className="flex items-baseline justify-between mb-12 hair-b pb-6">
-              <h2 className="slide-title" style={{ fontSize: 56, fontFamily: "var(--font-display)", fontStyle: "italic" }}>
-                Todas las diapositivas
-              </h2>
-              <button onClick={() => setShowGrid(false)} className="slide-mono text-xs uppercase tracking-widest hover:text-white/80">
-                Cerrar ✕
-              </button>
-            </div>
-            <div className="grid grid-cols-3 gap-8">
-              {slides.map((s, idx) => (
-                <button
-                  key={s.id}
-                  onClick={() => { go(idx); setShowGrid(false); }}
-                  className="group text-left"
-                >
-                  <div className="relative aspect-video overflow-hidden rounded-2xl hair transition-all group-hover:scale-[1.02]"
-                       style={{ outline: idx === i ? "2px solid var(--signal)" : "none", outlineOffset: 4 }}>
-                    <ScaledSlide>{s.render()}</ScaledSlide>
-                  </div>
-                  <div className="flex items-baseline justify-between mt-3">
-                    <span className="slide-mono text-xs" style={{ letterSpacing: "0.15em", color: "var(--signal)" }}>
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-sm" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>
-                      {s.title}
-                    </span>
-                  </div>
-                </button>
-              ))}
+    <main>
+      {/* Hero */}
+      <section className="max-w-[1400px] mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-20">
+        <div className="grid md:grid-cols-12 gap-10 items-end">
+          <div className="md:col-span-8">
+            <div className="kicker mb-6">Guía visual · Vol. 01</div>
+            <h1 className="text-5xl md:text-8xl leading-[0.95] tracking-tight">
+              Aprende <em>redes,</em>{" "}
+              <span style={{ color: "var(--signal)" }}>&amp;</span> los fundamentos que ningún curso <em>explica bien.</em>
+            </h1>
+          </div>
+          <div className="md:col-span-4">
+            <p className="text-lg md:text-xl leading-relaxed" style={{ color: "oklch(0.85 0.02 70)" }}>
+              Seis lecciones cortas, un simulador de DNS y HTTP que puedes tocar, y un
+              modo <span style={{ color: "var(--signal)" }}>quiz</span> para verificar
+              que de verdad lo entendiste.
+            </p>
+            <div className="flex flex-wrap gap-3 mt-8">
+              <Link to="/lecciones" className="rounded-full px-6 py-3 mono text-xs uppercase tracking-widest bg-[var(--signal)] text-[var(--ink)] hover:opacity-90 transition">
+                Empezar a estudiar →
+              </Link>
+              <Link to="/quiz" className="rounded-full px-6 py-3 mono text-xs uppercase tracking-widest hair-a hover:bg-white/5 transition">
+                Ir al quiz
+              </Link>
             </div>
           </div>
         </div>
-      )}
+      </section>
+
+      {/* Featured: simulator + quiz */}
+      <section className="max-w-[1400px] mx-auto px-6 md:px-10 pb-16">
+        <div className="grid md:grid-cols-2 gap-6">
+          <Link to="/simulador" className="group rounded-3xl hair-a p-8 md:p-10 relative overflow-hidden transition hover:-translate-y-1"
+                style={{ background: "linear-gradient(135deg, oklch(0.18 0.014 55), oklch(0.22 0.02 45))" }}>
+            <div className="kicker mb-6">Interactivo</div>
+            <h2 className="text-3xl md:text-5xl mb-4 italic">Simulador DNS &amp; HTTP</h2>
+            <p className="text-base md:text-lg mb-8" style={{ color: "oklch(0.85 0.02 70)" }}>
+              Escribe un dominio y mira, paso a paso, cómo el navegador consulta el DNS,
+              encuentra la IP y recibe (o no) la respuesta del servidor.
+            </p>
+            <div className="flex items-center gap-3 mono text-xs uppercase tracking-widest group-hover:text-[var(--signal)] transition">
+              Probar el simulador
+              <span className="inline-block w-8 h-8 rounded-full grid place-items-center hair-a group-hover:bg-[var(--signal)] group-hover:text-[var(--ink)] transition">→</span>
+            </div>
+          </Link>
+
+          <Link to="/quiz" className="group rounded-3xl p-8 md:p-10 relative overflow-hidden transition hover:-translate-y-1"
+                style={{ background: "var(--signal)", color: "var(--ink)" }}>
+            <div className="mono text-[11px] uppercase tracking-[0.22em] mb-6">Auto-evaluación</div>
+            <h2 className="text-3xl md:text-5xl mb-4 italic">Modo Quiz</h2>
+            <p className="text-base md:text-lg mb-8">
+              Doce preguntas mezcladas de todos los temas. Sin trampa: verás la
+              explicación correcta al terminar.
+            </p>
+            <div className="flex items-center gap-3 mono text-xs uppercase tracking-widest">
+              Iniciar quiz
+              <span className="inline-block w-8 h-8 rounded-full grid place-items-center transition group-hover:translate-x-1" style={{ background: "var(--ink)", color: "var(--paper)" }}>→</span>
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* Lessons grid */}
+      <section className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="flex items-baseline justify-between hair-b pb-4 mb-10">
+          <h2 className="text-3xl md:text-4xl italic">Lecciones</h2>
+          <span className="mono text-xs uppercase tracking-widest text-muted-foreground">06 temas</span>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {topics.map((t) => (
+            <Link
+              key={t.slug}
+              to="/lecciones/$topic"
+              params={{ topic: t.slug }}
+              className="group rounded-2xl hair-a p-7 flex flex-col justify-between min-h-[220px] transition hover:bg-white/[0.04] hover:-translate-y-0.5"
+            >
+              <div className="flex items-start justify-between mb-6">
+                <span className="mono text-xs uppercase tracking-widest" style={{ color: "var(--signal)" }}>{t.num}</span>
+                <span className="mono text-[10px] uppercase tracking-widest px-2 py-1 rounded-full hair-a text-muted-foreground">{t.tag}</span>
+              </div>
+              <div>
+                <h3 className="text-2xl md:text-[26px] leading-tight mb-3 italic">{t.title}</h3>
+                <p className="text-sm text-muted-foreground">{t.desc}</p>
+              </div>
+              <div className="mono text-xs uppercase tracking-widest mt-6 flex items-center gap-2 opacity-60 group-hover:opacity-100 group-hover:text-[var(--signal)] transition">
+                Leer lección <span>→</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
