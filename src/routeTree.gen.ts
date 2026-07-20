@@ -9,38 +9,72 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LeccionesRouteImport } from './routes/lecciones'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LeccionesIndexRouteImport } from './routes/lecciones.index'
+import { Route as LeccionesTopicRouteImport } from './routes/lecciones.$topic'
 
+const LeccionesRoute = LeccionesRouteImport.update({
+  id: '/lecciones',
+  path: '/lecciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LeccionesIndexRoute = LeccionesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LeccionesRoute,
+} as any)
+const LeccionesTopicRoute = LeccionesTopicRouteImport.update({
+  id: '/$topic',
+  path: '/$topic',
+  getParentRoute: () => LeccionesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/lecciones': typeof LeccionesRouteWithChildren
+  '/lecciones/$topic': typeof LeccionesTopicRoute
+  '/lecciones/': typeof LeccionesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/lecciones/$topic': typeof LeccionesTopicRoute
+  '/lecciones': typeof LeccionesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/lecciones': typeof LeccionesRouteWithChildren
+  '/lecciones/$topic': typeof LeccionesTopicRoute
+  '/lecciones/': typeof LeccionesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/lecciones' | '/lecciones/$topic' | '/lecciones/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/lecciones/$topic' | '/lecciones'
+  id: '__root__' | '/' | '/lecciones' | '/lecciones/$topic' | '/lecciones/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LeccionesRoute: typeof LeccionesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/lecciones': {
+      id: '/lecciones'
+      path: '/lecciones'
+      fullPath: '/lecciones'
+      preLoaderRoute: typeof LeccionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +82,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lecciones/': {
+      id: '/lecciones/'
+      path: '/'
+      fullPath: '/lecciones/'
+      preLoaderRoute: typeof LeccionesIndexRouteImport
+      parentRoute: typeof LeccionesRoute
+    }
+    '/lecciones/$topic': {
+      id: '/lecciones/$topic'
+      path: '/$topic'
+      fullPath: '/lecciones/$topic'
+      preLoaderRoute: typeof LeccionesTopicRouteImport
+      parentRoute: typeof LeccionesRoute
+    }
   }
 }
 
+interface LeccionesRouteChildren {
+  LeccionesTopicRoute: typeof LeccionesTopicRoute
+  LeccionesIndexRoute: typeof LeccionesIndexRoute
+}
+
+const LeccionesRouteChildren: LeccionesRouteChildren = {
+  LeccionesTopicRoute: LeccionesTopicRoute,
+  LeccionesIndexRoute: LeccionesIndexRoute,
+}
+
+const LeccionesRouteWithChildren = LeccionesRoute._addFileChildren(
+  LeccionesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LeccionesRoute: LeccionesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
