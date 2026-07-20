@@ -99,10 +99,12 @@ function RootComponent() {
   const isDesktop = pathname === "/";
   const title =
     pathname === "/" ? "Escritorio" :
+    pathname.startsWith("/estudiar") ? "¿Qué estudiar?" :
     pathname.startsWith("/quiz") ? "Quiz — Juegos" :
     pathname.startsWith("/simulador") ? "Simulador de red" :
     pathname.startsWith("/lecciones/") ? "Lección" :
     pathname.startsWith("/lecciones") ? "Lecciones" :
+    "Redes 95";
     "Redes 95";
   const url = `C:\\Redes95${pathname === "/" ? "\\Escritorio" : pathname.replaceAll("/", "\\")}`;
 
