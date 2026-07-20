@@ -13,6 +13,7 @@ export const Route = createFileRoute("/")({
 });
 
 const icons = [
+  { to: "/estudiar",   glyph: "🎓", label: "¿Qué\nestudiar?" },
   { to: "/lecciones",  glyph: "📚", label: "Lecciones" },
   { to: "/simulador",  glyph: "🌐", label: "Simulador\nde red" },
   { to: "/quiz",       glyph: "🎯", label: "Quiz.exe" },
