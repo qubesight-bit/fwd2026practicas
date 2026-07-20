@@ -353,7 +353,7 @@ function Ejercicios() {
   };
 
   return (
-    <div className="mt-8">
+    <div id="ejercicios" className="mt-8 scroll-mt-4">
       <div className="w95-titlebar mb-0">
         <span>📚 Ejercicios interactivos — HTML · CSS · JS · DOM · Red · Terminal · Lógica</span>
         <span className="text-[11px]">{correctCount}/{total}</span>
