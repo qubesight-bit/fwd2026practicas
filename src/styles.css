@@ -36,9 +36,9 @@
   --color-hair: var(--hair);
   --color-w95-face: var(--w95-face);
   --color-w95-titlebar: var(--w95-titlebar);
-  --font-display: "Pixelify Sans", "Press Start 2P", "MS Sans Serif", Tahoma, sans-serif;
-  --font-sans: "MS Sans Serif", "Pixelated MS Sans Serif", Tahoma, Geneva, sans-serif;
-  --font-mono: "VT323", "Courier New", monospace;
+  --font-display: "Tahoma", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Tahoma", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Consolas", "Menlo", "DejaVu Sans Mono", "Courier New", monospace;
 }
 
 :root {
@@ -90,11 +90,12 @@
     background-color: var(--w95-desktop);
     color: #000;
     font-family: var(--font-sans);
-    font-size: 13px;
-    -webkit-font-smoothing: none;
-    image-rendering: pixelated;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; letter-spacing: 0; }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; }
   code, kbd, .mono { font-family: var(--font-mono); }
   ::selection { background: #000080; color: #fff; }
   a { color: #0000ee; text-decoration: underline; }

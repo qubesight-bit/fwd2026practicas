@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { W95Button } from "@/components/win95";
-import { recordSimPrediction, recordSimUse, useStats, sfx } from "@/lib/gamification";
+import { recordSimPrediction, recordSimUse, useStats, sfx, addXP, addCoins } from "@/lib/gamification";
 
 export const Route = createFileRoute("/simulador")({
   head: () => ({
@@ -24,14 +24,24 @@ type Scenario = {
 };
 
 const SCENARIOS: Scenario[] = [
-  { domain: "google.com",             label: "Éxito clásico",   ip: "142.250.185.78", httpCode: 200, httpText: "OK",                    narrative: "Todo funciona. La página carga.",                outcome: "ok" },
-  { domain: "example.com",            label: "Éxito clásico",   ip: "93.184.216.34",  httpCode: 200, httpText: "OK",                    narrative: "El dominio existe, el servidor contesta bien.", outcome: "ok" },
-  { domain: "github.com/no-existe",   label: "Recurso faltante", ip: "140.82.121.4",  httpCode: 404, httpText: "Not Found",             narrative: "Llegamos al servidor, pero esa ruta no existe.", outcome: "http-error" },
-  { domain: "sitio-privado.com",      label: "Acceso denegado", ip: "203.0.113.42",   httpCode: 403, httpText: "Forbidden",             narrative: "El servidor te ubicó, pero no tienes permiso.", outcome: "http-error" },
-  { domain: "app-caida.com",          label: "Servidor roto",   ip: "198.51.100.7",   httpCode: 500, httpText: "Internal Server Error", narrative: "El servidor existe pero su código falló.",       outcome: "http-error" },
-  { domain: "gateway-lenta.com",      label: "Intermediario",   ip: "198.51.100.9",   httpCode: 502, httpText: "Bad Gateway",           narrative: "Un intermediario recibió una respuesta inválida.", outcome: "http-error" },
-  { domain: "mantenimiento.com",      label: "En pausa",        ip: "198.51.100.11",  httpCode: 503, httpText: "Service Unavailable",   narrative: "Servidor saturado o en mantenimiento.",          outcome: "http-error" },
-  { domain: "esto-no-existe-xyz.zzz", label: "DNS falla",       ip: null,             httpCode: null, httpText: "",                     narrative: "El DNS no encontró el dominio.",                 outcome: "dns-error" },
+  { domain: "google.com",             label: "Éxito clásico",     ip: "142.250.185.78", httpCode: 200, httpText: "OK",                    narrative: "Todo funciona. La página carga.",                outcome: "ok" },
+  { domain: "example.com",            label: "Éxito clásico",     ip: "93.184.216.34",  httpCode: 200, httpText: "OK",                    narrative: "El dominio existe, el servidor contesta bien.", outcome: "ok" },
+  { domain: "cdn.midominio.com",      label: "Recurso creado",    ip: "151.101.1.5",    httpCode: 201, httpText: "Created",               narrative: "El servidor creó un recurso nuevo (ej: subiste un archivo).", outcome: "ok" },
+  { domain: "api.midominio.com",      label: "Sin contenido",     ip: "151.101.1.6",    httpCode: 204, httpText: "No Content",            narrative: "OK pero sin cuerpo en la respuesta (típico en DELETE).", outcome: "ok" },
+  { domain: "http://midominio.com",   label: "Redirección",       ip: "151.101.1.7",    httpCode: 301, httpText: "Moved Permanently",     narrative: "El servidor te manda a https://midominio.com.",  outcome: "ok" },
+  { domain: "cache.midominio.com",    label: "No modificado",     ip: "151.101.1.8",    httpCode: 304, httpText: "Not Modified",          narrative: "Tu navegador usa la versión guardada en caché.", outcome: "ok" },
+  { domain: "github.com/no-existe",   label: "Recurso faltante",  ip: "140.82.121.4",   httpCode: 404, httpText: "Not Found",             narrative: "Llegamos al servidor, pero esa ruta no existe.", outcome: "http-error" },
+  { domain: "banco.com/panel",        label: "Sin sesión",        ip: "203.0.113.10",   httpCode: 401, httpText: "Unauthorized",          narrative: "Necesitas iniciar sesión para ver esto.",         outcome: "http-error" },
+  { domain: "sitio-privado.com",      label: "Acceso denegado",   ip: "203.0.113.42",   httpCode: 403, httpText: "Forbidden",             narrative: "El servidor te ubicó, pero no tienes permiso.",  outcome: "http-error" },
+  { domain: "api.demo.com/tea",       label: "Broma HTTP",        ip: "198.51.100.4",   httpCode: 418, httpText: "I'm a teapot",          narrative: "Código de broma: soy una tetera, no hago café.",  outcome: "http-error" },
+  { domain: "descarga.grande.com",    label: "Payload gigante",   ip: "198.51.100.5",   httpCode: 413, httpText: "Payload Too Large",     narrative: "El archivo que enviaste supera el límite del servidor.", outcome: "http-error" },
+  { domain: "api.limite.com",         label: "Demasiadas requests", ip: "198.51.100.6", httpCode: 429, httpText: "Too Many Requests",     narrative: "Rate limit: pediste demasiado en poco tiempo.",   outcome: "http-error" },
+  { domain: "app-caida.com",          label: "Servidor roto",     ip: "198.51.100.7",   httpCode: 500, httpText: "Internal Server Error", narrative: "El servidor existe pero su código falló.",       outcome: "http-error" },
+  { domain: "gateway-lenta.com",      label: "Intermediario",     ip: "198.51.100.9",   httpCode: 502, httpText: "Bad Gateway",           narrative: "Un intermediario recibió una respuesta inválida.", outcome: "http-error" },
+  { domain: "mantenimiento.com",      label: "En pausa",          ip: "198.51.100.11",  httpCode: 503, httpText: "Service Unavailable",   narrative: "Servidor saturado o en mantenimiento.",          outcome: "http-error" },
+  { domain: "servidor-tardon.com",    label: "Tardó demasiado",   ip: "198.51.100.12",  httpCode: 504, httpText: "Gateway Timeout",       narrative: "El gateway se cansó de esperar al servidor real.", outcome: "http-error" },
+  { domain: "esto-no-existe-xyz.zzz", label: "DNS falla",         ip: null,             httpCode: null, httpText: "",                     narrative: "El DNS no encontró el dominio.",                 outcome: "dns-error" },
+  { domain: "sitio.typosquat",        label: "TLD inválido",      ip: null,             httpCode: null, httpText: "",                     narrative: "Ese dominio de nivel superior no existe.",       outcome: "dns-error" },
 ];
 
 function pickScenario(input: string): Scenario {
@@ -112,7 +122,7 @@ function Simulator() {
 
   return (
     <div>
-      <h1 className="text-2xl md:text-3xl mb-1" style={{ fontFamily: "'Press Start 2P', var(--font-display)", color: "#000080" }}>
+      <h1 className="text-2xl md:text-3xl mb-1" style={{ fontFamily: "var(--font-display)", color: "#000080" }}>
         🌐 SIMULADOR DE RED
       </h1>
       <p className="text-[13px] mb-4">
@@ -235,6 +245,166 @@ function Simulator() {
             <li><span style={{color:"#c00000"}}>500</span> error del servidor</li>
             <li><span style={{color:"#c00000"}}>502 / 503</span> gateway / no disponible</li>
           </ul>
+        </div>
+      </div>
+
+      {/* Exercises */}
+      <Ejercicios />
+    </div>
+  );
+}
+
+/* ---------- Interactive mini-exercises (HTML / CSS / JS / DOM / Red) ---------- */
+
+type Ex = {
+  id: string;
+  tag: "HTML" | "CSS" | "JS" | "DOM" | "RED" | "TERMINAL" | "LOGICA";
+  q: string;
+  options: string[];
+  correct: number;
+  explain: string;
+};
+
+const EXERCISES: Ex[] = [
+  { id: "html-1", tag: "HTML", q: "¿Cuál etiqueta crea el título más importante de una página?", options: ["<h6>", "<title>", "<h1>", "<head>"], correct: 2, explain: "<h1> es el encabezado principal visible. <title> es lo que aparece en la pestaña." },
+  { id: "html-2", tag: "HTML", q: "¿Qué etiqueta se usa para un enlace a otra página?", options: ["<link>", "<a href='...'>", "<button>", "<url>"], correct: 1, explain: "<a href='https://...'> crea un hipervínculo. <link> sirve para conectar CSS o iconos." },
+  { id: "html-3", tag: "HTML", q: "Para mostrar una imagen usamos…", options: ["<image src>", "<picture path>", "<img src='foto.jpg' alt='...'>", "<src img>"], correct: 2, explain: "La etiqueta es <img> y siempre debería llevar el atributo alt para accesibilidad." },
+  { id: "html-4", tag: "HTML", q: "¿Cuál etiqueta representa una lista con orden (1, 2, 3)?", options: ["<ul>", "<ol>", "<list>", "<dl>"], correct: 1, explain: "<ol> = ordered list (numerada). <ul> = unordered list (viñetas)." },
+  { id: "html-5", tag: "HTML", q: "El bloque genérico sin significado semántico es…", options: ["<section>", "<div>", "<article>", "<main>"], correct: 1, explain: "<div> es un contenedor neutro. Los otros describen el tipo de contenido." },
+
+  { id: "css-1", tag: "CSS", q: "Para pintar el texto de rojo escribes…", options: ["font-color: red;", "text: red;", "color: red;", "background: red;"], correct: 2, explain: "La propiedad se llama color. background pinta el fondo." },
+  { id: "css-2", tag: "CSS", q: "¿Qué selector aplica estilos a la clase 'btn'?", options: ["#btn", ".btn", "btn", "*btn"], correct: 1, explain: "El punto (.) selecciona clases. El # selecciona IDs." },
+  { id: "css-3", tag: "CSS", q: "Para centrar horizontalmente un contenedor con flex…", options: ["align-items: center", "justify-content: center", "text-align: center", "margin: center"], correct: 1, explain: "justify-content controla el eje principal (horizontal por defecto). align-items el eje cruzado." },
+  { id: "css-4", tag: "CSS", q: "El espacio dentro de la caja (entre borde y contenido) es…", options: ["margin", "padding", "border", "gap"], correct: 1, explain: "padding = espacio interior. margin = espacio exterior." },
+
+  { id: "js-1", tag: "JS", q: "Se declara una variable que no cambia con…", options: ["var", "let", "const", "def"], correct: 2, explain: "const = constante. let = variable que puede cambiar. var es antiguo." },
+  { id: "js-2", tag: "JS", q: "¿Cuál operador es 'Y lógico'?", options: ["||", "&&", "!", "=="], correct: 1, explain: "&& = AND (los dos verdaderos). || = OR. ! = NOT." },
+  { id: "js-3", tag: "JS", q: "Un bucle que repite mientras se cumple una condición es…", options: ["for-in", "while", "if", "switch"], correct: 1, explain: "while(condición) { ... } repite hasta que la condición sea falsa." },
+  { id: "js-4", tag: "JS", q: "La tabla de verdad de (true && false) da…", options: ["true", "false", "error", "null"], correct: 1, explain: "AND requiere que AMBOS sean true. Si uno es false, el resultado es false." },
+  { id: "js-5", tag: "JS", q: "!(true || false) es…", options: ["true", "false"], correct: 1, explain: "true || false = true. Luego !true = false." },
+
+  { id: "dom-1", tag: "DOM", q: "El DOM es…", options: ["Un lenguaje de programación", "Un árbol con todas las etiquetas HTML de la página", "Una base de datos", "Un servidor web"], correct: 1, explain: "El DOM (Document Object Model) es la representación en árbol del HTML que JavaScript puede leer y modificar." },
+  { id: "dom-2", tag: "DOM", q: "Para cambiar el texto de un elemento usas…", options: ["element.color", "element.textContent", "element.href", "element.type"], correct: 1, explain: "textContent reemplaza el texto interior del nodo." },
+  { id: "dom-3", tag: "DOM", q: "document.querySelector('.card') devuelve…", options: ["Todos los .card", "El primer elemento con clase card", "Solo los ID", "Null siempre"], correct: 1, explain: "querySelector devuelve el primero que coincide. querySelectorAll devuelve todos." },
+
+  { id: "red-1", tag: "RED", q: "El DNS traduce…", options: ["HTML a CSS", "Nombre de dominio a dirección IP", "IP a MAC", "URL a HTTPS"], correct: 1, explain: "DNS = guía telefónica: convierte 'google.com' en una IP como 142.250.185.78." },
+  { id: "red-2", tag: "RED", q: "El código 404 significa…", options: ["Sin permiso", "Servidor caído", "Recurso no encontrado", "Todo OK"], correct: 2, explain: "404 = la URL específica no existe en ese servidor." },
+  { id: "red-3", tag: "RED", q: "El código 500 dice que…", options: ["El navegador falló", "El servidor tuvo un error interno", "No hay internet", "El DNS falló"], correct: 1, explain: "5xx = culpa del servidor. 4xx = culpa (o error) del cliente." },
+  { id: "red-4", tag: "RED", q: "Un ERR_NAME_NOT_RESOLVED es…", options: ["Error HTTP 500", "Error DNS: no encontró la IP", "Error CSS", "Error 404"], correct: 1, explain: "Sin IP no hay a dónde enviar la petición: falla antes de salir a internet." },
+  { id: "red-5", tag: "RED", q: "El código 301 significa…", options: ["Prohibido", "Redirección permanente", "No hay contenido", "Servidor lento"], correct: 1, explain: "301 = la página se movió para siempre a otra URL." },
+  { id: "red-6", tag: "RED", q: "429 aparece cuando…", options: ["Envías demasiadas peticiones", "El servidor está caído", "No tienes cuenta", "La URL está mal"], correct: 0, explain: "429 Too Many Requests = te frenaron por spam de peticiones (rate limit)." },
+
+  { id: "term-1", tag: "TERMINAL", q: "Para ver la IP de un dominio usas…", options: ["ping", "nslookup", "cd", "ls"], correct: 1, explain: "nslookup pregunta al DNS. ping mide si el host responde." },
+  { id: "term-2", tag: "TERMINAL", q: "Para cambiar de carpeta en la terminal usas…", options: ["mv", "cd", "ls", "rm"], correct: 1, explain: "cd = change directory. ls (o dir en Windows) muestra el contenido." },
+  { id: "term-3", tag: "TERMINAL", q: "Para probar si un servidor responde envías…", options: ["ping google.com", "css google.com", "dns google.com", "html google.com"], correct: 0, explain: "ping envía pequeños paquetes ICMP y mide el tiempo de ida y vuelta." },
+
+  { id: "log-1", tag: "LOGICA", q: "(true || false) && !false =", options: ["true", "false"], correct: 0, explain: "true||false=true; !false=true; true&&true = true." },
+  { id: "log-2", tag: "LOGICA", q: "Si NO tengo hambre Y tengo dinero, ¿compro helado?", options: ["Sí", "No"], correct: 1, explain: "Regla: compro si tengo hambre Y dinero. Sin hambre, no compro aunque haya dinero." },
+];
+
+function Ejercicios() {
+  const [filter, setFilter] = useState<"ALL" | Ex["tag"]>("ALL");
+  const [answered, setAnswered] = useState<Record<string, number>>({});
+  const [rewarded, setRewarded] = useState<Record<string, true>>({});
+
+  const list = filter === "ALL" ? EXERCISES : EXERCISES.filter((e) => e.tag === filter);
+  const total = list.length;
+  const correctCount = list.filter((e) => answered[e.id] === e.correct).length;
+
+  const tags: Array<"ALL" | Ex["tag"]> = ["ALL", "HTML", "CSS", "JS", "DOM", "RED", "TERMINAL", "LOGICA"];
+  const tagColor: Record<Ex["tag"], string> = {
+    HTML: "#e34c26", CSS: "#264de4", JS: "#b8860b", DOM: "#008080",
+    RED: "#000080", TERMINAL: "#000000", LOGICA: "#800080",
+  };
+
+  const answer = (ex: Ex, idx: number) => {
+    if (answered[ex.id] !== undefined) return;
+    setAnswered((a) => ({ ...a, [ex.id]: idx }));
+    const ok = idx === ex.correct;
+    if (ok) {
+      sfx.correct();
+      if (!rewarded[ex.id]) {
+        addXP(10, `Ejercicio ${ex.tag}`);
+        addCoins(1);
+        setRewarded((r) => ({ ...r, [ex.id]: true }));
+      }
+    } else {
+      sfx.wrong();
+    }
+  };
+
+  return (
+    <div className="mt-8">
+      <div className="w95-titlebar mb-0">
+        <span>📚 Ejercicios interactivos — HTML · CSS · JS · DOM · Red · Terminal · Lógica</span>
+        <span className="text-[11px]">{correctCount}/{total}</span>
+      </div>
+      <div className="w95-outset p-3">
+        <div className="flex flex-wrap gap-1 mb-3 items-center">
+          <span className="text-[12px] mr-1">Filtrar:</span>
+          {tags.map((t) => (
+            <button
+              key={t}
+              onClick={() => setFilter(t)}
+              className={`w95-btn text-[12px] ${filter === t ? "w95-btn-active" : ""}`}
+            >
+              {t}
+            </button>
+          ))}
+          <span className="ml-auto text-[12px] opacity-80">Cada acierto = +10 XP · +1 🪙 (una vez)</span>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-3">
+          {list.map((ex) => {
+            const chosen = answered[ex.id];
+            const done = chosen !== undefined;
+            const isCorrect = chosen === ex.correct;
+            return (
+              <div key={ex.id} className="w95-inset bg-white p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span
+                    className="text-[10px] font-bold text-white px-1.5 py-0.5"
+                    style={{ background: tagColor[ex.tag] }}
+                  >
+                    {ex.tag}
+                  </span>
+                  <span className="text-[13px] font-bold flex-1">{ex.q}</span>
+                </div>
+                <div className="flex flex-col gap-1">
+                  {ex.options.map((opt, i) => {
+                    const isChosen = chosen === i;
+                    const isRight = ex.correct === i;
+                    const bg =
+                      !done ? undefined :
+                      isRight ? "#ccffcc" :
+                      isChosen ? "#ffcccc" : undefined;
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => answer(ex, i)}
+                        disabled={done}
+                        className="w95-btn justify-start text-[12px] text-left"
+                        style={{ background: bg }}
+                      >
+                        <span className="mono mr-2">{String.fromCharCode(65 + i)}.</span>
+                        <span className="flex-1">{opt}</span>
+                        {done && isRight && <span>✓</span>}
+                        {done && isChosen && !isRight && <span>✗</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+                {done && (
+                  <div
+                    className="mt-2 p-2 text-[12px]"
+                    style={{ background: isCorrect ? "#e6ffe6" : "#fff2e0", border: "1px solid #808080" }}
+                  >
+                    <b>{isCorrect ? "¡Correcto!" : "Casi…"}</b> {ex.explain}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

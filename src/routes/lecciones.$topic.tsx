@@ -51,7 +51,7 @@ function LessonPage() {
       </div>
 
       <div className="w95-outset p-3 mb-4" style={{ background: "var(--w95-face)" }}>
-        <h1 className="text-2xl md:text-4xl leading-tight" style={{ fontFamily: "'Press Start 2P', var(--font-display)", color: "#000080" }}>
+        <h1 className="text-2xl md:text-4xl leading-tight" style={{ fontFamily: "var(--font-display)", color: "#000080" }}>
           {lesson.title}
         </h1>
         <p className="text-[13px] italic mt-2">{lesson.tagline}</p>

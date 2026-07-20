@@ -28,7 +28,7 @@ function Index() {
   return (
     <div>
       <div className="flex items-baseline justify-between mb-4">
-        <h1 className="text-3xl md:text-4xl" style={{ fontFamily: "'Press Start 2P', var(--font-display)" }}>
+        <h1 className="text-3xl md:text-4xl" style={{ fontFamily: "var(--font-display)" }}>
           📚 LECCIONES
         </h1>
         <div className="text-[12px]">Completadas: <b>{done.size}/{topics.length}</b> ({pct}%)</div>
