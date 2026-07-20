@@ -95,7 +95,7 @@ function Quiz() {
   if (state === "intro") {
     return (
       <div>
-        <h1 className="text-3xl md:text-4xl mb-2" style={{ fontFamily: "'Press Start 2P', var(--font-display)", color: "#000080" }}>
+        <h1 className="text-3xl md:text-4xl mb-2" style={{ fontFamily: "var(--font-display)", color: "#000080" }}>
           🎯 QUIZ.EXE
         </h1>
         <p className="text-[13px] mb-4">
@@ -126,7 +126,7 @@ function Quiz() {
     const mood = pct >= 80 ? "¡Excelente!" : pct >= 60 ? "Bien hecho" : pct >= 40 ? "Puedes mejorar" : "A repasar";
     return (
       <div>
-        <h1 className="text-2xl md:text-3xl mb-2" style={{ fontFamily: "'Press Start 2P', var(--font-display)", color: "#000080" }}>
+        <h1 className="text-2xl md:text-3xl mb-2" style={{ fontFamily: "var(--font-display)", color: "#000080" }}>
           {mood}
         </h1>
         <div className="flex items-baseline gap-3 mb-4">

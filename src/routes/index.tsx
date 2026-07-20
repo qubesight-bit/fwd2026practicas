@@ -46,7 +46,7 @@ function Desktop() {
       <div className="grid gap-3 content-start">
         <W95Window title="Bienvenido — Redes 95" icon="👋">
           <div className="p-2">
-            <h1 className="text-3xl md:text-5xl mb-2" style={{ fontFamily: "'Press Start 2P', var(--font-display)" }}>
+            <h1 className="text-3xl md:text-5xl mb-2" style={{ fontFamily: "var(--font-display)" }}>
               REDES <span style={{ color: "#000080" }}>95</span>
             </h1>
             <p className="text-[13px] mb-3">

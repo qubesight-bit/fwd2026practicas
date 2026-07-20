@@ -112,7 +112,7 @@ function Simulator() {
 
   return (
     <div>
-      <h1 className="text-2xl md:text-3xl mb-1" style={{ fontFamily: "'Press Start 2P', var(--font-display)", color: "#000080" }}>
+      <h1 className="text-2xl md:text-3xl mb-1" style={{ fontFamily: "var(--font-display)", color: "#000080" }}>
         🌐 SIMULADOR DE RED
       </h1>
       <p className="text-[13px] mb-4">
