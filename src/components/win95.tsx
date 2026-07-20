@@ -170,6 +170,7 @@ function StartMenu({ onClose }: { onClose: () => void }) {
       </div>
       <div className="flex-1 p-1">
         <MenuLink to="/"           icon="🖥️" title="Escritorio" onClick={onClose} />
+        <MenuLink to="/estudiar"   icon="🎓" title="¿Qué estudiar?" onClick={onClose} />
         <MenuLink to="/lecciones"  icon="📚" title="Programas · Lecciones" onClick={onClose} />
         <MenuLink to="/simulador"  icon="🌐" title="Internet · Simulador" onClose={onClose} />
         <MenuLink to="/quiz"       icon="🎯" title="Juegos · Quiz" onClose={onClose} />

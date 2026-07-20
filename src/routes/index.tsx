@@ -13,6 +13,7 @@ export const Route = createFileRoute("/")({
 });
 
 const icons = [
+  { to: "/estudiar",   glyph: "🎓", label: "¿Qué\nestudiar?" },
   { to: "/lecciones",  glyph: "📚", label: "Lecciones" },
   { to: "/simulador",  glyph: "🌐", label: "Simulador\nde red" },
   { to: "/quiz",       glyph: "🎯", label: "Quiz.exe" },
@@ -74,9 +75,10 @@ function Desktop() {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Link to="/lecciones" className="w95-btn">📚 Empezar a estudiar</Link>
-              <Link to="/simulador" className="w95-btn">🌐 Abrir simulador</Link>
-              <Link to="/quiz" className="w95-btn">🎯 Ir al Quiz</Link>
+              <Link to="/estudiar" className="w95-btn">🎓 ¿Qué estudiar hoy?</Link>
+              <Link to="/lecciones" className="w95-btn">📚 Todas las lecciones</Link>
+              <Link to="/simulador" className="w95-btn">🌐 Simulador</Link>
+              <Link to="/quiz" className="w95-btn">🎯 Quiz</Link>
               <W95Button onClick={() => { if (confirm("¿Reiniciar progreso? Perderás XP y medallas.")) resetAll(); }}>
                 🗑️ Reiniciar progreso
               </W95Button>
