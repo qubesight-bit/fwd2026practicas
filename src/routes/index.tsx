@@ -1,117 +1,102 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { W95Window, BadgeBoard, W95Button } from "@/components/win95";
+import { useStats, levelFor, xpToNext, resetAll, sfx } from "@/lib/gamification";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Redes y Fundamentos — Aprende jugando" },
-      { name: "description", content: "Hub de lecciones interactivas sobre DNS, HTTP, HTML, terminal, operadores lógicos y fundamentos de programación. Con simulador y quiz." },
+      { title: "Redes 95 — Escritorio" },
+      { name: "description", content: "Escritorio Windows 95 para aprender redes, HTTP, HTML, lógica y terminal. Con XP, monedas y medallas." },
     ],
   }),
-  component: Home,
+  component: Desktop,
 });
 
-const topics = [
-  { slug: "dns",         num: "01", title: "DNS y cómo viaja una URL",           desc: "La guía telefónica de internet, explicada con dibujos.", tag: "Redes" },
-  { slug: "operadores",  num: "02", title: "Operadores lógicos y tabla de verdad", desc: "AND, OR, NOT — con el ejemplo del helado 🍦.",           tag: "Lógica" },
-  { slug: "fundamentos", num: "03", title: "Fundamentos de programación",         desc: "Variables, condicionales, bucles y funciones.",         tag: "Base" },
-  { slug: "terminal",    num: "04", title: "Comandos de la terminal",             desc: "Windows, Mac y Linux — lado a lado.",                    tag: "Sistema" },
-  { slug: "html",        num: "05", title: "HTML — el esqueleto de la web",       desc: "Etiquetas, atributos y por qué todo va dentro de body.", tag: "Frontend" },
-  { slug: "frontend",    num: "06", title: "Frontend, DOM y renderizado",         desc: "La trinidad HTML · CSS · JS y precisiones clave.",       tag: "Frontend" },
+const icons = [
+  { to: "/lecciones",  glyph: "📚", label: "Lecciones" },
+  { to: "/simulador",  glyph: "🌐", label: "Simulador\nde red" },
+  { to: "/quiz",       glyph: "🎯", label: "Quiz.exe" },
+  { to: "/lecciones/dns",         glyph: "📞", label: "DNS.hlp" },
+  { to: "/lecciones/operadores",  glyph: "🍦", label: "Lógica.txt" },
+  { to: "/lecciones/fundamentos", glyph: "📝", label: "Base.doc" },
+  { to: "/lecciones/terminal",    glyph: "💻", label: "MS-DOS" },
+  { to: "/lecciones/html",        glyph: "📄", label: "HTML.htm" },
+  { to: "/lecciones/frontend",    glyph: "🎨", label: "Frontend" },
 ];
 
-function Home() {
+function Desktop() {
+  const stats = useStats();
+  const lvl = levelFor(stats.xp);
+  const toNext = xpToNext(stats.xp);
+  const pct = 100 - toNext;
+
   return (
-    <main>
-      {/* Hero */}
-      <section className="max-w-[1400px] mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-20">
-        <div className="grid md:grid-cols-12 gap-10 items-end">
-          <div className="md:col-span-8">
-            <div className="kicker mb-6">Guía visual · Vol. 01</div>
-            <h1 className="text-5xl md:text-8xl leading-[0.95] tracking-tight">
-              Aprende <em>redes,</em>{" "}
-              <span style={{ color: "var(--signal)" }}>&amp;</span> los fundamentos que ningún curso <em>explica bien.</em>
+    <div className="min-h-[calc(100vh-70px)] grid md:grid-cols-[220px_1fr] gap-4 p-2">
+      {/* Icon column */}
+      <div className="flex flex-wrap gap-1 content-start">
+        {icons.map((i) => (
+          <Link key={i.to} to={i.to} onClick={() => sfx.click()} className="w95-icon" tabIndex={0}>
+            <span className="glyph">{i.glyph}</span>
+            <span className="lbl whitespace-pre-line">{i.label}</span>
+          </Link>
+        ))}
+      </div>
+
+      {/* Welcome window */}
+      <div className="grid gap-3 content-start">
+        <W95Window title="Bienvenido — Redes 95" icon="👋">
+          <div className="p-2">
+            <h1 className="text-3xl md:text-5xl mb-2" style={{ fontFamily: "'Press Start 2P', var(--font-display)" }}>
+              REDES <span style={{ color: "#000080" }}>95</span>
             </h1>
-          </div>
-          <div className="md:col-span-4">
-            <p className="text-lg md:text-xl leading-relaxed" style={{ color: "oklch(0.85 0.02 70)" }}>
-              Seis lecciones cortas, un simulador de DNS y HTTP que puedes tocar, y un
-              modo <span style={{ color: "var(--signal)" }}>quiz</span> para verificar
-              que de verdad lo entendiste.
+            <p className="text-[13px] mb-3">
+              Bienvenido, jugador. Este es un mini sistema operativo para aprender
+              <b> redes, HTTP, HTML, lógica</b> y <b>terminal</b>. Cada acción te da <b>XP</b>,
+              monedas 🪙 y medallas 🏅. Explora los íconos del escritorio o abre un programa desde el menú <b>Inicio</b>.
             </p>
-            <div className="flex flex-wrap gap-3 mt-8">
-              <Link to="/lecciones" className="rounded-full px-6 py-3 mono text-xs uppercase tracking-widest bg-[var(--signal)] text-[var(--ink)] hover:opacity-90 transition">
-                Empezar a estudiar →
-              </Link>
-              <Link to="/quiz" className="rounded-full px-6 py-3 mono text-xs uppercase tracking-widest hair-a hover:bg-white/5 transition">
-                Ir al quiz
-              </Link>
+            <div className="w95-inset bg-white p-3 mb-3 text-[12px]">
+              <div className="mb-2 flex items-center justify-between">
+                <b>Perfil del jugador</b>
+                <span className="mono">Nivel {lvl}</span>
+              </div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-16 text-[11px]">XP</span>
+                <div className="flex-1 w95-inset bg-white h-3 overflow-hidden">
+                  <div className="h-full" style={{ width: `${pct}%`, background: "#000080" }} />
+                </div>
+                <span className="mono w-24 text-right">{stats.xp} / {lvl * 100}</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 mt-2 text-center">
+                <div className="w95-outset py-1">🪙 <b>{stats.coins}</b><div className="text-[10px]">Monedas</div></div>
+                <div className="w95-outset py-1">🔥 <b>{stats.bestStreak}</b><div className="text-[10px]">Mejor racha</div></div>
+                <div className="w95-outset py-1">🎯 <b>{stats.quizBest}</b><div className="text-[10px]">Mejor quiz</div></div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <Link to="/lecciones" className="w95-btn">📚 Empezar a estudiar</Link>
+              <Link to="/simulador" className="w95-btn">🌐 Abrir simulador</Link>
+              <Link to="/quiz" className="w95-btn">🎯 Ir al Quiz</Link>
+              <W95Button onClick={() => { if (confirm("¿Reiniciar progreso? Perderás XP y medallas.")) resetAll(); }}>
+                🗑️ Reiniciar progreso
+              </W95Button>
             </div>
           </div>
-        </div>
-      </section>
+        </W95Window>
 
-      {/* Featured: simulator + quiz */}
-      <section className="max-w-[1400px] mx-auto px-6 md:px-10 pb-16">
-        <div className="grid md:grid-cols-2 gap-6">
-          <Link to="/simulador" className="group rounded-3xl hair-a p-8 md:p-10 relative overflow-hidden transition hover:-translate-y-1"
-                style={{ background: "linear-gradient(135deg, oklch(0.18 0.014 55), oklch(0.22 0.02 45))" }}>
-            <div className="kicker mb-6">Interactivo</div>
-            <h2 className="text-3xl md:text-5xl mb-4 italic">Simulador DNS &amp; HTTP</h2>
-            <p className="text-base md:text-lg mb-8" style={{ color: "oklch(0.85 0.02 70)" }}>
-              Escribe un dominio y mira, paso a paso, cómo el navegador consulta el DNS,
-              encuentra la IP y recibe (o no) la respuesta del servidor.
-            </p>
-            <div className="flex items-center gap-3 mono text-xs uppercase tracking-widest group-hover:text-[var(--signal)] transition">
-              Probar el simulador
-              <span className="inline-block w-8 h-8 rounded-full grid place-items-center hair-a group-hover:bg-[var(--signal)] group-hover:text-[var(--ink)] transition">→</span>
-            </div>
-          </Link>
+        <W95Window title="Medallas — Trofeos" icon="🏅">
+          <div className="p-2">
+            <p className="text-[12px] mb-2">Consigue medallas completando lecciones, ganando rachas en el quiz y prediciendo escenarios en el simulador.</p>
+            <BadgeBoard />
+          </div>
+        </W95Window>
 
-          <Link to="/quiz" className="group rounded-3xl p-8 md:p-10 relative overflow-hidden transition hover:-translate-y-1"
-                style={{ background: "var(--signal)", color: "var(--ink)" }}>
-            <div className="mono text-[11px] uppercase tracking-[0.22em] mb-6">Auto-evaluación</div>
-            <h2 className="text-3xl md:text-5xl mb-4 italic">Modo Quiz</h2>
-            <p className="text-base md:text-lg mb-8">
-              Doce preguntas mezcladas de todos los temas. Sin trampa: verás la
-              explicación correcta al terminar.
-            </p>
-            <div className="flex items-center gap-3 mono text-xs uppercase tracking-widest">
-              Iniciar quiz
-              <span className="inline-block w-8 h-8 rounded-full grid place-items-center transition group-hover:translate-x-1" style={{ background: "var(--ink)", color: "var(--paper)" }}>→</span>
-            </div>
-          </Link>
-        </div>
-      </section>
-
-      {/* Lessons grid */}
-      <section className="max-w-[1400px] mx-auto px-6 md:px-10">
-        <div className="flex items-baseline justify-between hair-b pb-4 mb-10">
-          <h2 className="text-3xl md:text-4xl italic">Lecciones</h2>
-          <span className="mono text-xs uppercase tracking-widest text-muted-foreground">06 temas</span>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {topics.map((t) => (
-            <Link
-              key={t.slug}
-              to="/lecciones/$topic"
-              params={{ topic: t.slug }}
-              className="group rounded-2xl hair-a p-7 flex flex-col justify-between min-h-[220px] transition hover:bg-white/[0.04] hover:-translate-y-0.5"
-            >
-              <div className="flex items-start justify-between mb-6">
-                <span className="mono text-xs uppercase tracking-widest" style={{ color: "var(--signal)" }}>{t.num}</span>
-                <span className="mono text-[10px] uppercase tracking-widest px-2 py-1 rounded-full hair-a text-muted-foreground">{t.tag}</span>
-              </div>
-              <div>
-                <h3 className="text-2xl md:text-[26px] leading-tight mb-3 italic">{t.title}</h3>
-                <p className="text-sm text-muted-foreground">{t.desc}</p>
-              </div>
-              <div className="mono text-xs uppercase tracking-widest mt-6 flex items-center gap-2 opacity-60 group-hover:opacity-100 group-hover:text-[var(--signal)] transition">
-                Leer lección <span>→</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-    </main>
+        <W95Window title="Consejo del día" icon="💡">
+          <div className="p-3 text-[13px]">
+            <span className="w95-blink">▮</span> Truco: en el <b>Quiz</b>, mantener una racha de 5 aciertos te da la medalla <b>🔥 Racha x5</b>.
+          </div>
+        </W95Window>
+      </div>
+    </div>
   );
 }
