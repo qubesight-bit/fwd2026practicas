@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SimuladorRouteImport } from './routes/simulador'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as LeccionesRouteImport } from './routes/lecciones'
+import { Route as EstudiarRouteImport } from './routes/estudiar'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LeccionesIndexRouteImport } from './routes/lecciones.index'
 import { Route as LeccionesTopicRouteImport } from './routes/lecciones.$topic'
@@ -29,6 +30,11 @@ const QuizRoute = QuizRouteImport.update({
 const LeccionesRoute = LeccionesRouteImport.update({
   id: '/lecciones',
   path: '/lecciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EstudiarRoute = EstudiarRouteImport.update({
+  id: '/estudiar',
+  path: '/estudiar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -49,6 +55,7 @@ const LeccionesTopicRoute = LeccionesTopicRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/estudiar': typeof EstudiarRoute
   '/lecciones': typeof LeccionesRouteWithChildren
   '/quiz': typeof QuizRoute
   '/simulador': typeof SimuladorRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/estudiar': typeof EstudiarRoute
   '/quiz': typeof QuizRoute
   '/simulador': typeof SimuladorRoute
   '/lecciones/$topic': typeof LeccionesTopicRoute
@@ -65,6 +73,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/estudiar': typeof EstudiarRoute
   '/lecciones': typeof LeccionesRouteWithChildren
   '/quiz': typeof QuizRoute
   '/simulador': typeof SimuladorRoute
@@ -75,16 +84,24 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/estudiar'
     | '/lecciones'
     | '/quiz'
     | '/simulador'
     | '/lecciones/$topic'
     | '/lecciones/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/quiz' | '/simulador' | '/lecciones/$topic' | '/lecciones'
+  to:
+    | '/'
+    | '/estudiar'
+    | '/quiz'
+    | '/simulador'
+    | '/lecciones/$topic'
+    | '/lecciones'
   id:
     | '__root__'
     | '/'
+    | '/estudiar'
     | '/lecciones'
     | '/quiz'
     | '/simulador'
@@ -94,6 +111,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EstudiarRoute: typeof EstudiarRoute
   LeccionesRoute: typeof LeccionesRouteWithChildren
   QuizRoute: typeof QuizRoute
   SimuladorRoute: typeof SimuladorRoute
@@ -120,6 +138,13 @@ declare module '@tanstack/react-router' {
       path: '/lecciones'
       fullPath: '/lecciones'
       preLoaderRoute: typeof LeccionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/estudiar': {
+      id: '/estudiar'
+      path: '/estudiar'
+      fullPath: '/estudiar'
+      preLoaderRoute: typeof EstudiarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -162,6 +187,7 @@ const LeccionesRouteWithChildren = LeccionesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EstudiarRoute: EstudiarRoute,
   LeccionesRoute: LeccionesRouteWithChildren,
   QuizRoute: QuizRoute,
   SimuladorRoute: SimuladorRoute,
