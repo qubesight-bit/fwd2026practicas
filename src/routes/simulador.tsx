@@ -307,6 +307,25 @@ function Ejercicios() {
   const [answered, setAnswered] = useState<Record<string, number>>({});
   const [rewarded, setRewarded] = useState<Record<string, true>>({});
 
+  // Read ?ej=<TAG> from the URL on mount and scroll into view.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const ej = (params.get("ej") || "").toUpperCase();
+    const allowed: Ex["tag"][] = ["HTML", "CSS", "JS", "DOM", "RED", "TERMINAL", "LOGICA"];
+    if ((allowed as string[]).indexOf(ej) !== -1) {
+      setFilter(ej as Ex["tag"]);
+      setTimeout(() => {
+        document.getElementById("ejercicios")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    } else if (window.location.hash === "#ejercicios") {
+      setTimeout(() => {
+        document.getElementById("ejercicios")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
+  }, []);
+
+
   const list = filter === "ALL" ? EXERCISES : EXERCISES.filter((e) => e.tag === filter);
   const total = list.length;
   const correctCount = list.filter((e) => answered[e.id] === e.correct).length;
