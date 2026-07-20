@@ -5,10 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -34,83 +34,240 @@
   --color-signal-soft: var(--signal-soft);
   --color-mint: var(--mint);
   --color-hair: var(--hair);
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-w95-face: var(--w95-face);
+  --color-w95-titlebar: var(--w95-titlebar);
+  --font-display: "Pixelify Sans", "Press Start 2P", "MS Sans Serif", Tahoma, sans-serif;
+  --font-sans: "MS Sans Serif", "Pixelated MS Sans Serif", Tahoma, Geneva, sans-serif;
+  --font-mono: "VT323", "Courier New", monospace;
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0px;
 
-  /* Editorial dark palette */
-  --paper: oklch(0.965 0.018 85);
-  --ink: oklch(0.14 0.012 55);
-  --signal: oklch(0.72 0.19 45);           /* terracotta */
-  --signal-soft: oklch(0.72 0.19 45 / 0.14);
-  --mint: oklch(0.78 0.14 165);            /* success/true */
-  --hair: oklch(0.965 0.018 85 / 0.14);
+  /* Windows 95 palette */
+  --w95-face:       #c0c0c0;
+  --w95-highlight:  #ffffff;
+  --w95-shadow:     #808080;
+  --w95-shadow-d:   #000000;
+  --w95-titlebar:   #000080;
+  --w95-titlebar-2: #1084d0;
+  --w95-desktop:    #008080;
+  --w95-text:       #000000;
 
-  --background: var(--ink);
-  --foreground: var(--paper);
-  --card: oklch(0.18 0.014 55);
-  --card-foreground: var(--paper);
-  --popover: oklch(0.18 0.014 55);
-  --popover-foreground: var(--paper);
-  --primary: var(--paper);
-  --primary-foreground: var(--ink);
-  --secondary: oklch(0.22 0.014 55);
-  --secondary-foreground: var(--paper);
-  --muted: oklch(0.22 0.014 55);
-  --muted-foreground: oklch(0.72 0.02 70);
-  --accent: var(--signal);
-  --accent-foreground: var(--ink);
-  --destructive: oklch(0.65 0.22 25);
-  --destructive-foreground: var(--paper);
-  --border: var(--hair);
-  --input: oklch(1 0 0 / 15%);
-  --ring: var(--signal);
+  /* Compat tokens (used by legacy components) — remapped to Win95 */
+  --paper:  #000000;   /* text over light */
+  --ink:    #c0c0c0;   /* background */
+  --signal: #000080;   /* accent = title bar blue */
+  --signal-soft: #000080cc;
+  --mint:   #008000;   /* success green */
+  --hair:   #808080;
+
+  --background: var(--w95-desktop);
+  --foreground: #000000;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #c0c0c0;
+  --popover-foreground: #000000;
+  --primary: #000080;
+  --primary-foreground: #ffffff;
+  --secondary: #c0c0c0;
+  --secondary-foreground: #000000;
+  --muted: #dfdfdf;
+  --muted-foreground: #404040;
+  --accent: #000080;
+  --accent-foreground: #ffffff;
+  --destructive: #ff0000;
+  --destructive-foreground: #ffffff;
+  --border: #808080;
+  --input: #ffffff;
+  --ring: #000080;
 }
 
 @layer base {
   * { border-color: var(--color-border); }
   html, body { height: 100%; }
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--w95-desktop);
+    color: #000;
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
-    -webkit-font-smoothing: antialiased;
+    font-size: 13px;
+    -webkit-font-smoothing: none;
+    image-rendering: pixelated;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; letter-spacing: 0; }
   code, kbd, .mono { font-family: var(--font-mono); }
-  ::selection { background: var(--signal); color: var(--ink); }
+  ::selection { background: #000080; color: #fff; }
+  a { color: #0000ee; text-decoration: underline; }
+  a:visited { color: #551a8b; }
 }
 
 @utility kicker {
   font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 1.1;
-  letter-spacing: 0.22em;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--signal);
+  color: #000080;
+  font-weight: bold;
 }
-@utility hair-b { border-bottom: 1px solid var(--hair); }
-@utility hair-t { border-top: 1px solid var(--hair); }
-@utility hair-a { border: 1px solid var(--hair); }
+@utility hair-b { border-bottom: 1px dashed #808080; }
+@utility hair-t { border-top: 1px dashed #808080; }
+@utility hair-a { border: 1px solid #808080; }
 
+/* --- Win95 3D bevels --- */
+@utility w95-outset {
+  background: var(--w95-face);
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--w95-highlight) var(--w95-shadow-d) var(--w95-shadow-d) var(--w95-highlight);
+  box-shadow: inset 1px 1px 0 var(--w95-face), inset -1px -1px 0 var(--w95-shadow);
+}
+@utility w95-inset {
+  background: var(--w95-face);
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--w95-shadow) var(--w95-highlight) var(--w95-highlight) var(--w95-shadow);
+  box-shadow: inset 1px 1px 0 var(--w95-shadow-d);
+}
+
+/* --- Buttons --- */
+@utility w95-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  min-height: 24px;
+  background: var(--w95-face);
+  color: #000;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--w95-highlight) var(--w95-shadow-d) var(--w95-shadow-d) var(--w95-highlight);
+  box-shadow: inset 1px 1px 0 var(--w95-face), inset -1px -1px 0 var(--w95-shadow);
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+}
+@utility w95-btn-active {
+  border-color: var(--w95-shadow-d) var(--w95-highlight) var(--w95-highlight) var(--w95-shadow-d) !important;
+  box-shadow: inset 1px 1px 0 var(--w95-shadow) !important;
+  padding: 4px 9px 2px 11px;
+}
+.w95-btn:active:not(:disabled) {
+  border-color: var(--w95-shadow-d) var(--w95-highlight) var(--w95-highlight) var(--w95-shadow-d);
+  box-shadow: inset 1px 1px 0 var(--w95-shadow);
+  padding: 4px 9px 2px 11px;
+}
+.w95-btn:focus-visible { outline: 1px dotted #000; outline-offset: -4px; }
+
+/* --- Title bar --- */
+.w95-titlebar {
+  background: linear-gradient(90deg, var(--w95-titlebar) 0%, var(--w95-titlebar-2) 100%);
+  color: #fff;
+  padding: 2px 4px;
+  font-weight: bold;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.w95-tb-btn {
+  background: var(--w95-face);
+  color: #000;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: bold;
+  width: 18px; height: 16px;
+  line-height: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-style: solid; border-width: 2px;
+  border-color: var(--w95-highlight) var(--w95-shadow-d) var(--w95-shadow-d) var(--w95-highlight);
+  box-shadow: inset 1px 1px 0 var(--w95-face);
+  cursor: pointer;
+}
+.w95-tb-btn:active {
+  border-color: var(--w95-shadow-d) var(--w95-highlight) var(--w95-highlight) var(--w95-shadow-d);
+}
+
+/* --- Windows flag icon (CSS art) --- */
+.w95-flag {
+  display: inline-block;
+  width: 16px; height: 14px;
+  background:
+    linear-gradient(135deg, #ff0000 0 50%, transparent 50%) top left / 8px 7px no-repeat,
+    linear-gradient(225deg, #00ff00 0 50%, transparent 50%) top right / 8px 7px no-repeat,
+    linear-gradient(45deg,  #0000ff 0 50%, transparent 50%) bottom left / 8px 7px no-repeat,
+    linear-gradient(-45deg, #ffff00 0 50%, transparent 50%) bottom right / 8px 7px no-repeat;
+  transform: skewX(-12deg);
+  border: 1px solid #000;
+}
+
+/* --- Desktop icon --- */
+.w95-icon {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 6px; width: 84px; text-align: center;
+  cursor: pointer;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+}
+.w95-icon .glyph { font-size: 34px; line-height: 1; }
+.w95-icon .lbl { font-size: 11px; padding: 1px 3px; }
+.w95-icon:hover .lbl { background: #000080; }
+.w95-icon:focus-visible .lbl { background: #000080; outline: 1px dotted #fff; }
+
+/* --- Legacy dark theme card colors → override to white paper --- */
+[style*="oklch(0.18"],
+[style*="oklch(0.16"],
+[style*="oklch(0.11"],
+[style*="oklch(0.22 0.014 55)"],
+[style*="oklch(0.24 0.09"] {
+  background: #ffffff !important;
+  color: #000 !important;
+  border: 2px solid !important;
+  border-color: #808080 #ffffff #ffffff #808080 !important;
+  box-shadow: inset 1px 1px 0 #000 !important;
+}
+[style*="oklch(0.85 0.02 70)"],
+[style*="oklch(0.82 0.02 70)"],
+[style*="oklch(0.9 0.02 70)"],
+[style*="oklch(0.8 0.02 70)"] {
+  color: #000 !important;
+}
+[style*="linear-gradient(135deg, oklch(0.18"] {
+  background: #ffffff !important;
+  color: #000 !important;
+}
+
+/* --- Grain overlay (subtle CRT scanlines) --- */
 .grain::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.05;
-  z-index: 50;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/></svg>");
+  z-index: 40;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.05) 0 1px,
+    transparent 1px 3px
+  );
+  opacity: 0.35;
+  mix-blend-mode: multiply;
 }
 
+/* --- Animations --- */
 @keyframes pulse-dot { 0%,100%{opacity:.3} 50%{opacity:1} }
 .dot-pulse { animation: pulse-dot 1.4s ease-in-out infinite; }
 
 @keyframes travel { 0%{transform:translateX(-10%);opacity:0} 15%{opacity:1} 85%{opacity:1} 100%{transform:translateX(110%);opacity:0} }
 .travel { animation: travel 1.8s cubic-bezier(0.32,0.72,0,1) forwards; }
+
+@keyframes w95-pop { 0% { transform: translateY(6px) scale(0.95); opacity: 0 } 100% { transform: translateY(0) scale(1); opacity: 1 } }
+.animate-w95-pop { animation: w95-pop 180ms steps(4, end); }
+
+@keyframes hourglass { 0%,100% { transform: rotate(0deg) } 50% { transform: rotate(180deg) } }
+.w95-hourglass { display: inline-block; animation: hourglass 1.4s ease-in-out infinite; }
+
+@keyframes blink { 50% { opacity: 0 } }
+.w95-blink { animation: blink 1s steps(2, end) infinite; }

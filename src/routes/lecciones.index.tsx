@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useStats } from "@/lib/gamification";
 
 export const Route = createFileRoute("/lecciones/")({
   head: () => ({
     meta: [
-      { title: "Lecciones — Redes y Fundamentos" },
+      { title: "Lecciones — Redes 95" },
       { name: "description", content: "Índice de lecciones: DNS, operadores lógicos, fundamentos de programación, terminal, HTML y frontend." },
     ],
   }),
@@ -11,41 +12,56 @@ export const Route = createFileRoute("/lecciones/")({
 });
 
 const topics = [
-  { slug: "dns",         num: "01", title: "DNS y cómo viaja una URL",           desc: "La guía telefónica de internet. Comandos, errores y flujo completo." },
-  { slug: "operadores",  num: "02", title: "Operadores lógicos y tabla de verdad", desc: "AND, OR, NOT — tablas, ejemplos y un evaluador interactivo." },
-  { slug: "fundamentos", num: "03", title: "Fundamentos de programación",         desc: "Variables, operadores, condicionales, bucles y funciones." },
-  { slug: "terminal",    num: "04", title: "Comandos de la terminal",             desc: "Comparativa Windows · Mac · Linux, tabla navegable." },
-  { slug: "html",        num: "05", title: "HTML — el esqueleto de la web",       desc: "Etiquetas, atributos, listas y por qué todo va dentro de body." },
-  { slug: "frontend",    num: "06", title: "Frontend, DOM y renderizado",         desc: "HTML + CSS + JS, qué es el DOM y qué NO es frontend." },
+  { slug: "dns",         num: "01", title: "DNS y cómo viaja una URL",           desc: "La guía telefónica de internet. Comandos, errores y flujo completo.", icon: "📞" },
+  { slug: "operadores",  num: "02", title: "Operadores lógicos y tabla de verdad", desc: "AND, OR, NOT — tablas, ejemplos y un evaluador interactivo.", icon: "🍦" },
+  { slug: "fundamentos", num: "03", title: "Fundamentos de programación",         desc: "Variables, operadores, condicionales, bucles y funciones.", icon: "📝" },
+  { slug: "terminal",    num: "04", title: "Comandos de la terminal",             desc: "Comparativa Windows · Mac · Linux, tabla navegable.", icon: "💻" },
+  { slug: "html",        num: "05", title: "HTML — el esqueleto de la web",       desc: "Etiquetas, atributos, listas y por qué todo va dentro de body.", icon: "📄" },
+  { slug: "frontend",    num: "06", title: "Frontend, DOM y renderizado",         desc: "HTML + CSS + JS, qué es el DOM y qué NO es frontend.", icon: "🎨" },
 ];
 
 function Index() {
+  const stats = useStats();
+  const done = new Set(stats.lessonsCompleted);
+  const pct = Math.round((done.size / topics.length) * 100);
+
   return (
-    <main className="max-w-[1400px] mx-auto px-6 md:px-10 pt-14 md:pt-20">
-      <div className="kicker mb-6">Índice</div>
-      <h1 className="text-5xl md:text-7xl mb-4">Lecciones.</h1>
-      <p className="text-lg max-w-2xl mb-12" style={{ color: "oklch(0.85 0.02 70)" }}>
-        Cada tema en su propia página, con ejemplos, tablas y ejercicios que puedes tocar.
-      </p>
-      <div className="grid md:grid-cols-2 gap-4">
-        {topics.map((t) => (
-          <Link
-            key={t.slug}
-            to="/lecciones/$topic"
-            params={{ topic: t.slug }}
-            className="group rounded-2xl hair-a p-8 flex items-start gap-6 transition hover:bg-white/[0.04] hover:-translate-y-0.5"
-          >
-            <span className="mono text-3xl italic" style={{ color: "var(--signal)", fontFamily: "var(--font-display)", fontStyle: "italic" }}>
-              {t.num}
-            </span>
-            <div className="flex-1">
-              <h2 className="text-2xl mb-2 italic">{t.title}</h2>
-              <p className="text-sm text-muted-foreground">{t.desc}</p>
-            </div>
-            <span className="mono text-xs uppercase tracking-widest opacity-60 group-hover:opacity-100 group-hover:text-[var(--signal)] transition mt-2">→</span>
-          </Link>
-        ))}
+    <div>
+      <div className="flex items-baseline justify-between mb-4">
+        <h1 className="text-3xl md:text-4xl" style={{ fontFamily: "'Press Start 2P', var(--font-display)" }}>
+          📚 LECCIONES
+        </h1>
+        <div className="text-[12px]">Completadas: <b>{done.size}/{topics.length}</b> ({pct}%)</div>
       </div>
-    </main>
+      <div className="w95-inset h-3 bg-white mb-6">
+        <div className="h-full" style={{ width: `${pct}%`, background: "#000080" }} />
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-3">
+        {topics.map((t) => {
+          const isDone = done.has(t.slug);
+          return (
+            <Link
+              key={t.slug}
+              to="/lecciones/$topic"
+              params={{ topic: t.slug }}
+              className="w95-outset p-3 flex items-start gap-3 hover:brightness-105 no-underline text-black"
+              style={{ background: "var(--w95-face)" }}
+            >
+              <div className="text-4xl">{t.icon}</div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="mono text-[12px]">Nº {t.num}</span>
+                  {isDone && <span className="text-[10px] px-1 bg-[#008000] text-white">✓ COMPLETADA</span>}
+                </div>
+                <div className="text-lg leading-tight" style={{ fontFamily: "var(--font-display)" }}>{t.title}</div>
+                <div className="text-[12px] mt-1">{t.desc}</div>
+              </div>
+              <div className="text-2xl">▶</div>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
   );
 }
