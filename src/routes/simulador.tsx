@@ -249,6 +249,7 @@ function Simulator() {
       </div>
 
       {/* Exercises */}
+      <EjerciciosCodigo />
       <Ejercicios />
     </div>
   );
@@ -441,3 +442,254 @@ function Node({ title, sub, children, active, disabled }: { title: string; sub: 
     </div>
   );
 }
+
+/* ---------- Code-writing exercises ---------- */
+
+type CodeEx = {
+  id: string;
+  tag: "HTML" | "CSS" | "JS" | "TERMINAL";
+  q: string;
+  hint?: string;
+  placeholder: string;
+  starter?: string;
+  accept: RegExp[][];
+  explain: string;
+  preview?: "html";
+};
+
+const CODE_EXERCISES: CodeEx[] = [
+  {
+    id: "c-html-1", tag: "HTML",
+    q: "Escribe un título principal que diga: Hola mundo",
+    hint: "Usa la etiqueta <h1>…</h1>",
+    placeholder: "<h1>Hola mundo</h1>",
+    accept: [[/^<h1>\s*hola\s+mundo\s*<\/h1>$/i]],
+    explain: "<h1> es el título más importante de la página.",
+    preview: "html",
+  },
+  {
+    id: "c-html-2", tag: "HTML",
+    q: "Crea un enlace a https://google.com con el texto: Buscar",
+    hint: "Etiqueta <a> con atributo href",
+    placeholder: '<a href="https://google.com">Buscar</a>',
+    accept: [[/<a\s+href=["']https:\/\/google\.com["']\s*>\s*buscar\s*<\/a>/i]],
+    explain: "<a href='URL'>texto</a> crea un hipervínculo.",
+    preview: "html",
+  },
+  {
+    id: "c-html-3", tag: "HTML",
+    q: "Muestra una imagen 'gato.jpg' con texto alternativo: Un gato",
+    hint: "Etiqueta <img> con src y alt",
+    placeholder: '<img src="gato.jpg" alt="Un gato">',
+    accept: [
+      [/<img\s+[^>]*src=["']gato\.jpg["'][^>]*alt=["']un\s+gato["'][^>]*\/?>/i],
+      [/<img\s+[^>]*alt=["']un\s+gato["'][^>]*src=["']gato\.jpg["'][^>]*\/?>/i],
+    ],
+    explain: "El atributo alt describe la imagen para lectores y accesibilidad.",
+    preview: "html",
+  },
+  {
+    id: "c-html-4", tag: "HTML",
+    q: "Escribe una lista ordenada con dos elementos: Uno y Dos",
+    hint: "<ol> con dos <li> dentro",
+    placeholder: "<ol><li>Uno</li><li>Dos</li></ol>",
+    accept: [[/<ol>\s*<li>\s*uno\s*<\/li>\s*<li>\s*dos\s*<\/li>\s*<\/ol>/i]],
+    explain: "<ol> = lista numerada. Cada punto va en <li>.",
+    preview: "html",
+  },
+  {
+    id: "c-css-1", tag: "CSS",
+    q: "Pinta el texto de rojo (solo la regla CSS)",
+    placeholder: "color: red;",
+    accept: [[/^color\s*:\s*red\s*;?\s*$/i]],
+    explain: "La propiedad se llama color, no font-color.",
+  },
+  {
+    id: "c-css-2", tag: "CSS",
+    q: "Selecciona la clase 'btn' y pon el fondo azul",
+    hint: ".clase { propiedad: valor; }",
+    placeholder: ".btn { background: blue; }",
+    accept: [[/^\.btn\s*\{\s*background(-color)?\s*:\s*blue\s*;?\s*\}$/i]],
+    explain: "El punto (.) selecciona clases. background pinta el fondo.",
+  },
+  {
+    id: "c-css-3", tag: "CSS",
+    q: "Centra con flex (escribe las 3 propiedades)",
+    hint: "display, justify-content, align-items",
+    placeholder: "display: flex;\njustify-content: center;\nalign-items: center;",
+    accept: [[/display\s*:\s*flex\s*;/i, /justify-content\s*:\s*center\s*;/i, /align-items\s*:\s*center\s*;/i]],
+    explain: "flex + justify-content (eje X) + align-items (eje Y) = centrado perfecto.",
+  },
+  {
+    id: "c-js-1", tag: "JS",
+    q: "Declara una constante 'nombre' con el valor 'Ada'",
+    placeholder: "const nombre = 'Ada';",
+    accept: [[/^const\s+nombre\s*=\s*['"`]ada['"`]\s*;?\s*$/i]],
+    explain: "const = valor que no cambia. Cadenas entre comillas.",
+  },
+  {
+    id: "c-js-2", tag: "JS",
+    q: "Muestra en consola el texto: Hola",
+    placeholder: "console.log('Hola');",
+    accept: [[/^console\.log\(\s*['"`]hola['"`]\s*\)\s*;?\s*$/i]],
+    explain: "console.log() imprime en la consola del navegador.",
+  },
+  {
+    id: "c-js-3", tag: "JS",
+    q: "Escribe un if que compruebe si 'edad' es mayor o igual a 18",
+    hint: "if (condición) { ... }",
+    placeholder: "if (edad >= 18) { console.log('adulto'); }",
+    accept: [[/if\s*\(\s*edad\s*>=\s*18\s*\)\s*\{[^}]*\}/i]],
+    explain: ">= significa mayor o igual. La condición va entre paréntesis.",
+  },
+  {
+    id: "c-js-4", tag: "JS",
+    q: "Un bucle for de 0 a 4 que imprima i",
+    placeholder: "for (let i = 0; i < 5; i++) { console.log(i); }",
+    accept: [[/for\s*\(\s*let\s+i\s*=\s*0\s*;\s*i\s*<\s*5\s*;\s*i\+\+\s*\)\s*\{[^}]*console\.log\(\s*i\s*\)[^}]*\}/i]],
+    explain: "for (inicio; condición; paso). i++ suma 1 cada vuelta.",
+  },
+  {
+    id: "c-js-5", tag: "JS",
+    q: "Define saludar(nombre) que retorne 'Hola ' + nombre",
+    placeholder: "function saludar(nombre) { return 'Hola ' + nombre; }",
+    accept: [
+      [/function\s+saludar\s*\(\s*nombre\s*\)\s*\{\s*return\s+['"`]hola\s+['"`]\s*\+\s*nombre\s*;?\s*\}/i],
+      [/const\s+saludar\s*=\s*\(?\s*nombre\s*\)?\s*=>\s*['"`]hola\s+['"`]\s*\+\s*nombre/i],
+    ],
+    explain: "function nombre(param) { return … } o una arrow: (n) => 'Hola ' + n.",
+  },
+  {
+    id: "c-term-1", tag: "TERMINAL",
+    q: "Pregunta al DNS por la IP de google.com",
+    placeholder: "nslookup google.com",
+    accept: [[/^nslookup\s+google\.com\s*$/i]],
+    explain: "nslookup consulta el DNS y muestra la(s) IP(s) del dominio.",
+  },
+  {
+    id: "c-term-2", tag: "TERMINAL",
+    q: "Envía pings a google.com",
+    placeholder: "ping google.com",
+    accept: [[/^ping\s+(-c\s*\d+\s+)?google\.com\s*$/i]],
+    explain: "ping envía paquetes ICMP y mide el tiempo de respuesta.",
+  },
+  {
+    id: "c-term-3", tag: "TERMINAL",
+    q: "Muestra el contenido de la carpeta actual (Linux/Mac)",
+    placeholder: "ls",
+    accept: [[/^ls(\s+-\w+)?\s*$/i]],
+    explain: "ls lista archivos. En Windows CMD sería 'dir'.",
+  },
+  {
+    id: "c-term-4", tag: "TERMINAL",
+    q: "Cambia a la carpeta 'proyectos'",
+    placeholder: "cd proyectos",
+    accept: [[/^cd\s+proyectos\/?\s*$/i]],
+    explain: "cd = change directory. Con cd .. subes un nivel.",
+  },
+];
+
+function EjerciciosCodigo() {
+  const tags: Array<"ALL" | CodeEx["tag"]> = ["ALL", "HTML", "CSS", "JS", "TERMINAL"];
+  const [filter, setFilter] = useState<"ALL" | CodeEx["tag"]>("ALL");
+  const [rewarded, setRewarded] = useState<Record<string, true>>({});
+  const list = filter === "ALL" ? CODE_EXERCISES : CODE_EXERCISES.filter((e) => e.tag === filter);
+
+  const tagColor: Record<CodeEx["tag"], string> = {
+    HTML: "#e34c26", CSS: "#264de4", JS: "#b8860b", TERMINAL: "#000000",
+  };
+
+  return (
+    <div id="ejercicios-codigo" className="mt-8 scroll-mt-4">
+      <div className="w95-titlebar mb-0">
+        <span>⌨️ Ejercicios de código — escribe tú la respuesta</span>
+        <span className="text-[11px]">{Object.keys(rewarded).length} resueltos</span>
+      </div>
+      <div className="w95-outset p-3">
+        <div className="flex flex-wrap gap-1 mb-3 items-center">
+          <span className="text-[12px] mr-1">Filtrar:</span>
+          {tags.map((t) => (
+            <button key={t} onClick={() => setFilter(t)} className={`w95-btn text-[12px] ${filter === t ? "w95-btn-active" : ""}`}>{t}</button>
+          ))}
+          <span className="ml-auto text-[12px] opacity-80">Cada acierto = +15 XP · +2 🪙 (una vez)</span>
+        </div>
+        <div className="grid md:grid-cols-2 gap-3">
+          {list.map((ex) => (
+            <CodeCard
+              key={ex.id}
+              ex={ex}
+              tagColor={tagColor[ex.tag]}
+              rewarded={!!rewarded[ex.id]}
+              onSolve={() => {
+                if (rewarded[ex.id]) return;
+                addXP(15, `Código ${ex.tag}`);
+                addCoins(2);
+                setRewarded((r) => ({ ...r, [ex.id]: true }));
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function normalizeCode(s: string) { return s.replace(/\s+/g, " ").trim(); }
+
+function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: string; rewarded: boolean; onSolve: () => void }) {
+  const [value, setValue] = useState(ex.starter ?? "");
+  const [status, setStatus] = useState<"idle" | "ok" | "bad">("idle");
+  const [showHint, setShowHint] = useState(false);
+
+  const check = () => {
+    const norm = normalizeCode(value);
+    if (!norm) { setStatus("bad"); sfx.wrong(); return; }
+    const ok = ex.accept.some((group) => group.every((rx) => rx.test(norm)));
+    setStatus(ok ? "ok" : "bad");
+    if (ok) { sfx.correct(); onSolve(); } else { sfx.wrong(); }
+  };
+
+  const rows = Math.max(2, (ex.placeholder.match(/\n/g)?.length ?? 0) + 1);
+
+  return (
+    <div className="w95-inset bg-white p-3">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-[10px] font-bold text-white px-1.5 py-0.5" style={{ background: tagColor }}>{ex.tag}</span>
+        <span className="text-[13px] font-bold flex-1">{ex.q}</span>
+        {rewarded && <span title="Ya premiado">🏆</span>}
+      </div>
+      <textarea
+        value={value}
+        onChange={(e) => { setValue(e.target.value); if (status !== "idle") setStatus("idle"); }}
+        spellCheck={false}
+        rows={rows}
+        placeholder={ex.placeholder}
+        className="w-full w95-inset bg-white p-2 mono text-[12px] outline-none resize-y"
+        style={{ minHeight: 56 }}
+      />
+      <div className="flex flex-wrap items-center gap-1 mt-2">
+        <W95Button onClick={check}>▶ Comprobar</W95Button>
+        <W95Button onClick={() => { setValue(ex.placeholder); setStatus("idle"); }}>Ver ejemplo</W95Button>
+        {ex.hint && <W95Button onClick={() => setShowHint((v) => !v)}>{showHint ? "Ocultar pista" : "💡 Pista"}</W95Button>}
+        <W95Button onClick={() => { setValue(""); setStatus("idle"); }}>Limpiar</W95Button>
+        {status === "ok" && <span className="ml-2 px-2 py-1 text-white text-[12px]" style={{ background: "#008000" }}>✓ Correcto</span>}
+        {status === "bad" && <span className="ml-2 px-2 py-1 text-white text-[12px]" style={{ background: "#c00000" }}>✗ Intenta otra vez</span>}
+      </div>
+      {showHint && ex.hint && (
+        <div className="mt-2 p-2 text-[12px]" style={{ background: "#ffffcc", border: "1px solid #808080" }}>💡 {ex.hint}</div>
+      )}
+      {status === "ok" && (
+        <div className="mt-2 p-2 text-[12px]" style={{ background: "#e6ffe6", border: "1px solid #808080" }}>
+          <b>¡Bien!</b> {ex.explain}
+        </div>
+      )}
+      {ex.preview === "html" && value.trim() && (
+        <div className="mt-2">
+          <div className="mono text-[10px] uppercase opacity-70 mb-1">Vista previa</div>
+          <div className="w95-inset bg-white p-2 text-black text-[13px]" dangerouslySetInnerHTML={{ __html: value }} />
+        </div>
+      )}
+    </div>
+  );
+}
+
