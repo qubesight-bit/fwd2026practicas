@@ -36,9 +36,9 @@
   --color-hair: var(--hair);
   --color-w95-face: var(--w95-face);
   --color-w95-titlebar: var(--w95-titlebar);
-  --font-display: "Pixelify Sans", "Press Start 2P", "MS Sans Serif", Tahoma, sans-serif;
-  --font-sans: "MS Sans Serif", "Pixelated MS Sans Serif", Tahoma, Geneva, sans-serif;
-  --font-mono: "VT323", "Courier New", monospace;
+  --font-display: "Tahoma", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Tahoma", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Consolas", "Menlo", "DejaVu Sans Mono", "Courier New", monospace;
 }
 
 :root {
