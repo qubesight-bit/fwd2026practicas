@@ -24,14 +24,24 @@ type Scenario = {
 };
 
 const SCENARIOS: Scenario[] = [
-  { domain: "google.com",             label: "Éxito clásico",   ip: "142.250.185.78", httpCode: 200, httpText: "OK",                    narrative: "Todo funciona. La página carga.",                outcome: "ok" },
-  { domain: "example.com",            label: "Éxito clásico",   ip: "93.184.216.34",  httpCode: 200, httpText: "OK",                    narrative: "El dominio existe, el servidor contesta bien.", outcome: "ok" },
-  { domain: "github.com/no-existe",   label: "Recurso faltante", ip: "140.82.121.4",  httpCode: 404, httpText: "Not Found",             narrative: "Llegamos al servidor, pero esa ruta no existe.", outcome: "http-error" },
-  { domain: "sitio-privado.com",      label: "Acceso denegado", ip: "203.0.113.42",   httpCode: 403, httpText: "Forbidden",             narrative: "El servidor te ubicó, pero no tienes permiso.", outcome: "http-error" },
-  { domain: "app-caida.com",          label: "Servidor roto",   ip: "198.51.100.7",   httpCode: 500, httpText: "Internal Server Error", narrative: "El servidor existe pero su código falló.",       outcome: "http-error" },
-  { domain: "gateway-lenta.com",      label: "Intermediario",   ip: "198.51.100.9",   httpCode: 502, httpText: "Bad Gateway",           narrative: "Un intermediario recibió una respuesta inválida.", outcome: "http-error" },
-  { domain: "mantenimiento.com",      label: "En pausa",        ip: "198.51.100.11",  httpCode: 503, httpText: "Service Unavailable",   narrative: "Servidor saturado o en mantenimiento.",          outcome: "http-error" },
-  { domain: "esto-no-existe-xyz.zzz", label: "DNS falla",       ip: null,             httpCode: null, httpText: "",                     narrative: "El DNS no encontró el dominio.",                 outcome: "dns-error" },
+  { domain: "google.com",             label: "Éxito clásico",     ip: "142.250.185.78", httpCode: 200, httpText: "OK",                    narrative: "Todo funciona. La página carga.",                outcome: "ok" },
+  { domain: "example.com",            label: "Éxito clásico",     ip: "93.184.216.34",  httpCode: 200, httpText: "OK",                    narrative: "El dominio existe, el servidor contesta bien.", outcome: "ok" },
+  { domain: "cdn.midominio.com",      label: "Recurso creado",    ip: "151.101.1.5",    httpCode: 201, httpText: "Created",               narrative: "El servidor creó un recurso nuevo (ej: subiste un archivo).", outcome: "ok" },
+  { domain: "api.midominio.com",      label: "Sin contenido",     ip: "151.101.1.6",    httpCode: 204, httpText: "No Content",            narrative: "OK pero sin cuerpo en la respuesta (típico en DELETE).", outcome: "ok" },
+  { domain: "http://midominio.com",   label: "Redirección",       ip: "151.101.1.7",    httpCode: 301, httpText: "Moved Permanently",     narrative: "El servidor te manda a https://midominio.com.",  outcome: "ok" },
+  { domain: "cache.midominio.com",    label: "No modificado",     ip: "151.101.1.8",    httpCode: 304, httpText: "Not Modified",          narrative: "Tu navegador usa la versión guardada en caché.", outcome: "ok" },
+  { domain: "github.com/no-existe",   label: "Recurso faltante",  ip: "140.82.121.4",   httpCode: 404, httpText: "Not Found",             narrative: "Llegamos al servidor, pero esa ruta no existe.", outcome: "http-error" },
+  { domain: "banco.com/panel",        label: "Sin sesión",        ip: "203.0.113.10",   httpCode: 401, httpText: "Unauthorized",          narrative: "Necesitas iniciar sesión para ver esto.",         outcome: "http-error" },
+  { domain: "sitio-privado.com",      label: "Acceso denegado",   ip: "203.0.113.42",   httpCode: 403, httpText: "Forbidden",             narrative: "El servidor te ubicó, pero no tienes permiso.",  outcome: "http-error" },
+  { domain: "api.demo.com/tea",       label: "Broma HTTP",        ip: "198.51.100.4",   httpCode: 418, httpText: "I'm a teapot",          narrative: "Código de broma: soy una tetera, no hago café.",  outcome: "http-error" },
+  { domain: "descarga.grande.com",    label: "Payload gigante",   ip: "198.51.100.5",   httpCode: 413, httpText: "Payload Too Large",     narrative: "El archivo que enviaste supera el límite del servidor.", outcome: "http-error" },
+  { domain: "api.limite.com",         label: "Demasiadas requests", ip: "198.51.100.6", httpCode: 429, httpText: "Too Many Requests",     narrative: "Rate limit: pediste demasiado en poco tiempo.",   outcome: "http-error" },
+  { domain: "app-caida.com",          label: "Servidor roto",     ip: "198.51.100.7",   httpCode: 500, httpText: "Internal Server Error", narrative: "El servidor existe pero su código falló.",       outcome: "http-error" },
+  { domain: "gateway-lenta.com",      label: "Intermediario",     ip: "198.51.100.9",   httpCode: 502, httpText: "Bad Gateway",           narrative: "Un intermediario recibió una respuesta inválida.", outcome: "http-error" },
+  { domain: "mantenimiento.com",      label: "En pausa",          ip: "198.51.100.11",  httpCode: 503, httpText: "Service Unavailable",   narrative: "Servidor saturado o en mantenimiento.",          outcome: "http-error" },
+  { domain: "servidor-tardon.com",    label: "Tardó demasiado",   ip: "198.51.100.12",  httpCode: 504, httpText: "Gateway Timeout",       narrative: "El gateway se cansó de esperar al servidor real.", outcome: "http-error" },
+  { domain: "esto-no-existe-xyz.zzz", label: "DNS falla",         ip: null,             httpCode: null, httpText: "",                     narrative: "El DNS no encontró el dominio.",                 outcome: "dns-error" },
+  { domain: "sitio.typosquat",        label: "TLD inválido",      ip: null,             httpCode: null, httpText: "",                     narrative: "Ese dominio de nivel superior no existe.",       outcome: "dns-error" },
 ];
 
 function pickScenario(input: string): Scenario {
