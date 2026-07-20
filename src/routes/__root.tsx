@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -11,40 +12,47 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Taskbar, ToastLayer, IEBrowser, W95Button } from "@/components/win95";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <div className="kicker mb-4">Error 404</div>
-        <h1 className="text-6xl mb-4">Página no encontrada</h1>
-        <p className="text-sm text-muted-foreground mb-6">
-          Esta ruta no existe en la guía. Como cuando el DNS no encuentra un dominio.
-        </p>
-        <Link to="/" className="inline-flex rounded-full px-5 py-2 mono text-xs uppercase tracking-widest hair-a hover:bg-accent hover:text-accent-foreground transition">
-          ← Volver al inicio
-        </Link>
+    <ChromeWrap>
+      <div className="text-center py-16">
+        <div className="text-6xl mb-4">📄❌</div>
+        <h1 className="text-3xl mb-2">No se pudo mostrar la página</h1>
+        <p className="mb-6">Esta ruta no existe. (Como cuando el DNS no encuentra un dominio.)</p>
+        <Link to="/" className="w95-btn inline-flex">🏠 Volver al escritorio</Link>
       </div>
-    </div>
+    </ChromeWrap>
   );
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
+  useEffect(() => { reportLovableError(error, { boundary: "tanstack_root_error_component" }); }, [error]);
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <div className="kicker mb-4">Algo se rompió</div>
-        <h1 className="text-4xl mb-4">Esta página no cargó</h1>
+    <ChromeWrap>
+      <div className="max-w-md mx-auto text-center py-12">
+        <div className="text-5xl mb-4">💥</div>
+        <h1 className="text-2xl mb-2">Se produjo un error</h1>
+        <p className="mb-6 text-[12px]">Un programa no responde. Presiona reintentar.</p>
         <div className="flex gap-2 justify-center">
-          <button onClick={() => { router.invalidate(); reset(); }} className="rounded-full px-5 py-2 mono text-xs uppercase tracking-widest bg-accent text-accent-foreground">Reintentar</button>
-          <a href="/" className="rounded-full px-5 py-2 mono text-xs uppercase tracking-widest hair-a">Inicio</a>
+          <W95Button onClick={() => { router.invalidate(); reset(); }}>Reintentar</W95Button>
+          <a href="/" className="w95-btn">Inicio</a>
         </div>
       </div>
+    </ChromeWrap>
+  );
+}
+
+/** Wrapper used by error/not-found routes to give the same IE chrome. */
+function ChromeWrap({ children }: { children: ReactNode }) {
+  return (
+    <div className="grain min-h-screen p-2 md:p-4 pb-[52px]" style={{ background: "var(--w95-desktop)" }}>
+      <IEBrowser title="Error" url="about:blank">{children}</IEBrowser>
+      <Taskbar />
+      <ToastLayer />
     </div>
   );
 }
@@ -54,10 +62,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Redes y Fundamentos — Estudia jugando" },
-      { name: "description", content: "Aprende DNS, HTTP, HTML, operadores lógicos, terminal y fundamentos de programación con lecciones ilustradas, un simulador interactivo y modo quiz." },
-      { property: "og:title", content: "Redes y Fundamentos — Estudia jugando" },
-      { property: "og:description", content: "Lecciones + simulador DNS/HTTP + quiz para dominar los conceptos base de la web." },
+      { title: "Redes 95 — Estudia jugando en Internet Explorer" },
+      { name: "description", content: "Aprende DNS, HTTP, HTML, lógica y terminal en un simulador con estética Windows 95 e Internet Explorer, con XP, monedas y medallas." },
+      { property: "og:title", content: "Redes 95 — Estudia jugando" },
+      { property: "og:description", content: "Lecciones, simulador DNS/HTTP y quiz gamificado, todo dentro de una PC de los 90s." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -66,7 +74,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&family=VT323&family=Press+Start+2P&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -78,68 +86,38 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="es">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
+      <head><HeadContent /></head>
+      <body>{children}<Scripts /></body>
     </html>
   );
 }
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isDesktop = pathname === "/";
+  const title =
+    pathname === "/" ? "Escritorio" :
+    pathname.startsWith("/quiz") ? "Quiz — Juegos" :
+    pathname.startsWith("/simulador") ? "Simulador de red" :
+    pathname.startsWith("/lecciones/") ? "Lección" :
+    pathname.startsWith("/lecciones") ? "Lecciones" :
+    "Redes 95";
+  const url = `C:\\Redes95${pathname === "/" ? "\\Escritorio" : pathname.replaceAll("/", "\\")}`;
+
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="grain min-h-screen">
-        <SiteNav />
-        <Outlet />
-        <SiteFooter />
+      <div className="grain min-h-screen p-2 md:p-4 pb-[52px]" style={{ background: "var(--w95-desktop)" }}>
+        {isDesktop ? (
+          <Outlet />
+        ) : (
+          <IEBrowser title={title} url={url}>
+            <Outlet />
+          </IEBrowser>
+        )}
+        <Taskbar />
+        <ToastLayer />
       </div>
     </QueryClientProvider>
-  );
-}
-
-function SiteNav() {
-  return (
-    <header className="sticky top-0 z-40 backdrop-blur-md" style={{ background: "oklch(0.14 0.012 55 / 0.75)", borderBottom: "1px solid var(--hair)" }}>
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-baseline gap-3">
-          <span className="mono text-[11px] uppercase tracking-[0.22em]" style={{ color: "var(--signal)" }}>REDES</span>
-          <span className="text-2xl italic" style={{ fontFamily: "var(--font-display)" }}>&amp; fundamentos</span>
-        </Link>
-        <nav className="flex items-center gap-1 md:gap-2 mono text-[11px] uppercase tracking-widest">
-          {[
-            { to: "/", label: "Inicio" },
-            { to: "/lecciones", label: "Lecciones" },
-            { to: "/simulador", label: "Simulador" },
-            { to: "/quiz", label: "Quiz" },
-          ].map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className="px-3 py-2 rounded-full hover:bg-white/5 transition"
-              activeOptions={{ exact: l.to === "/" }}
-              activeProps={{ className: "px-3 py-2 rounded-full bg-white/10 text-[var(--signal)]" }}
-            >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
-    </header>
-  );
-}
-
-function SiteFooter() {
-  return (
-    <footer className="hair-t mt-24">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-10 flex flex-wrap items-baseline justify-between gap-6 mono text-[11px] uppercase tracking-widest text-muted-foreground">
-        <span>Guía visual · para estudiar sin sufrir</span>
-        <span>Hecho con cariño · 2026</span>
-      </div>
-    </footer>
   );
 }
