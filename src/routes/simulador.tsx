@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { W95Button } from "@/components/win95";
+import { RulesBox } from "@/components/RulesBox";
 import { recordSimPrediction, recordSimUse, useStats, sfx, addXP, addCoins } from "@/lib/gamification";
 
 export const Route = createFileRoute("/simulador")({
@@ -422,6 +423,17 @@ function Ejercicios() {
                     <b>{isCorrect ? "¡Correcto!" : "Casi…"}</b> {ex.explain}
                   </div>
                 )}
+                <RulesBox tag={ex.tag} defaultOpen={done && !isCorrect} compact />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function __ejerciciosClose() { return null;
               </div>
             );
           })}
