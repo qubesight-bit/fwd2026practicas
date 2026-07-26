@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Section, Callout, CodeBlock, Sig } from "@/components/lesson-ui";
 import BoolPlayground from "@/components/BoolPlayground";
 
-export type LessonSlug = "dns" | "operadores" | "fundamentos" | "terminal" | "html" | "frontend";
+export type LessonSlug = "dns" | "operadores" | "fundamentos" | "js" | "terminal" | "html" | "frontend";
 
 type Lesson = { title: string; tagline: string; description: string; body: () => ReactNode };
 
@@ -609,6 +609,148 @@ document.body.style.background = "black";`}</CodeBlock>
   ),
 };
 
+/* ============ 07 · JS (typeof, const/let, coerción, arrays, objetos) ============ */
+const js: Lesson = {
+  title: "JavaScript en detalle — tipos, variables, arrays y objetos",
+  tagline: "Los bugs más famosos de JS no son magia: son reglas. Aquí las ves con lupa: typeof, const vs let, '3' + 10, índices desde 0, .length vs .push(), y objetos con notación de punto.",
+  description: "typeof, diferencia entre const y let, coerción de tipos con + / - / *, arrays (índice desde 0, .length, .push()) y objetos con notación de punto.",
+  body: () => (
+    <>
+      <Section kicker="1 · typeof" title="Comparar el tipo de un valor">
+        <p>
+          <span className="mono">typeof</span> te dice <em>qué tipo</em> de dato tienes.
+          Siempre devuelve un <strong>texto en minúsculas</strong>: <span className="mono">'number'</span>,
+          <span className="mono"> 'string'</span>, <span className="mono">'boolean'</span>,
+          <span className="mono"> 'object'</span>, <span className="mono">'undefined'</span>.
+        </p>
+        <CodeBlock>{`console.log(typeof 10);        // "number"
+console.log(typeof "hola");    // "string"
+console.log(typeof true);      // "boolean"
+console.log(typeof [1,2]);     // "object"  (los arrays son objetos)
+console.log(typeof undefined); // "undefined"`}</CodeBlock>
+        <Callout tone="warn" label="Bug clásico 🐛">
+          <span className="mono">typeof 10 === 'Number'</span> es <b>falso</b>. JavaScript distingue mayúsculas:
+          la respuesta correcta es <span className="mono">'number'</span> con minúscula.
+        </Callout>
+      </Section>
+
+      <Section kicker="2 · const vs let" title="El candado de const">
+        <p>
+          <span className="mono">let</span> es una caja normal: puedes cambiar lo que guardas.
+          <span className="mono"> const</span> le pone un <strong>candado permanente</strong>: si intentas reasignar, JS lanza
+          <span className="mono"> TypeError: Assignment to constant variable</span>.
+        </p>
+        <CodeBlock>{`const precio = 100;
+precio = 120;  // ❌ TypeError
+
+let stock = 5;
+stock = 4;     // ✅ OK`}</CodeBlock>
+        <Callout label="Regla práctica">
+          Usa <span className="mono">const</span> por defecto. Cambia a <span className="mono">let</span> solo cuando sepas
+          que el valor va a cambiar.
+        </Callout>
+      </Section>
+
+      <Section kicker="3 · Coerción de tipos" title={<>Por qué <span className="mono">'3' + 10 = '310'</span></>}>
+        <p>
+          Con <span className="mono">+</span>, si un lado es texto, JS convierte el otro a texto y los <em>pega</em> (concatena).
+          Con <span className="mono">-</span>, <span className="mono">*</span>, <span className="mono">/</span> hace lo contrario:
+          convierte los textos a número y calcula.
+        </p>
+        <CodeBlock>{`'3' + 10   // "310"   (concatena)
+'3' - 10   // -7      (resta numérica)
+'3' * 10   // 30      (multiplica)
+Number('3') + 10  // 13   (conversión explícita)`}</CodeBlock>
+        <Callout tone="warn" label="Cómo evitarlo">
+          Convierte tú mismo con <span className="mono">Number(x)</span> o <span className="mono">parseInt(x)</span> antes de sumar.
+        </Callout>
+      </Section>
+
+      <Section kicker="4 · Arrays" title="🍎 Listas ordenadas — el índice arranca en 0">
+        <p>Un array es una fila de casilleros numerados. La primera casilla es la <strong>0</strong>, no la 1.</p>
+        <CodeBlock>{`let frutas = ["manzana", "pera", "uva"];
+
+frutas[0];   // "manzana"
+frutas[1];   // "pera"
+frutas[2];   // "uva"
+frutas[3];   // undefined  (no existe)`}</CodeBlock>
+
+        <div className="grid md:grid-cols-2 gap-4 mt-4">
+          <div className="rounded-2xl hair-a p-5" style={{ background: "oklch(0.18 0.014 55)" }}>
+            <div className="mono text-xs uppercase tracking-widest mb-2" style={{ color: "var(--signal)" }}>.length — propiedad</div>
+            <p className="text-sm mb-2">Cuenta cuántos elementos hay. Se escribe <b>sin</b> paréntesis.</p>
+            <CodeBlock>{`frutas.length   // 3`}</CodeBlock>
+          </div>
+          <div className="rounded-2xl hair-a p-5" style={{ background: "oklch(0.18 0.014 55)" }}>
+            <div className="mono text-xs uppercase tracking-widest mb-2" style={{ color: "var(--signal)" }}>.push() — método</div>
+            <p className="text-sm mb-2">Añade un elemento al final. Se escribe <b>con</b> paréntesis.</p>
+            <CodeBlock>{`frutas.push("kiwi");
+// ahora length = 4`}</CodeBlock>
+          </div>
+        </div>
+        <Callout label="Diferencia clave">
+          <b>Propiedad</b> = dato que ya está calculado (sin <span className="mono">()</span>). <br />
+          <b>Método</b> = acción que la variable puede <em>hacer</em> (siempre con <span className="mono">()</span>).
+        </Callout>
+      </Section>
+
+      <Section kicker="5 · Objetos" title="📇 Fichas con etiquetas — notación de punto">
+        <p>
+          Un objeto guarda datos con <em>nombre</em> (no con número como los arrays).
+          Para leerlos usas <strong>notación de punto</strong>: <span className="mono">objeto.propiedad</span>.
+        </p>
+        <CodeBlock>{`let libro = {
+  titulo: "El Principito",
+  autor:  "Saint-Exupéry",
+  paginas: 96,
+  leido:   true
+};
+
+libro.titulo;   // "El Principito"
+libro.paginas;  // 96
+libro.leido;    // true
+
+// También puedes cambiar valores:
+libro.leido = false;`}</CodeBlock>
+        <Callout tone="ok" label="Array vs. Objeto">
+          Array = casilleros <em>numerados</em> (<span className="mono">frutas[0]</span>). <br />
+          Objeto = fichas <em>etiquetadas</em> (<span className="mono">libro.titulo</span>).
+        </Callout>
+      </Section>
+
+      <Section kicker="6 · Resumen express" title="Los bugs más comunes en una tabla">
+        <div className="overflow-x-auto rounded-2xl hair-a" style={{ background: "oklch(0.16 0.012 55)" }}>
+          <table className="w-full text-sm">
+            <thead className="hair-b opacity-70">
+              <tr>
+                <th className="text-left px-4 py-3">Escribiste</th>
+                <th className="text-left px-4 py-3">JS ve</th>
+                <th className="text-left px-4 py-3">Arreglo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["typeof 10 === 'Number'", "false",           "usa 'number' en minúscula"],
+                ["const x = 1; x = 2;",     "TypeError",       "cambia const → let"],
+                ["'3' + 10",                "'310'",           "Number('3') + 10 → 13"],
+                ["frutas[3] en lista de 3", "undefined",       "recuerda: el índice empieza en 0"],
+                ["arr.length()",            "TypeError",       "es propiedad: arr.length (sin paréntesis)"],
+                ["arr.push",                "no hace nada",    "es método: arr.push('kiwi')"],
+              ].map((r, i) => (
+                <tr key={i} className="hair-b last:border-b-0">
+                  <td className="px-4 py-2.5 mono" style={{ color: "var(--signal)" }}>{r[0]}</td>
+                  <td className="px-4 py-2.5 mono">{r[1]}</td>
+                  <td className="px-4 py-2.5">{r[2]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Section>
+    </>
+  ),
+};
+
 export const lessons: Record<LessonSlug, Lesson> = {
-  dns, operadores, fundamentos, terminal, html, frontend,
+  dns, operadores, fundamentos, js, terminal, html, frontend,
 };
