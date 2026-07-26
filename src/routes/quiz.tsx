@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { questions as ALL, type Question } from "@/lib/quiz-data";
 import { W95Button } from "@/components/win95";
 import { addXP, addCoins, bumpStreak, recordQuizResult, resetStreak, useStats, sfx } from "@/lib/gamification";
+import { RulesBox } from "@/components/RulesBox";
 
 export const Route = createFileRoute("/quiz")({
   head: () => ({
@@ -197,6 +198,7 @@ function Quiz() {
 
       <div className="w95-outset p-3 mb-3" style={{ background: "var(--w95-face)" }}>
         <h2 className="text-lg md:text-2xl" style={{ fontFamily: "var(--font-display)" }}>{q.q}</h2>
+        <RulesBox tag={q.topic} defaultOpen={!locked} compact />
       </div>
 
       <div className="grid gap-2">
