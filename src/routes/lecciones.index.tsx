@@ -15,9 +15,10 @@ const topics = [
   { slug: "dns",         num: "01", title: "DNS y cómo viaja una URL",           desc: "La guía telefónica de internet. Comandos, errores y flujo completo.", icon: "📞" },
   { slug: "operadores",  num: "02", title: "Operadores lógicos y tabla de verdad", desc: "AND, OR, NOT — tablas, ejemplos y un evaluador interactivo.", icon: "🍦" },
   { slug: "fundamentos", num: "03", title: "Fundamentos de programación",         desc: "Variables, operadores, condicionales, bucles y funciones.", icon: "📝" },
-  { slug: "terminal",    num: "04", title: "Comandos de la terminal",             desc: "Comparativa Windows · Mac · Linux, tabla navegable.", icon: "💻" },
-  { slug: "html",        num: "05", title: "HTML — el esqueleto de la web",       desc: "Etiquetas, atributos, listas y por qué todo va dentro de body.", icon: "📄" },
-  { slug: "frontend",    num: "06", title: "Frontend, DOM y renderizado",         desc: "HTML + CSS + JS, qué es el DOM y qué NO es frontend.", icon: "🎨" },
+  { slug: "js",          num: "04", title: "JavaScript en detalle",               desc: "typeof, const vs let, coerción '3'+10, arrays (índice 0, .length, .push), objetos.", icon: "⚙️" },
+  { slug: "terminal",    num: "05", title: "Comandos de la terminal",             desc: "Comparativa Windows · Mac · Linux, tabla navegable.", icon: "💻" },
+  { slug: "html",        num: "06", title: "HTML — el esqueleto de la web",       desc: "Etiquetas, atributos, listas y por qué todo va dentro de body.", icon: "📄" },
+  { slug: "frontend",    num: "07", title: "Frontend, DOM y renderizado",         desc: "HTML + CSS + JS, qué es el DOM y qué NO es frontend.", icon: "🎨" },
 ];
 
 function Index() {

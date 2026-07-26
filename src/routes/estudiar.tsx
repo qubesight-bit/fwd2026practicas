@@ -75,11 +75,13 @@ const TOPICS: Topic[] = [
   {
     slug: "js",
     title: "JavaScript · Lógica de la web",
-    desc: "Variables, condicionales, bucles, funciones, operadores.",
+    desc: "typeof, const vs let, coerción, arrays, objetos, bucles y funciones.",
     icon: "⚙️",
     actions: [
-      { kind: "lesson", label: "Fundamentos de programación", icon: "📖", target: "fundamentos" },
+      { kind: "lesson", label: "JavaScript en detalle", icon: "📖", target: "js" },
+      { kind: "lesson", label: "Fundamentos (variables, if, bucles)", icon: "📖", target: "fundamentos" },
       { kind: "sim-ej", label: "Ejercicios de JS", icon: "🧠", target: "JS" },
+      { kind: "quiz",   label: "Hacer quiz general", icon: "🎯" },
     ],
   },
   {
