@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { W95Button } from "@/components/win95";
+import { RulesBox } from "@/components/RulesBox";
 import { recordSimPrediction, recordSimUse, useStats, sfx, addXP, addCoins } from "@/lib/gamification";
 
 export const Route = createFileRoute("/simulador")({
@@ -422,6 +423,7 @@ function Ejercicios() {
                     <b>{isCorrect ? "¡Correcto!" : "Casi…"}</b> {ex.explain}
                   </div>
                 )}
+                <RulesBox tag={ex.tag} defaultOpen={done && !isCorrect} compact />
               </div>
             );
           })}
@@ -770,6 +772,7 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
         <span className="text-[13px] font-bold flex-1">{ex.q}</span>
         {rewarded && <span title="Ya premiado">🏆</span>}
       </div>
+      <RulesBox tag={ex.tag} defaultOpen={status === "bad"} compact />
       <textarea
         value={value}
         onChange={(e) => { setValue(e.target.value); if (status !== "idle") setStatus("idle"); }}
