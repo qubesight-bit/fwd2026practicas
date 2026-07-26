@@ -772,6 +772,7 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
         <span className="text-[13px] font-bold flex-1">{ex.q}</span>
         {rewarded && <span title="Ya premiado">🏆</span>}
       </div>
+      <RulesBox tag={ex.tag} defaultOpen={status === "bad"} compact />
       <textarea
         value={value}
         onChange={(e) => { setValue(e.target.value); if (status !== "idle") setStatus("idle"); }}
