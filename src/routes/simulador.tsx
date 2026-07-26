@@ -432,16 +432,6 @@ function Ejercicios() {
     </div>
   );
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function __ejerciciosClose() { return null;
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function Node({ title, sub, children, active, disabled }: { title: string; sub: string; children: React.ReactNode; active?: boolean; disabled?: boolean }) {
   return (
