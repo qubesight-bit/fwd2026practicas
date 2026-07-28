@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { W95Button } from "@/components/win95";
 import { RulesBox } from "@/components/RulesBox";
+import { WhyBox } from "@/components/WhyBox";
 import { recordSimPrediction, recordSimUse, useStats, sfx, addXP, addCoins } from "@/lib/gamification";
 
 export const Route = createFileRoute("/simulador")({
@@ -421,14 +422,20 @@ function Ejercicios() {
                     style={{ background: isCorrect ? "#e6ffe6" : "#fff2e0", border: "1px solid #808080" }}
                   >
                     <b>{isCorrect ? "¡Correcto!" : "Casi…"}</b>
-                    {!isCorrect && (
-                      <div className="mt-1">
-                        <div>Elegiste <b>{String.fromCharCode(65 + (chosen as number))}. {ex.options[chosen as number]}</b>.</div>
-                        <div>La correcta era <b>{String.fromCharCode(65 + ex.correct)}. {ex.options[ex.correct]}</b>.</div>
-                      </div>
-                    )}
                     <div className="mt-1">{ex.explain}</div>
                   </div>
+                )}
+                {done && !isCorrect && (
+                  <WhyBox
+                    tag={ex.tag}
+                    correctText={`${String.fromCharCode(65 + ex.correct)}. ${ex.options[ex.correct]}`}
+                    correctExplain={ex.explain}
+                    wrongText={`${String.fromCharCode(65 + (chosen as number))}. ${ex.options[chosen as number]}`}
+                    wrongReasons={[
+                      "no coincide con la afirmación correcta del enunciado",
+                      "rompe alguna de las reglas del tema listadas abajo",
+                    ]}
+                  />
                 )}
                 <RulesBox tag={ex.tag} defaultOpen={done && !isCorrect} compact />
               </div>
@@ -912,6 +919,15 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
             </div>
           </div>
         </div>
+      )}
+      {status === "bad" && (
+        <WhyBox
+          tag={ex.tag}
+          correctText={revealed ? ex.placeholder : undefined}
+          correctExplain={ex.explain}
+          wrongText={value || "(vacío)"}
+          wrongReasons={tips}
+        />
       )}
       {status === "ok" && (
         <div className="mt-2 p-2 text-[12px]" style={{ background: "#e6ffe6", border: "1px solid #808080" }}>

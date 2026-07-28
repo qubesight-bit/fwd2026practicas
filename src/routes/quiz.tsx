@@ -4,6 +4,7 @@ import { questions as ALL, type Question } from "@/lib/quiz-data";
 import { W95Button } from "@/components/win95";
 import { addXP, addCoins, bumpStreak, recordQuizResult, resetStreak, useStats, sfx } from "@/lib/gamification";
 import { RulesBox } from "@/components/RulesBox";
+import { WhyBox } from "@/components/WhyBox";
 
 export const Route = createFileRoute("/quiz")({
   head: () => ({
@@ -233,6 +234,27 @@ function Quiz() {
           <div className="mono mb-1" style={{ color: "#000080" }}>💡 EXPLICACIÓN</div>
           <p>{q.explain}</p>
         </div>
+      )}
+
+      {locked && pickedIdx !== undefined && pickedIdx !== q.answer && (
+        <WhyBox
+          tag={q.topic}
+          correctText={`${String.fromCharCode(65 + q.answer)}. ${q.choices[q.answer]}`}
+          correctExplain={q.explain}
+          wrongText={
+            pickedIdx === -1
+              ? "(sin respuesta — se acabó el tiempo)"
+              : `${String.fromCharCode(65 + pickedIdx)}. ${q.choices[pickedIdx]}`
+          }
+          wrongReasons={
+            pickedIdx === -1
+              ? ["no diste una respuesta antes de que se agotaran los 20 segundos"]
+              : [
+                  "esa opción no coincide con lo que dice la explicación de arriba",
+                  "contradice alguna de las reglas del tema listadas abajo",
+                ]
+          }
+        />
       )}
 
       <div className="flex justify-end mt-4">
