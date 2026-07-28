@@ -4,6 +4,7 @@ import { questions as ALL, type Question } from "@/lib/quiz-data";
 import { W95Button } from "@/components/win95";
 import { addXP, addCoins, bumpStreak, recordQuizResult, resetStreak, useStats, sfx } from "@/lib/gamification";
 import { RulesBox } from "@/components/RulesBox";
+import { WhyBox } from "@/components/WhyBox";
 
 export const Route = createFileRoute("/quiz")({
   head: () => ({
