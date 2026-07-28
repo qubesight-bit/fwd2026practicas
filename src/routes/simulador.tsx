@@ -920,6 +920,15 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
           </div>
         </div>
       )}
+      {status === "bad" && (
+        <WhyBox
+          tag={ex.tag}
+          correctText={revealed ? ex.placeholder : undefined}
+          correctExplain={ex.explain}
+          wrongText={value || "(vacío)"}
+          wrongReasons={tips}
+        />
+      )}
       {status === "ok" && (
         <div className="mt-2 p-2 text-[12px]" style={{ background: "#e6ffe6", border: "1px solid #808080" }}>
           <b>¡Bien!</b> {ex.explain}
