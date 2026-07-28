@@ -750,17 +750,106 @@ function EjerciciosCodigo() {
 
 function normalizeCode(s: string) { return s.replace(/\s+/g, " ").trim(); }
 
+/** Genera pistas específicas comparando la respuesta del alumno con la solución esperada. */
+function diagnose(user: string, ex: CodeEx): string[] {
+  const tips: string[] = [];
+  const u = user.trim();
+  const sol = (ex.placeholder || "").trim();
+  if (!u) return ["Escribe algo antes de comprobar."];
+
+  const isJS = ex.tag === "JS";
+  const isCSS = ex.tag === "CSS";
+  const isHTML = ex.tag === "HTML";
+  const isTerm = ex.tag === "TERMINAL";
+
+  if (isJS || isCSS) {
+    const oneLine = !u.includes("\n") && !u.trim().endsWith("}") && !u.trim().endsWith("{");
+    if (oneLine && !u.trim().endsWith(";")) tips.push("Falta el punto y coma ; al final de la instrucción.");
+  }
+  const singles = (u.match(/'/g) || []).length;
+  const doubles = (u.match(/"/g) || []).length;
+  const backs = (u.match(/`/g) || []).length;
+  if (singles % 2 !== 0) tips.push("Tienes una comilla simple ' sin cerrar. Los textos se abren y cierran con la MISMA comilla.");
+  if (doubles % 2 !== 0) tips.push("Tienes una comilla doble \" sin cerrar.");
+  if (backs % 2 !== 0) tips.push("Tienes una comilla invertida ` sin cerrar.");
+
+  const pairs: Array<[string, string, string]> = [["(", ")", "paréntesis"], ["{", "}", "llaves"], ["[", "]", "corchetes"]];
+  for (const [a, b, name] of pairs) {
+    const na = (u.match(new RegExp("\\" + a, "g")) || []).length;
+    const nb = (u.match(new RegExp("\\" + b, "g")) || []).length;
+    if (na !== nb) tips.push(`Los ${name} no están equilibrados: ${na} de "${a}" y ${nb} de "${b}".`);
+  }
+
+  if (isJS) {
+    if (/^\s*let\s+/.test(sol) && /^\s*const\s+/.test(u)) tips.push("Estás usando const, pero el valor va a cambiar → usa let.");
+    if (/^\s*const\s+/.test(sol) && /^\s*let\s+/.test(u)) tips.push("Aquí el valor no cambia → mejor const en lugar de let.");
+    if (/typeof/.test(u) && /['"`](Number|String|Boolean|Undefined|Object)['"`]/.test(u))
+      tips.push("typeof devuelve el tipo en MINÚSCULAS: 'number', 'string', 'boolean'…");
+    if (/\.length\s*\(/.test(u)) tips.push(".length es una PROPIEDAD, no un método: escríbelo SIN paréntesis.");
+    if (/\.push(?!\s*\()/.test(u)) tips.push(".push es un MÉTODO: necesita paréntesis, por ejemplo .push('algo').");
+    if (/\bvar\s+/.test(u)) tips.push("No uses var. Usa let (si cambia) o const (si no cambia).");
+    if (/\[\s*1\s*\]/.test(u) && /\[\s*0\s*\]/.test(sol)) tips.push("Recuerda: los arrays empiezan en el índice 0, no en 1.");
+    if (/\[\s*2\s*\]/.test(u) && /\[\s*1\s*\]/.test(sol)) tips.push("El SEGUNDO elemento está en el índice 1 (se cuenta desde 0).");
+    if (/=\s*['"`]\d+['"`]/.test(u) && /=\s*\d+\s*;?/.test(sol))
+      tips.push("Estás poniendo el número entre comillas: eso lo convierte en TEXTO. Los números van sin comillas.");
+  }
+
+  if (isCSS) {
+    if (!/\{[\s\S]*\}/.test(u)) tips.push("Las reglas CSS van dentro de llaves { … }.");
+    if (/\{[^:}]*\}/.test(u)) tips.push("Entre la propiedad y el valor van DOS PUNTOS: propiedad: valor;");
+  }
+
+  if (isHTML) {
+    const opens = (u.match(/<([a-zA-Z][a-zA-Z0-9]*)(\s[^>]*)?>/g) || []).map((t) => t.replace(/[<>\/\s].*/g, "").toLowerCase()).filter(Boolean);
+    const closes = (u.match(/<\/([a-zA-Z][a-zA-Z0-9]*)>/g) || []).map((t) => t.replace(/[<>\/]/g, "").toLowerCase());
+    const voids = new Set(["img", "br", "hr", "input", "meta", "link"]);
+    for (const tag of opens) {
+      if (voids.has(tag)) continue;
+      const oc = opens.filter((x) => x === tag).length;
+      const cc = closes.filter((x) => x === tag).length;
+      if (oc > cc) { tips.push(`La etiqueta <${tag}> está abierta pero no cerrada con </${tag}>.`); break; }
+    }
+    if (/<img\b(?![^>]*\balt=)/i.test(u)) tips.push("Las imágenes deben llevar el atributo alt=\"…\" por accesibilidad.");
+    if (/<a\b(?![^>]*\bhref=)/i.test(u)) tips.push("El enlace <a> necesita el atributo href=\"…\".");
+    if (/=[^"'\s>][^\s>]*/.test(u)) tips.push("Los valores de los atributos van entre comillas: href=\"…\", src=\"…\".");
+  }
+
+  if (isTerm) {
+    if (u.trim().endsWith(";")) tips.push("La terminal NO usa punto y coma al final del comando.");
+  }
+
+  const tokenize = (s: string) => s.match(/[A-Za-z_$][\w$]*|\d+|[()[\]{};=]/g) || [];
+  const solTokens = tokenize(sol);
+  const userTokens = tokenize(u);
+  const seen = new Set(userTokens.map((t) => t.toLowerCase()));
+  const missing: string[] = [];
+  for (const t of solTokens) {
+    if (t.length < 2 && !/[{}();=]/.test(t)) continue;
+    if (!seen.has(t.toLowerCase()) && !missing.includes(t)) missing.push(t);
+  }
+  if (missing.length && missing.length <= 4) {
+    tips.push(`Te faltan piezas de la solución: ${missing.slice(0, 4).map((m) => `\`${m}\``).join(", ")}.`);
+  }
+
+  if (tips.length === 0) tips.push("La estructura no coincide con lo que se pide. Revisa el orden y los símbolos (=, +, comillas, paréntesis).");
+  return tips.slice(0, 5);
+}
+
 function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: string; rewarded: boolean; onSolve: () => void }) {
   const [value, setValue] = useState(ex.starter ?? "");
   const [status, setStatus] = useState<"idle" | "ok" | "bad">("idle");
   const [showHint, setShowHint] = useState(false);
+  const [tips, setTips] = useState<string[]>([]);
+  const [attempts, setAttempts] = useState(0);
+  const [revealed, setRevealed] = useState(false);
 
   const check = () => {
     const norm = normalizeCode(value);
-    if (!norm) { setStatus("bad"); sfx.wrong(); return; }
+    if (!norm) { setStatus("bad"); setTips(["Escribe algo antes de comprobar."]); sfx.wrong(); return; }
     const ok = ex.accept.some((group) => group.every((rx) => rx.test(norm)));
     setStatus(ok ? "ok" : "bad");
-    if (ok) { sfx.correct(); onSolve(); } else { sfx.wrong(); }
+    if (ok) { sfx.correct(); onSolve(); setTips([]); }
+    else { sfx.wrong(); setTips(diagnose(value, ex)); setAttempts((n) => n + 1); }
   };
 
   const rows = Math.max(2, (ex.placeholder.match(/\n/g)?.length ?? 0) + 1);
@@ -775,7 +864,7 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
       <RulesBox tag={ex.tag} defaultOpen={status === "bad"} compact />
       <textarea
         value={value}
-        onChange={(e) => { setValue(e.target.value); if (status !== "idle") setStatus("idle"); }}
+        onChange={(e) => { setValue(e.target.value); if (status !== "idle") { setStatus("idle"); setTips([]); } }}
         spellCheck={false}
         rows={rows}
         placeholder={ex.placeholder}
@@ -784,14 +873,38 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
       />
       <div className="flex flex-wrap items-center gap-1 mt-2">
         <W95Button onClick={check}>▶ Comprobar</W95Button>
-        <W95Button onClick={() => { setValue(ex.placeholder); setStatus("idle"); }}>Ver ejemplo</W95Button>
+        <W95Button onClick={() => { setValue(ex.placeholder); setStatus("idle"); setTips([]); }}>Ver ejemplo</W95Button>
         {ex.hint && <W95Button onClick={() => setShowHint((v) => !v)}>{showHint ? "Ocultar pista" : "💡 Pista"}</W95Button>}
-        <W95Button onClick={() => { setValue(""); setStatus("idle"); }}>Limpiar</W95Button>
+        {attempts >= 2 && !revealed && status !== "ok" && (
+          <W95Button onClick={() => setRevealed(true)}>👀 Ver solución</W95Button>
+        )}
+        <W95Button onClick={() => { setValue(""); setStatus("idle"); setTips([]); }}>Limpiar</W95Button>
         {status === "ok" && <span className="ml-2 px-2 py-1 text-white text-[12px]" style={{ background: "#008000" }}>✓ Correcto</span>}
         {status === "bad" && <span className="ml-2 px-2 py-1 text-white text-[12px]" style={{ background: "#c00000" }}>✗ Intenta otra vez</span>}
       </div>
       {showHint && ex.hint && (
         <div className="mt-2 p-2 text-[12px]" style={{ background: "#ffffcc", border: "1px solid #808080" }}>💡 {ex.hint}</div>
+      )}
+      {status === "bad" && tips.length > 0 && (
+        <div className="mt-2 p-2 text-[12px]" style={{ background: "#ffe6e6", border: "1px solid #808080" }}>
+          <div className="font-bold mb-1">🔎 Qué revisar en tu respuesta:</div>
+          <ul className="list-disc pl-5 space-y-0.5">
+            {tips.map((t, i) => <li key={i}>{t}</li>)}
+          </ul>
+          <div className="mt-2 grid md:grid-cols-2 gap-2">
+            <div>
+              <div className="mono text-[10px] uppercase opacity-70">Tu respuesta</div>
+              <pre className="w95-inset bg-white p-1 mono text-[11px] whitespace-pre-wrap break-words">{value || "(vacío)"}</pre>
+            </div>
+            <div>
+              <div className="mono text-[10px] uppercase opacity-70">Solución esperada</div>
+              <pre className="w95-inset bg-white p-1 mono text-[11px] whitespace-pre-wrap break-words">
+                {revealed ? ex.placeholder : ex.placeholder.replace(/[A-Za-z0-9áéíóúñÁÉÍÓÚÑ]/g, "•")}
+              </pre>
+              {!revealed && <div className="text-[10px] opacity-70 mt-1">Falla 2 veces para desbloquear la solución completa.</div>}
+            </div>
+          </div>
+        </div>
       )}
       {status === "ok" && (
         <div className="mt-2 p-2 text-[12px]" style={{ background: "#e6ffe6", border: "1px solid #808080" }}>
@@ -807,4 +920,5 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
     </div>
   );
 }
+
 
