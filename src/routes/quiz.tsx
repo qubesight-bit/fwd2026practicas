@@ -236,6 +236,27 @@ function Quiz() {
         </div>
       )}
 
+      {locked && pickedIdx !== undefined && pickedIdx !== q.answer && (
+        <WhyBox
+          tag={q.topic}
+          correctText={`${String.fromCharCode(65 + q.answer)}. ${q.choices[q.answer]}`}
+          correctExplain={q.explain}
+          wrongText={
+            pickedIdx === -1
+              ? "(sin respuesta — se acabó el tiempo)"
+              : `${String.fromCharCode(65 + pickedIdx)}. ${q.choices[pickedIdx]}`
+          }
+          wrongReasons={
+            pickedIdx === -1
+              ? ["no diste una respuesta antes de que se agotaran los 20 segundos"]
+              : [
+                  "esa opción no coincide con lo que dice la explicación de arriba",
+                  "contradice alguna de las reglas del tema listadas abajo",
+                ]
+          }
+        />
+      )}
+
       <div className="flex justify-end mt-4">
         <W95Button onClick={nextQ} disabled={!locked}>
           {i < deck.length - 1 ? "Siguiente ▶" : "Ver resultado ▶"}
