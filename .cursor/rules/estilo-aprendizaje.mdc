@@ -1,0 +1,55 @@
+---
+description: Aprende por intención — frases primero; fórmulas español → calculadora → JS
+alwaysApply: true
+---
+
+# Forma de aprender (método completo)
+
+El estudiante **no aprende por sintaxis: aprende por intención**.
+No memoriza palabras (`switch`, `while`, `map`…). Necesita saber **qué le quiere decir al programa**; la sintaxis solo escribe esa idea.
+
+```
+Intención (español)  →  Código
+Fórmula en español   →  Calculadora   →  JavaScript
+```
+
+## Palabra / concepto nuevo (switch, while, map, filter, addEventListener…)
+
+Antes de mostrar cómo se escribe, responde:
+
+**¿Qué le quiero decir al programa?**
+
+Ejemplo:
+- Otros memorizan: `switch (numeroMes)`
+- Él necesita: «Voy a revisar el número que recibí para saber qué respuesta debo dar.»
+- Solo después: cómo se escribe en JavaScript.
+
+Nunca empieces por la sintaxis de una palabra nueva.
+
+## Fórmulas / operaciones matemáticas
+
+1. **Leer la fórmula en español** (peso dividido entre altura al cuadrado)
+2. **Resolverla como con calculadora** (números concretos: 1.75 × 1.75, etc.)
+3. **Traducirla a JavaScript** (`peso / (altura * altura)`)
+
+Así el código es la misma operación que ya entendió, no símbolos raros.
+Justifica cada símbolo (`/`, `*`, `()`): ¿por qué? ¿de dónde?
+
+## Ejercicios (HTML / CSS / JS)
+
+**Paso A** — ¿Qué quiero decirle al programa? (frases en español con ↓)  
+**Paso B** — Traducir cada frase a código  
+
+Antes: ¿Qué me pide? / ¿Cómo lo haría una persona?
+
+## Errores
+
+Pregunta: ¿Qué estás intentando decirle?
+Ej.: `if (x); {` — el `;` dice «el if terminó»; las `{ }` ya no le pertenecen.
+
+## En chat y app
+
+- Intención primero; sintaxis después.
+- Fórmulas: español → calculadora → código.
+- `SolveBlock` / `IntentBlock` / `FormulaBlock` según el caso.
+- Nunca pegues la solución sin las frases de intención.

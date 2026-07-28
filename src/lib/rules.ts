@@ -1,52 +1,53 @@
 // Reglas / recordatorios por tema. Se muestran en cada ejercicio y pregunta
-// del quiz para que el estudiante interiorice la sintaxis obligatoria.
+// del quiz. Están redactadas para construir modelo mental (qué / por qué),
+// no solo memorizar sintaxis.
 
 export type RuleTag =
   | "HTML" | "CSS" | "JS" | "DOM" | "TERMINAL" | "LOGICA" | "RED" | "DNS" | "HTTP" | "FRONTEND";
 
 const COMMON_JS: string[] = [
-  "Los textos (strings) SIEMPRE van entre comillas: 'Ada', \"Ada\" o `Ada`.",
-  "Los números NO llevan comillas: 10 es número, '10' es texto.",
-  "Cada instrucción termina con punto y coma ; al final.",
-  "JavaScript distingue mayúsculas: Nombre ≠ nombre ≠ NOMBRE.",
-  "Usa const si el valor NO cambia, let si SÍ cambia. Nunca var.",
-  "Los métodos llevan paréntesis (): arr.push(x). Las propiedades no: arr.length.",
-  "Los arrays empiezan en el índice 0, no en 1.",
+  "Qué es un string: texto. Por qué lleva comillas: para que JS sepa que no es un nombre de variable. Usa 'Ada', \"Ada\" o `Ada`.",
+  "Los números NO llevan comillas: 10 es cantidad; '10' es texto. Mezclarlos con + puede pegar en vez de sumar.",
+  "Cada instrucción es un paso. El ; marca el final del paso (como un punto al final de la frase).",
+  "JS distingue mayúsculas: Nombre ≠ nombre. typeof responde en minúsculas: 'number', no 'Number'.",
+  "const = candado (no reasignas). let = caja que sí puedes cambiar. Empieza con const; pasa a let solo si hace falta.",
+  "Propiedad = dato (arr.length, sin ()). Método = acción (arr.push(x), con ()). Los () significan «ejecuta».",
+  "En un array el primer casillero es 0, no 1. frutas[0] es el primero de la lista.",
 ];
 
 const COMMON_HTML: string[] = [
-  "Toda etiqueta se abre y se cierra: <p>…</p>. Excepto las vacías: <img>, <br>.",
-  "Los atributos van entre comillas: href=\"…\", src=\"…\", alt=\"…\".",
-  "Las imágenes SIEMPRE llevan alt=\"…\" (accesibilidad).",
-  "Todo lo visible va dentro de <body>, nunca fuera.",
-  "HTML no distingue mayúsculas, pero se escribe en minúsculas por convención.",
+  "Etiqueta = marca qué es el contenido. Se abre y se cierra: <p>…</p>. Vacías (solo info): <img>, <br>.",
+  "Atributos = instrucciones pegadas en la apertura. Van entre comillas: href=\"…\", src=\"…\", alt=\"…\".",
+  "alt en imágenes: describe la foto. Por qué: accesibilidad y si la imagen no carga.",
+  "body = escenario visible. Todo lo que el usuario ve va dentro de <body>, nunca fuera.",
+  "HTML no distingue mayúsculas, pero se escribe en minúsculas por costumbre clara.",
 ];
 
 const COMMON_CSS: string[] = [
-  "Cada regla termina con punto y coma ; dentro de las llaves { }.",
-  "Selector de clase con punto: .btn { … }. Selector de id con almohadilla: #main { … }.",
-  "propiedad: valor; (dos puntos entre propiedad y valor).",
-  "Los colores pueden ser nombre (red), hex (#ff0000) o rgb().",
+  "Cada declaración es un paso de estilo: termina con ; dentro de las llaves { }.",
+  "Clase = grupo (.btn). id = uno solo (#main). El punto y la # dicen «cómo buscar el elemento».",
+  "Forma: propiedad: valor; — los dos puntos separan el «qué cambiar» del «a qué».",
+  "Colores: nombre (red), hex (#ff0000) o rgb(). Distintas formas, misma idea: pintar.",
 ];
 
 const COMMON_TERMINAL: string[] = [
-  "Los comandos y opciones distinguen mayúsculas: ls ≠ LS.",
-  "Separa comando y argumentos con UN espacio: cd proyectos.",
-  "Las opciones empiezan con guion: -r, -f, --help.",
-  "No pongas punto y coma al final: la terminal no lo necesita.",
+  "La terminal distingue mayúsculas: ls ≠ LS. Es literal con lo que escribes.",
+  "Comando + espacio + argumento: cd proyectos = «entra a la carpeta proyectos».",
+  "Opciones empiezan con guion (-r, -f): son modificadores de la acción.",
+  "No hace falta ; al final: aquí cada línea ya es un paso completo.",
 ];
 
 const COMMON_LOGICA: string[] = [
-  "AND (&&): solo true si AMBOS son true.",
-  "OR (||): true si AL MENOS UNO es true.",
-  "NOT (!): invierte el valor. !true = false.",
-  "Prioridad: primero !, luego &&, después ||. Usa paréntesis para forzar el orden.",
+  "AND (&&): solo true si AMBOS son true. Regla estricta (mamá y el helado).",
+  "OR (||): true si AL MENOS UNO es true. Con una alternativa basta (papá y el helado).",
+  "NOT (!): invierte. !true = false. Es «lo contrario».",
+  "Orden: primero !, luego &&, después ||. Los paréntesis ( ) mandan el orden a mano.",
 ];
 
 const COMMON_RED: string[] = [
-  "DNS traduce nombres (google.com) a IPs (142.250.185.78).",
-  "Errores DNS: la petición NI SIQUIERA sale de tu máquina.",
-  "Errores HTTP: el servidor sí respondió, pero con problema (4xx cliente, 5xx servidor).",
+  "DNS: traduce nombre bonito → IP. Por qué: tú memoricas google.com; la máquina necesita el número.",
+  "Error DNS: ni saliste de casa — no hay dirección en el mapa.",
+  "Error HTTP: sí llegaste al servidor; él respondió con problema (4xx tú, 5xx él).",
 ];
 
 const RULES: Record<RuleTag, string[]> = {
@@ -55,22 +56,22 @@ const RULES: Record<RuleTag, string[]> = {
   CSS: COMMON_CSS,
   DOM: [
     ...COMMON_JS.slice(0, 4),
-    "document.querySelector('…') devuelve el PRIMER elemento; querySelectorAll devuelve TODOS.",
-    "Para cambiar texto usa .textContent; para HTML usa .innerHTML (con cuidado).",
+    "querySelector('…') = el PRIMERO que encuentra. querySelectorAll = TODOS. Por qué: a veces quieres uno, a veces la lista.",
+    "textContent = cambiar texto. innerHTML = meter HTML (con cuidado). Son acciones sobre el árbol DOM.",
   ],
   TERMINAL: COMMON_TERMINAL,
   LOGICA: COMMON_LOGICA,
   RED: COMMON_RED,
   DNS: COMMON_RED,
   HTTP: [
-    "2xx = éxito · 3xx = redirección · 4xx = error del cliente · 5xx = error del servidor.",
+    "Familias: 2xx éxito · 3xx redirección · 4xx error tuyo · 5xx error del servidor.",
     "200 OK · 301 movido · 401 sin login · 403 prohibido · 404 no existe · 500 servidor roto.",
-    "Un código HTTP significa que el servidor SÍ respondió (no confundir con error DNS).",
+    "Un código HTTP significa que el servidor SÍ respondió. No lo confundas con error DNS.",
   ],
   FRONTEND: [
-    "HTML = estructura · CSS = estilo · JS = comportamiento.",
-    "El DOM es el árbol de objetos que JS usa para leer y modificar la página.",
-    "El motor de renderizado dibuja; el DOM solo describe.",
+    "HTML = estructura · CSS = estilo · JS = comportamiento. Tres roles, un mismo escenario.",
+    "DOM = árbol en memoria para que JS toque la página. El que dibuja es el motor de renderizado.",
+    "Frontend = lo que corre en el dispositivo del usuario (aunque aún no esté en internet).",
   ],
 };
 

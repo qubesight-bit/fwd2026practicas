@@ -38,7 +38,7 @@ export function WhyBox({
           ✓ CORRECTA
         </span>{" "}
         {correctText && <b>{correctText}</b>}
-        <div className="opacity-90 mt-0.5">Funciona porque: {correctExplain}</div>
+        <div className="opacity-90 mt-0.5 whitespace-pre-line">Funciona porque: {correctExplain}</div>
       </div>
 
       {(wrongText || (wrongReasons && wrongReasons.length > 0)) && (

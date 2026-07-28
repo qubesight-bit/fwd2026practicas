@@ -269,40 +269,40 @@ type Ex = {
 };
 
 const EXERCISES: Ex[] = [
-  { id: "html-1", tag: "HTML", q: "¿Cuál etiqueta crea el título más importante de una página?", options: ["<h6>", "<title>", "<h1>", "<head>"], correct: 2, explain: "<h1> es el encabezado principal visible. <title> es lo que aparece en la pestaña." },
-  { id: "html-2", tag: "HTML", q: "¿Qué etiqueta se usa para un enlace a otra página?", options: ["<link>", "<a href='...'>", "<button>", "<url>"], correct: 1, explain: "<a href='https://...'> crea un hipervínculo. <link> sirve para conectar CSS o iconos." },
-  { id: "html-3", tag: "HTML", q: "Para mostrar una imagen usamos…", options: ["<image src>", "<picture path>", "<img src='foto.jpg' alt='...'>", "<src img>"], correct: 2, explain: "La etiqueta es <img> y siempre debería llevar el atributo alt para accesibilidad." },
-  { id: "html-4", tag: "HTML", q: "¿Cuál etiqueta representa una lista con orden (1, 2, 3)?", options: ["<ul>", "<ol>", "<list>", "<dl>"], correct: 1, explain: "<ol> = ordered list (numerada). <ul> = unordered list (viñetas)." },
-  { id: "html-5", tag: "HTML", q: "El bloque genérico sin significado semántico es…", options: ["<section>", "<div>", "<article>", "<main>"], correct: 1, explain: "<div> es un contenedor neutro. Los otros describen el tipo de contenido." },
+  { id: "html-1", tag: "HTML", q: "¿Cuál etiqueta crea el título más importante de una página?", options: ["<h6>", "<title>", "<h1>", "<head>"], correct: 2, explain: "1) ¿Qué me pide? El título principal visible.\n2) ¿Persona? El texto más grande e importante.\n3) Algoritmo: usar título nivel 1.\n4) Traducir: <h1> (no <title>, que es solo la pestaña)." },
+  { id: "html-2", tag: "HTML", q: "¿Qué etiqueta se usa para un enlace a otra página?", options: ["<link>", "<a href='...'>", "<button>", "<url>"], correct: 1, explain: "1) ¿Qué me pide? Un enlace clicable.\n2) ¿Persona? Cartel + dirección detrás.\n3) Algoritmo: enlace + destino (href) + texto.\n4) Traducir: <a href='…'> (<link> no es clicable)." },
+  { id: "html-3", tag: "HTML", q: "Para mostrar una imagen usamos…", options: ["<image src>", "<picture path>", "<img src='foto.jpg' alt='...'>", "<src img>"], correct: 2, explain: "1) ¿Qué me pide? Mostrar una imagen.\n2) ¿Persona? Foto + etiqueta por si falta.\n3) Algoritmo: img + src + alt.\n4) Traducir: <img src='foto.jpg' alt='…'>" },
+  { id: "html-4", tag: "HTML", q: "¿Cuál etiqueta representa una lista con orden (1, 2, 3)?", options: ["<ul>", "<ol>", "<list>", "<dl>"], correct: 1, explain: "1) ¿Qué me pide? Lista numerada.\n2) ¿Persona? 1. 2. 3.\n3) Algoritmo: lista ordenada + ítems.\n4) Traducir: <ol> (ul = viñetas)." },
+  { id: "html-5", tag: "HTML", q: "El bloque genérico sin significado semántico es…", options: ["<section>", "<div>", "<article>", "<main>"], correct: 1, explain: "1) ¿Qué me pide? Caja neutra sin significado.\n2) ¿Persona? Agrupar sin decir «esto es un artículo».\n3) Algoritmo: contenedor genérico.\n4) Traducir: <div>." },
 
-  { id: "css-1", tag: "CSS", q: "Para pintar el texto de rojo escribes…", options: ["font-color: red;", "text: red;", "color: red;", "background: red;"], correct: 2, explain: "La propiedad se llama color. background pinta el fondo." },
-  { id: "css-2", tag: "CSS", q: "¿Qué selector aplica estilos a la clase 'btn'?", options: ["#btn", ".btn", "btn", "*btn"], correct: 1, explain: "El punto (.) selecciona clases. El # selecciona IDs." },
-  { id: "css-3", tag: "CSS", q: "Para centrar horizontalmente un contenedor con flex…", options: ["align-items: center", "justify-content: center", "text-align: center", "margin: center"], correct: 1, explain: "justify-content controla el eje principal (horizontal por defecto). align-items el eje cruzado." },
-  { id: "css-4", tag: "CSS", q: "El espacio dentro de la caja (entre borde y contenido) es…", options: ["margin", "padding", "border", "gap"], correct: 1, explain: "padding = espacio interior. margin = espacio exterior." },
+  { id: "css-1", tag: "CSS", q: "Para pintar el texto de rojo escribes…", options: ["font-color: red;", "text: red;", "color: red;", "background: red;"], correct: 2, explain: "1) ¿Qué me pide? Letras rojas (no el fondo).\n2) ¿Persona? Marcador rojo en el texto.\n3) Algoritmo: propiedad color = red.\n4) Traducir: color: red;" },
+  { id: "css-2", tag: "CSS", q: "¿Qué selector aplica estilos a la clase 'btn'?", options: ["#btn", ".btn", "btn", "*btn"], correct: 1, explain: "1) ¿Qué me pide? Seleccionar la clase btn.\n2) ¿Persona? Buscar el grupo etiquetado btn.\n3) Algoritmo: selector de clase = punto.\n4) Traducir: .btn (# es id)." },
+  { id: "css-3", tag: "CSS", q: "Para centrar horizontalmente un contenedor con flex…", options: ["align-items: center", "justify-content: center", "text-align: center", "margin: center"], correct: 1, explain: "1) ¿Qué me pide? Centrar en el eje principal (horizontal).\n2) ¿Persona? Empujar al centro izquierda-derecha.\n3) Algoritmo: justify-content en el eje principal.\n4) Traducir: justify-content: center" },
+  { id: "css-4", tag: "CSS", q: "El espacio dentro de la caja (entre borde y contenido) es…", options: ["margin", "padding", "border", "gap"], correct: 1, explain: "1) ¿Qué me pide? Espacio DENTRO de la caja.\n2) ¿Persona? Aire entre el regalo y el borde del envoltorio.\n3) Algoritmo: espacio interior = padding.\n4) Traducir: padding (margin = fuera)." },
 
-  { id: "js-1", tag: "JS", q: "Se declara una variable que no cambia con…", options: ["var", "let", "const", "def"], correct: 2, explain: "const = constante. let = variable que puede cambiar. var es antiguo." },
-  { id: "js-2", tag: "JS", q: "¿Cuál operador es 'Y lógico'?", options: ["||", "&&", "!", "=="], correct: 1, explain: "&& = AND (los dos verdaderos). || = OR. ! = NOT." },
-  { id: "js-3", tag: "JS", q: "Un bucle que repite mientras se cumple una condición es…", options: ["for-in", "while", "if", "switch"], correct: 1, explain: "while(condición) { ... } repite hasta que la condición sea falsa." },
-  { id: "js-4", tag: "JS", q: "La tabla de verdad de (true && false) da…", options: ["true", "false", "error", "null"], correct: 1, explain: "AND requiere que AMBOS sean true. Si uno es false, el resultado es false." },
-  { id: "js-5", tag: "JS", q: "!(true || false) es…", options: ["true", "false"], correct: 1, explain: "true || false = true. Luego !true = false." },
+  { id: "js-1", tag: "JS", q: "Se declara una variable que no cambia con…", options: ["var", "let", "const", "def"], correct: 2, explain: "1) ¿Qué me pide? Una caja que no se reasigne.\n2) ¿Persona? Frasco sellado.\n3) Algoritmo: declarar con candado.\n4) Traducir: const (let sí cambia)." },
+  { id: "js-2", tag: "JS", q: "¿Cuál operador es 'Y lógico'?", options: ["||", "&&", "!", "=="], correct: 1, explain: "1) ¿Qué me pide? El Y (ambos deben cumplirse).\n2) ¿Persona? Helado solo si limpias Y haces tarea.\n3) Algoritmo: AND = ambos true.\n4) Traducir: &&" },
+  { id: "js-3", tag: "JS", q: "Un bucle que repite mientras se cumple una condición es…", options: ["for-in", "while", "if", "switch"], correct: 1, explain: "1) ¿Qué me pide? Repetir mientras…\n2) ¿Persona? Seguir mientras la condición sea sí.\n3) Algoritmo: mientras condición → hacer.\n4) Traducir: while (if solo decide una vez)." },
+  { id: "js-4", tag: "JS", q: "La tabla de verdad de (true && false) da…", options: ["true", "false", "error", "null"], correct: 1, explain: "1) ¿Qué me pide? Resultado de true Y false.\n2) ¿Persona? Si falta una condición, no.\n3) Algoritmo: AND exige ambos true.\n4) Traducir: true && false → false" },
+  { id: "js-5", tag: "JS", q: "!(true || false) es…", options: ["true", "false"], correct: 1, explain: "1) ¿Qué me pide? Negar (true O false).\n2) ¿Persona? Primero OR, luego lo contrario.\n3) Algoritmo: true||false → true; !true → false.\n4) Traducir: !(true || false) → false" },
 
-  { id: "dom-1", tag: "DOM", q: "El DOM es…", options: ["Un lenguaje de programación", "Un árbol con todas las etiquetas HTML de la página", "Una base de datos", "Un servidor web"], correct: 1, explain: "El DOM (Document Object Model) es la representación en árbol del HTML que JavaScript puede leer y modificar." },
-  { id: "dom-2", tag: "DOM", q: "Para cambiar el texto de un elemento usas…", options: ["element.color", "element.textContent", "element.href", "element.type"], correct: 1, explain: "textContent reemplaza el texto interior del nodo." },
-  { id: "dom-3", tag: "DOM", q: "document.querySelector('.card') devuelve…", options: ["Todos los .card", "El primer elemento con clase card", "Solo los ID", "Null siempre"], correct: 1, explain: "querySelector devuelve el primero que coincide. querySelectorAll devuelve todos." },
+  { id: "dom-1", tag: "DOM", q: "El DOM es…", options: ["Un lenguaje de programación", "Un árbol con todas las etiquetas HTML de la página", "Una base de datos", "Un servidor web"], correct: 1, explain: "Qué es: árbol de objetos en memoria. Por qué: para que JS toque la página en vivo. Quien dibuja es el renderizado, no el DOM." },
+  { id: "dom-2", tag: "DOM", q: "Para cambiar el texto de un elemento usas…", options: ["element.color", "element.textContent", "element.href", "element.type"], correct: 1, explain: "Qué es: textContent = el texto que hay dentro del nodo. Por qué existe: cambiar lo que lee el usuario sin reescribir todo el HTML." },
+  { id: "dom-3", tag: "DOM", q: "document.querySelector('.card') devuelve…", options: ["Todos los .card", "El primer elemento con clase card", "Solo los ID", "Null siempre"], correct: 1, explain: "querySelector = el primero que encuentra. querySelectorAll = todos. Por qué: a veces quieres uno; a veces la lista completa." },
 
-  { id: "red-1", tag: "RED", q: "El DNS traduce…", options: ["HTML a CSS", "Nombre de dominio a dirección IP", "IP a MAC", "URL a HTTPS"], correct: 1, explain: "DNS = guía telefónica: convierte 'google.com' en una IP como 142.250.185.78." },
-  { id: "red-2", tag: "RED", q: "El código 404 significa…", options: ["Sin permiso", "Servidor caído", "Recurso no encontrado", "Todo OK"], correct: 2, explain: "404 = la URL específica no existe en ese servidor." },
-  { id: "red-3", tag: "RED", q: "El código 500 dice que…", options: ["El navegador falló", "El servidor tuvo un error interno", "No hay internet", "El DNS falló"], correct: 1, explain: "5xx = culpa del servidor. 4xx = culpa (o error) del cliente." },
-  { id: "red-4", tag: "RED", q: "Un ERR_NAME_NOT_RESOLVED es…", options: ["Error HTTP 500", "Error DNS: no encontró la IP", "Error CSS", "Error 404"], correct: 1, explain: "Sin IP no hay a dónde enviar la petición: falla antes de salir a internet." },
-  { id: "red-5", tag: "RED", q: "El código 301 significa…", options: ["Prohibido", "Redirección permanente", "No hay contenido", "Servidor lento"], correct: 1, explain: "301 = la página se movió para siempre a otra URL." },
-  { id: "red-6", tag: "RED", q: "429 aparece cuando…", options: ["Envías demasiadas peticiones", "El servidor está caído", "No tienes cuenta", "La URL está mal"], correct: 0, explain: "429 Too Many Requests = te frenaron por spam de peticiones (rate limit)." },
+  { id: "red-1", tag: "RED", q: "El DNS traduce…", options: ["HTML a CSS", "Nombre de dominio a dirección IP", "IP a MAC", "URL a HTTPS"], correct: 1, explain: "Qué es: nombre bonito → IP. Analogía: guía telefónica. Tú das google.com; el DNS te da el número." },
+  { id: "red-2", tag: "RED", q: "El código 404 significa…", options: ["Sin permiso", "Servidor caído", "Recurso no encontrado", "Todo OK"], correct: 2, explain: "Qué es: 404 = esa URL no existe en el servidor. Importante: sí llegaste (es HTTP, no DNS). Analogía: la casa existe, pero esa habitación no." },
+  { id: "red-3", tag: "RED", q: "El código 500 dice que…", options: ["El navegador falló", "El servidor tuvo un error interno", "No hay internet", "El DNS falló"], correct: 1, explain: "5xx = se rompió adentro del servidor. 4xx = problema del cliente. No es DNS: hubo respuesta." },
+  { id: "red-4", tag: "RED", q: "Un ERR_NAME_NOT_RESOLVED es…", options: ["Error HTTP 500", "Error DNS: no encontró la IP", "Error CSS", "Error 404"], correct: 1, explain: "Sin IP no hay a dónde ir: falla antes de salir. Analogía: la dirección no está en el mapa — nunca tocaste el timbre." },
+  { id: "red-5", tag: "RED", q: "El código 301 significa…", options: ["Prohibido", "Redirección permanente", "No hay contenido", "Servidor lento"], correct: 1, explain: "Qué es: 301 = «esta página se mudó para siempre». Por qué: para que enlaces viejos sigan funcionando y apunten al sitio nuevo." },
+  { id: "red-6", tag: "RED", q: "429 aparece cuando…", options: ["Envías demasiadas peticiones", "El servidor está caído", "No tienes cuenta", "La URL está mal"], correct: 0, explain: "Qué es: Too Many Requests. Por qué existe: frenar spam de peticiones (rate limit). Analogía: el guardia te para por llamar al timbre mil veces." },
 
-  { id: "term-1", tag: "TERMINAL", q: "Para ver la IP de un dominio usas…", options: ["ping", "nslookup", "cd", "ls"], correct: 1, explain: "nslookup pregunta al DNS. ping mide si el host responde." },
-  { id: "term-2", tag: "TERMINAL", q: "Para cambiar de carpeta en la terminal usas…", options: ["mv", "cd", "ls", "rm"], correct: 1, explain: "cd = change directory. ls (o dir en Windows) muestra el contenido." },
-  { id: "term-3", tag: "TERMINAL", q: "Para probar si un servidor responde envías…", options: ["ping google.com", "css google.com", "dns google.com", "html google.com"], correct: 0, explain: "ping envía pequeños paquetes ICMP y mide el tiempo de ida y vuelta." },
+  { id: "term-1", tag: "TERMINAL", q: "Para ver la IP de un dominio usas…", options: ["ping", "nslookup", "cd", "ls"], correct: 1, explain: "nslookup = preguntar el número al DNS. ping = además llamar a ver si contestan. Analogía: buscar el teléfono vs marcar." },
+  { id: "term-2", tag: "TERMINAL", q: "Para cambiar de carpeta en la terminal usas…", options: ["mv", "cd", "ls", "rm"], correct: 1, explain: "cd = Change Directory (entrar a otra carpeta). ls/dir = mirar qué hay. Analogía: cambiar de habitación vs mirar el contenido del cajón." },
+  { id: "term-3", tag: "TERMINAL", q: "Para probar si un servidor responde envías…", options: ["ping google.com", "css google.com", "dns google.com", "html google.com"], correct: 0, explain: "Qué hace ping: manda señales y mide si hay eco. Por qué: saber si el host está vivo, no solo si el DNS resolvió." },
 
-  { id: "log-1", tag: "LOGICA", q: "(true || false) && !false =", options: ["true", "false"], correct: 0, explain: "true||false=true; !false=true; true&&true = true." },
-  { id: "log-2", tag: "LOGICA", q: "Si NO tengo hambre Y tengo dinero, ¿compro helado?", options: ["Sí", "No"], correct: 1, explain: "Regla: compro si tengo hambre Y dinero. Sin hambre, no compro aunque haya dinero." },
+  { id: "log-1", tag: "LOGICA", q: "(true || false) && !false =", options: ["true", "false"], correct: 0, explain: "Paso a paso: true||false → true. !false → true. true&&true → true. Primero OR, luego NOT, luego AND." },
+  { id: "log-2", tag: "LOGICA", q: "Si NO tengo hambre Y tengo dinero, ¿compro helado?", options: ["Sí", "No"], correct: 1, explain: "Regla AND: hace falta hambre Y dinero. Sin hambre → no compro, aunque haya dinero. Como la regla de mamá con el helado." },
 ];
 
 function Ejercicios() {
@@ -422,7 +422,7 @@ function Ejercicios() {
                     style={{ background: isCorrect ? "#e6ffe6" : "#fff2e0", border: "1px solid #808080" }}
                   >
                     <b>{isCorrect ? "¡Correcto!" : "Casi…"}</b>
-                    <div className="mt-1">{ex.explain}</div>
+                    <div className="mt-1 whitespace-pre-line">{ex.explain}</div>
                   </div>
                 )}
                 {done && !isCorrect && (
@@ -480,7 +480,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "Usa la etiqueta <h1>…</h1>",
     placeholder: "<h1>Hola mundo</h1>",
     accept: [[/^<h1>\s*hola\s+mundo\s*<\/h1>$/i]],
-    explain: "<h1> es el título más importante de la página.",
+    explain: "1) ¿Qué me pide? Un título principal visible con el texto Hola mundo.\n2) ¿Persona? Pondría el texto más grande e importante de la página.\n3) Algoritmo: abrir título principal → escribir Hola mundo → cerrar.\n4) Traducir: <h1>Hola mundo</h1>",
     preview: "html",
   },
   {
@@ -489,7 +489,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "Etiqueta <a> con atributo href",
     placeholder: '<a href="https://google.com">Buscar</a>',
     accept: [[/<a\s+href=["']https:\/\/google\.com["']\s*>\s*buscar\s*<\/a>/i]],
-    explain: "<a href='URL'>texto</a> crea un hipervínculo.",
+    explain: "1) ¿Qué me pide? Un enlace clicable que diga Buscar y vaya a Google.\n2) ¿Persona? Un cartel «Buscar» con la dirección detrás.\n3) Algoritmo: crear enlace → indicar destino → poner texto visible → cerrar.\n4) Traducir: <a href=\"https://google.com\">Buscar</a>",
     preview: "html",
   },
   {
@@ -501,7 +501,7 @@ const CODE_EXERCISES: CodeEx[] = [
       [/<img\s+[^>]*src=["']gato\.jpg["'][^>]*alt=["']un\s+gato["'][^>]*\/?>/i],
       [/<img\s+[^>]*alt=["']un\s+gato["'][^>]*src=["']gato\.jpg["'][^>]*\/?>/i],
     ],
-    explain: "El atributo alt describe la imagen para lectores y accesibilidad.",
+    explain: "1) ¿Qué me pide? Mostrar gato.jpg y, si no carga, que diga Un gato.\n2) ¿Persona? Colgar la foto y escribir una etiqueta debajo por si falta.\n3) Algoritmo: imagen → archivo (src) → descripción (alt).\n4) Traducir: <img src=\"gato.jpg\" alt=\"Un gato\">",
     preview: "html",
   },
   {
@@ -510,7 +510,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "<ol> con dos <li> dentro",
     placeholder: "<ol><li>Uno</li><li>Dos</li></ol>",
     accept: [[/<ol>\s*<li>\s*uno\s*<\/li>\s*<li>\s*dos\s*<\/li>\s*<\/ol>/i]],
-    explain: "<ol> = lista numerada. Cada punto va en <li>.",
+    explain: "1) ¿Qué me pide? Lista numerada con Uno y Dos.\n2) ¿Persona? Escribiría 1. Uno  2. Dos.\n3) Algoritmo: abrir lista ordenada → ítem Uno → ítem Dos → cerrar lista.\n4) Traducir: <ol><li>Uno</li><li>Dos</li></ol>",
     preview: "html",
   },
   {
@@ -518,7 +518,7 @@ const CODE_EXERCISES: CodeEx[] = [
     q: "Pinta el texto de rojo (solo la regla CSS)",
     placeholder: "color: red;",
     accept: [[/^color\s*:\s*red\s*;?\s*$/i]],
-    explain: "La propiedad se llama color, no font-color.",
+    explain: "1) ¿Qué me pide? Que las letras se vean rojas.\n2) ¿Persona? Cogería un marcador rojo y pintaría el texto (no el fondo).\n3) Algoritmo: elegir propiedad de color de texto → valor red.\n4) Traducir: color: red;",
   },
   {
     id: "c-css-2", tag: "CSS",
@@ -526,7 +526,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: ".clase { propiedad: valor; }",
     placeholder: ".btn { background: blue; }",
     accept: [[/^\.btn\s*\{\s*background(-color)?\s*:\s*blue\s*;?\s*\}$/i]],
-    explain: "El punto (.) selecciona clases. background pinta el fondo.",
+    explain: "1) ¿Qué me pide? Todos los .btn con fondo azul.\n2) ¿Persona? Buscar el grupo etiquetado btn y pintarles el fondo.\n3) Algoritmo: seleccionar clase btn → dentro, fondo = azul.\n4) Traducir: .btn { background: blue; }",
   },
   {
     id: "c-css-3", tag: "CSS",
@@ -534,21 +534,21 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "display, justify-content, align-items",
     placeholder: "display: flex;\njustify-content: center;\nalign-items: center;",
     accept: [[/display\s*:\s*flex\s*;/i, /justify-content\s*:\s*center\s*;/i, /align-items\s*:\s*center\s*;/i]],
-    explain: "flex + justify-content (eje X) + align-items (eje Y) = centrado perfecto.",
+    explain: "1) ¿Qué me pide? Centrar el contenido con flex.\n2) ¿Persona? Activar modo fila y empujar al centro en horizontal y vertical.\n3) Algoritmo: activar flex → centrar eje X → centrar eje Y.\n4) Traducir: display: flex;  justify-content: center;  align-items: center;",
   },
   {
     id: "c-js-1", tag: "JS",
     q: "Declara una constante 'nombre' con el valor 'Ada'",
     placeholder: "const nombre = 'Ada';",
     accept: [[/^const\s+nombre\s*=\s*['"`]ada['"`]\s*;?\s*$/i]],
-    explain: "const = valor que no cambia. Cadenas entre comillas.",
+    explain: "1) ¿Qué me pide? Guardar el texto Ada en una caja llamada nombre que no se reasigne.\n2) ¿Persona? Etiquetar un frasco sellado «nombre» con Ada adentro.\n3) Algoritmo: crear constante nombre → valor texto Ada.\n4) Traducir: const nombre = 'Ada';",
   },
   {
     id: "c-js-2", tag: "JS",
     q: "Muestra en consola el texto: Hola",
     placeholder: "console.log('Hola');",
     accept: [[/^console\.log\(\s*['"`]hola['"`]\s*\)\s*;?\s*$/i]],
-    explain: "console.log() imprime en la consola del navegador.",
+    explain: "1) ¿Qué me pide? Imprimir Hola en la consola.\n2) ¿Persona? Decirle al ayudante: «muéstrame la palabra Hola».\n3) Algoritmo: ejecutar la acción mostrar → con el texto Hola.\n4) Traducir: console.log('Hola');",
   },
   {
     id: "c-js-3", tag: "JS",
@@ -556,14 +556,14 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "if (condición) { ... }",
     placeholder: "if (edad >= 18) { console.log('adulto'); }",
     accept: [[/if\s*\(\s*edad\s*>=\s*18\s*\)\s*\{[^}]*\}/i]],
-    explain: ">= significa mayor o igual. La condición va entre paréntesis.",
+    explain: "1) ¿Qué me pide? Solo actuar si edad ≥ 18.\n2) ¿Persona? Mirar la edad; si llega a 18, hacer algo.\n3) Algoritmo: si edad >= 18 → mostrar adulto.\n4) Traducir: if (edad >= 18) { console.log('adulto'); }",
   },
   {
     id: "c-js-4", tag: "JS",
     q: "Un bucle for de 0 a 4 que imprima i",
     placeholder: "for (let i = 0; i < 5; i++) { console.log(i); }",
     accept: [[/for\s*\(\s*let\s+i\s*=\s*0\s*;\s*i\s*<\s*5\s*;\s*i\+\+\s*\)\s*\{[^}]*console\.log\(\s*i\s*\)[^}]*\}/i]],
-    explain: "for (inicio; condición; paso). i++ suma 1 cada vuelta.",
+    explain: "1) ¿Qué me pide? Mostrar 0,1,2,3,4.\n2) ¿Persona? Empezar en 0, decir el número, subir 1, repetir hasta antes de 5.\n3) Algoritmo: i=0; mientras i<5; mostrar i; i++.\n4) Traducir: for (let i = 0; i < 5; i++) { console.log(i); }",
   },
   {
     id: "c-js-5", tag: "JS",
@@ -573,35 +573,35 @@ const CODE_EXERCISES: CodeEx[] = [
       [/function\s+saludar\s*\(\s*nombre\s*\)\s*\{\s*return\s+['"`]hola\s+['"`]\s*\+\s*nombre\s*;?\s*\}/i],
       [/const\s+saludar\s*=\s*\(?\s*nombre\s*\)?\s*=>\s*['"`]hola\s+['"`]\s*\+\s*nombre/i],
     ],
-    explain: "function nombre(param) { return … } o una arrow: (n) => 'Hola ' + n.",
+    explain: "1) ¿Qué me pide? Una receta que, con un nombre, devuelva «Hola » + ese nombre.\n2) ¿Persona? Plantilla: Hola ___ ; rellenar el hueco.\n3) Algoritmo: función saludar(nombre) → devolver «Hola » + nombre.\n4) Traducir: function saludar(nombre) { return 'Hola ' + nombre; }",
   },
   {
     id: "c-term-1", tag: "TERMINAL",
     q: "Pregunta al DNS por la IP de google.com",
     placeholder: "nslookup google.com",
     accept: [[/^nslookup\s+google\.com\s*$/i]],
-    explain: "nslookup consulta el DNS y muestra la(s) IP(s) del dominio.",
+    explain: "Qué hace: pregunta al DNS el número (IP) de ese nombre. Analogía: buscar el teléfono en la guía, sin marcar todavía.",
   },
   {
     id: "c-term-2", tag: "TERMINAL",
     q: "Envía pings a google.com",
     placeholder: "ping google.com",
     accept: [[/^ping\s+(-c\s*\d+\s+)?google\.com\s*$/i]],
-    explain: "ping envía paquetes ICMP y mide el tiempo de respuesta.",
+    explain: "Qué hace: resuelve y además «llama» a ver si contesta. Por qué: comprobar si el host está vivo, no solo si existe el nombre.",
   },
   {
     id: "c-term-3", tag: "TERMINAL",
     q: "Muestra el contenido de la carpeta actual (Linux/Mac)",
     placeholder: "ls",
     accept: [[/^ls(\s+-\w+)?\s*$/i]],
-    explain: "ls lista archivos. En Windows CMD sería 'dir'.",
+    explain: "ls = list (listar). Por qué: ver qué hay en el cajón actual. En Windows CMD el hermano es dir.",
   },
   {
     id: "c-term-4", tag: "TERMINAL",
     q: "Cambia a la carpeta 'proyectos'",
     placeholder: "cd proyectos",
     accept: [[/^cd\s+proyectos\/?\s*$/i]],
-    explain: "cd = change directory. Con cd .. subes un nivel.",
+    explain: "cd = Change Directory: entrar a otra carpeta. cd .. = subir un nivel (como subir un piso en el edificio de carpetas).",
   },
 
   /* ===== JS · typeof, concatenación, const/let, arrays, objetos ===== */
@@ -612,7 +612,7 @@ const CODE_EXERCISES: CodeEx[] = [
     placeholder: "let esNumero = typeof cantidad === 'number';",
     starter: "let esNumero = typeof cantidad === 'Number';",
     accept: [[/let\s+esNumero\s*=\s*typeof\s+cantidad\s*===\s*['"`]number['"`]\s*;?/i]],
-    explain: "typeof 10 devuelve 'number' en minúsculas. JavaScript distingue mayúsculas y minúsculas: 'Number' ≠ 'number'.",
+    explain: "1) ¿Qué me pide? Que esNumero sea true cuando cantidad es un número.\n2) ¿Persona? Preguntar el tipo y comparar con la etiqueta correcta en minúsculas.\n3) Algoritmo: tipo = typeof cantidad; ¿tipo === 'number'?\n4) Traducir: let esNumero = typeof cantidad === 'number';",
   },
   {
     id: "c-js-typeof-2", tag: "JS",
@@ -620,7 +620,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "typeof devuelve 'string', 'number', 'boolean', 'undefined'…",
     placeholder: "let esTexto = typeof texto === 'string';",
     accept: [[/let\s+esTexto\s*=\s*typeof\s+texto\s*===\s*['"`]string['"`]\s*;?/i]],
-    explain: "typeof siempre devuelve el nombre del tipo como string en minúsculas.",
+    explain: "1) ¿Qué me pide? Saber si texto es string y guardarlo en esTexto.\n2) ¿Persona? Preguntar categoría → ¿es texto? → sí/no.\n3) Algoritmo: comparar typeof texto con 'string' → guardar resultado.\n4) Traducir: let esTexto = typeof texto === 'string';",
   },
   {
     id: "c-js-concat-1", tag: "JS",
@@ -628,7 +628,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "Usa + para concatenar: nombre + ' ' + apellido",
     placeholder: "let nombreCompleto = nombre + ' ' + apellido;",
     accept: [[/let\s+nombreCompleto\s*=\s*nombre\s*\+\s*['"`]\s['"`]\s*\+\s*apellido\s*;?/i]],
-    explain: "Con +, JavaScript no suma: 'pega' los textos en orden. El espacio ' ' evita 'DiegoTorres'.",
+    explain: "1) ¿Qué me pide? Pegar nombre + espacio + apellido en nombreCompleto.\n2) ¿Persona? Escribir Diego, dejar un espacio, escribir Torres.\n3) Algoritmo: unir nombre + ' ' + apellido → guardar.\n4) Traducir: let nombreCompleto = nombre + ' ' + apellido;",
   },
   {
     id: "c-js-concat-2", tag: "JS",
@@ -636,7 +636,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "mensaje += algo → mensaje = mensaje + algo",
     placeholder: "mensaje += nombreCompleto;",
     accept: [[/^\s*mensaje\s*\+=\s*nombreCompleto\s*;?\s*$/i]],
-    explain: "+= es un atajo: acumula al final del texto que ya había.",
+    explain: "1) ¿Qué me pide? Pegar nombreCompleto al final de mensaje.\n2) ¿Persona? Tomar el texto que ya había y añadir más al final.\n3) Algoritmo: mensaje = mensaje + nombreCompleto (atajo +=).\n4) Traducir: mensaje += nombreCompleto;",
   },
   {
     id: "c-js-concat-3", tag: "JS",
@@ -648,7 +648,7 @@ const CODE_EXERCISES: CodeEx[] = [
       [/let\s+total\s*=\s*parseInt\s*\(\s*precioUnitario\s*\)\s*\*\s*cantidad\s*;?/i],
       [/let\s+total\s*=\s*\+\s*precioUnitario\s*\*\s*cantidad\s*;?/i],
     ],
-    explain: "Con + entre número y string, JS concatena ('3'+'10'='310'). Number() lo convierte primero a número real.",
+    explain: "1) ¿Qué me pide? Multiplicar bien: el '3' es texto y hay que volverlo número.\n2) ¿Persona? Borrar las comillas mentales: 3 × 10 = 30.\n3) Algoritmo: convertir precioUnitario a número → multiplicar por cantidad.\n4) Traducir: let total = Number(precioUnitario) * cantidad;",
   },
   {
     id: "c-js-constlet-1", tag: "JS",
@@ -657,7 +657,7 @@ const CODE_EXERCISES: CodeEx[] = [
     placeholder: "let precio = 100;",
     starter: "const precio = 100;",
     accept: [[/^\s*let\s+precio\s*=\s*100\s*;?\s*$/i]],
-    explain: "const pone un candado permanente. Si el valor va a cambiar (como un precio), usa let.",
+    explain: "1) ¿Qué me pide? Que precio pueda cambiar después (100 → 120).\n2) ¿Persona? Usar un vaso normal, no un frasco sellado.\n3) Algoritmo: declarar precio con let (no const) = 100.\n4) Traducir: let precio = 100;",
   },
   {
     id: "c-js-array-1", tag: "JS",
@@ -665,7 +665,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "Usa corchetes [ ] y comas entre elementos.",
     placeholder: "let tareas = ['Lavar platos', 'Sacar la basura', 'Limpiar el baño', 'Barrer'];",
     accept: [[/let\s+tareas\s*=\s*\[\s*['"`]lavar\s+platos['"`]\s*,\s*['"`]sacar\s+la\s+basura['"`]\s*,\s*['"`]limpiar\s+el\s+baño['"`]\s*,\s*['"`]barrer['"`]\s*\]\s*;?/i]],
-    explain: "Un array es una caja con compartimentos numerados desde 0. Los strings van entre comillas.",
+    explain: "1) ¿Qué me pide? Una lista de 4 tareas con esos textos.\n2) ¿Persona? Escribiría una lista del súper con 4 renglones.\n3) Algoritmo: crear lista tareas = [texto1, texto2, texto3, texto4].\n4) Traducir: let tareas = ['Lavar platos', 'Sacar la basura', 'Limpiar el baño', 'Barrer'];",
   },
   {
     id: "c-js-array-2", tag: "JS",
@@ -673,7 +673,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "El primer elemento es el índice 0, el segundo es el 1.",
     placeholder: "let segunda = frutas[1];",
     accept: [[/^\s*let\s+segunda\s*=\s*frutas\s*\[\s*1\s*\]\s*;?\s*$/i]],
-    explain: "Los índices arrancan en 0: frutas[0]='manzana', frutas[1]='pera', frutas[2]='uva'.",
+    explain: "1) ¿Qué me pide? Guardar la pera (2.º casillero) en segunda.\n2) ¿Persona? Contar: 1.º manzana (0), 2.º pera (1).\n3) Algoritmo: segunda = frutas en posición 1.\n4) Traducir: let segunda = frutas[1];",
   },
   {
     id: "c-js-length-1", tag: "JS",
@@ -681,7 +681,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: ".length es una PROPIEDAD (sin paréntesis).",
     placeholder: "let cuantas = tareas.length;",
     accept: [[/^\s*let\s+cuantas\s*=\s*tareas\.length\s*;?\s*$/i]],
-    explain: ".length es propiedad, no método → no lleva (). Devuelve el número de elementos.",
+    explain: "1) ¿Qué me pide? Contar cuántas tareas hay y guardar el número.\n2) ¿Persona? Mirar el cartel «hay N» (no hacer una acción).\n3) Algoritmo: cuantas = dato length de tareas (sin ()).\n4) Traducir: let cuantas = tareas.length;",
   },
   {
     id: "c-js-push-1", tag: "JS",
@@ -689,7 +689,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: ".push() es un método → lleva paréntesis.",
     placeholder: "tareas.push('Trapear');",
     accept: [[/^\s*tareas\.push\s*\(\s*['"`]trapear['"`]\s*\)\s*;?\s*$/i]],
-    explain: ".push(x) añade x al final del array. Es método → () obligatorios.",
+    explain: "1) ¿Qué me pide? Meter Trapear al final de la lista.\n2) ¿Persona? Añadir un renglón nuevo al final de la lista.\n3) Algoritmo: ejecutar acción push con 'Trapear'.\n4) Traducir: tareas.push('Trapear');",
   },
   {
     id: "c-js-obj-1", tag: "JS",
@@ -697,7 +697,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "Usa llaves { } y clave: valor separados por coma.",
     placeholder: "let libro = { titulo: 'Cien años de soledad', autor: 'García Márquez' };",
     accept: [[/let\s+libro\s*=\s*\{\s*titulo\s*:\s*['"`]cien\s+años\s+de\s+soledad['"`]\s*,\s*autor\s*:\s*['"`]garcía\s+márquez['"`]\s*\}\s*;?/i]],
-    explain: "Un objeto guarda datos con nombre (clave: valor). A diferencia del array, no usa índices numéricos.",
+    explain: "1) ¿Qué me pide? Una ficha libro con título y autor.\n2) ¿Persona? Llenar una ficha de biblioteca con dos etiquetas.\n3) Algoritmo: crear ficha { titulo: …, autor: … }.\n4) Traducir: let libro = { titulo: 'Cien años de soledad', autor: 'García Márquez' };",
   },
   {
     id: "c-js-obj-2", tag: "JS",
@@ -705,7 +705,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: "objeto.propiedad",
     placeholder: "let t = libro.titulo;",
     accept: [[/^\s*let\s+t\s*=\s*libro\.titulo\s*;?\s*$/i]],
-    explain: "La notación de punto accede a propiedades: libro.titulo lee el valor guardado en esa clave.",
+    explain: "1) ¿Qué me pide? Leer el título de la ficha libro y guardarlo en t.\n2) ¿Persona? Buscar la etiqueta «titulo» en la ficha.\n3) Algoritmo: t = libro.titulo.\n4) Traducir: let t = libro.titulo;",
   },
   {
     id: "c-js-obj-3", tag: "JS",
@@ -713,7 +713,7 @@ const CODE_EXERCISES: CodeEx[] = [
     hint: ".push() también acepta objetos.",
     placeholder: "biblioteca.push(libro);",
     accept: [[/^\s*biblioteca\.push\s*\(\s*libro\s*\)\s*;?\s*$/i]],
-    explain: ".push() acepta CUALQUIER valor: números, strings, objetos, otros arrays…",
+    explain: "1) ¿Qué me pide? Meter la ficha libro al final de la lista biblioteca.\n2) ¿Persona? Poner esa ficha al final del estante/lista.\n3) Algoritmo: push libro en biblioteca.\n4) Traducir: biblioteca.push(libro);",
   },
 ];
 
@@ -931,7 +931,7 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
       )}
       {status === "ok" && (
         <div className="mt-2 p-2 text-[12px]" style={{ background: "#e6ffe6", border: "1px solid #808080" }}>
-          <b>¡Bien!</b> {ex.explain}
+          <b>¡Bien!</b> <span className="whitespace-pre-line">{ex.explain}</span>
         </div>
       )}
       {ex.preview === "html" && value.trim() && (

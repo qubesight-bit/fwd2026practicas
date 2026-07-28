@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Section, Callout, CodeBlock, Sig } from "@/components/lesson-ui";
+import { Section, Callout, CodeBlock, Sig, LearnBlock, TranslateBlock, SolveBlock, IntentBlock, FormulaBlock } from "@/components/lesson-ui";
 import BoolPlayground from "@/components/BoolPlayground";
 
 export type LessonSlug = "dns" | "operadores" | "fundamentos" | "js" | "terminal" | "html" | "frontend";
@@ -14,31 +14,34 @@ const dns: Lesson = {
   body: () => (
     <>
       <Section kicker="1 · La idea" title={<>La guía telefónica de <em>internet.</em></>}>
-        <p>
-          Cuando escribes <span className="mono">google.com</span>, tu computadora no
-          sabe dónde está esa página. Le pregunta al <Sig>DNS</Sig> (Domain Name System),
-          que le responde con la <em>dirección IP</em> del servidor, algo como{" "}
-          <span className="mono">142.250.185.78</span>.
-        </p>
-        <Callout label="Imagínalo así">
-          Tú buscas <em>“Pizzería de Ana”</em> en la guía telefónica. La guía te da el número.
-          El DNS hace lo mismo: tú das un nombre, él te da un número (la IP).
-        </Callout>
+        <LearnBlock
+          what={<>El <Sig>DNS</Sig> (Domain Name System) es el sistema que traduce un nombre bonito como <span className="mono">google.com</span> a una dirección IP que las máquinas sí entienden, como <span className="mono">142.250.185.78</span>.</>}
+          why="Tu computadora no sabe dónde está una página solo con el nombre. Necesita un número (la IP) para llegar. El DNS existe para que tú memorices nombres fáciles y las máquinas usen números."
+          how={[
+            "Escribes un dominio en el navegador.",
+            "Tu computadora pregunta al DNS: «¿cuál es la IP de este nombre?»",
+            "El DNS responde con la IP.",
+            "Con esa IP, el navegador contacta al servidor.",
+          ]}
+          example={<>Escribes <span className="mono">google.com</span> → el DNS te da algo como <span className="mono">142.250.185.78</span>.</>}
+          analogy="Es como la guía telefónica: buscas «Pizzería de Ana» y te dan el número. Tú das el nombre; el DNS te da el número (la IP)."
+        />
       </Section>
 
       <Section kicker="2 · Comandos" title="Dos herramientas para revisar el DNS">
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-2xl hair-a p-6" style={{ background: "oklch(0.18 0.014 55)" }}>
-            <div className="mono text-2xl mb-3" style={{ color: "var(--signal)" }}>nslookup</div>
-            <p className="text-sm mb-3">Le pregunta al DNS: <em>¿cuál es la IP de este dominio?</em></p>
-            <div className="mono text-xs opacity-70">→ Dirección: 142.250.185.78</div>
-          </div>
-          <div className="rounded-2xl hair-a p-6" style={{ background: "oklch(0.18 0.014 55)" }}>
-            <div className="mono text-2xl mb-3" style={{ color: "var(--signal)" }}>ping</div>
-            <p className="text-sm mb-3">Resuelve el dominio <em>y</em> comprueba si el servidor contesta.</p>
-            <div className="mono text-xs opacity-70">→ Respuesta desde 142.250.185.78</div>
-          </div>
-        </div>
+        <LearnBlock
+          what={<>Dos comandos para «preguntarle» al DNS: <span className="mono">nslookup</span> y <span className="mono">ping</span>.</>}
+          why="Cuando una web no carga, necesitas saber si el problema es «no encontré la dirección» (DNS) o «sí llegué pero el servidor falló» (HTTP). Estos comandos te ayudan a mirar eso."
+          how={[
+            "nslookup solo pregunta: ¿cuál es la IP de este dominio?",
+            "ping resuelve el dominio Y además comprueba si el servidor contesta.",
+            "Si ambos dan la misma IP, el DNS está limpio (sin datos viejos raros).",
+          ]}
+          example={<>Escribes <span className="mono">nslookup google.com</span> y ves la IP. Luego <span className="mono">ping google.com</span> y ves si responde.</>}
+          analogy="nslookup es preguntar el número de teléfono. ping es llamar para ver si alguien contesta."
+          code={`nslookup google.com
+ping google.com`}
+        />
         <Callout tone="ok" label="¿Y si ambos muestran la misma IP?">
           Significa que el DNS está limpio: encontraste la dirección correcta,
           sin datos viejos en caché. Si hay problemas, no son del DNS — son de conexión o del servidor.
@@ -46,7 +49,18 @@ const dns: Lesson = {
       </Section>
 
       <Section kicker="3 · Cuando el DNS falla" title={<>Cuando la casa <em>no está</em> en el mapa.</>}>
-        <p>El navegador no pudo encontrar la dirección. La petición <em>no llega</em> al servidor.</p>
+        <LearnBlock
+          what="Un error DNS significa que el navegador no encontró la dirección. La petición ni siquiera sale hacia el servidor."
+          why="Si no sabes dónde está la casa, no puedes tocar la puerta. Distinguir un error DNS de un error HTTP te ahorra horas buscando el problema en el lugar equivocado."
+          how={[
+            "Escribes el dominio.",
+            "El DNS busca y no encuentra nada útil.",
+            "El navegador se detiene y muestra un error de nombre no resuelto.",
+            "Nadie llegó al servidor: no hay código 404 ni 500 todavía.",
+          ]}
+          example={<>Mensajes típicos: <span className="mono">ERR_NAME_NOT_RESOLVED</span>, <span className="mono">DNS_PROBE_FINISHED_NXDOMAIN</span>.</>}
+          analogy="Quieres ir a una fiesta, pero la dirección no existe en el mapa. No fallaste al tocar el timbre: nunca llegaste a la casa."
+        />
         <div className="grid gap-2 my-4">
           {["DNS_PROBE_FINISHED_NXDOMAIN", "ERR_NAME_NOT_RESOLVED", "No se puede encontrar la dirección del servidor"].map((e) => (
             <div key={e} className="mono text-sm rounded-xl hair-a px-4 py-3" style={{ background: "oklch(0.18 0.014 55)" }}>
@@ -58,6 +72,17 @@ const dns: Lesson = {
       </Section>
 
       <Section kicker="4 · La distinción clave" title={<>Error <em>DNS</em> vs. Error <em>HTTP.</em></>}>
+        <LearnBlock
+          what="DNS = no encontré la dirección. HTTP = sí llegué al servidor, pero él respondió con un problema (o con éxito)."
+          why="Son dos momentos distintos del viaje. Si los mezclas, intentas «arreglar el servidor» cuando en realidad ni siquiera encontraste la IP."
+          how={[
+            "Primero el DNS: ¿existe este nombre? Si no → error DNS y se acabó.",
+            "Si sí, tienes la IP y contactas al servidor.",
+            "El servidor responde con un código HTTP: 200 bien, 404 no existe, 500 se rompió, etc.",
+          ]}
+          example={<>«No se puede encontrar el servidor» ≈ DNS. «404 Not Found» ≈ HTTP (sí hubo respuesta).</>}
+          analogy={'DNS: «No encontré la dirección de la casa.» HTTP: «Llegué a la casa, pero no me dejaron entrar / la habitación no existe.»'}
+        />
         <div className="grid md:grid-cols-2 gap-4">
           <div className="rounded-2xl hair-a p-6" style={{ background: "oklch(0.16 0.012 55)" }}>
             <div className="text-3xl mb-3">DNS</div>
@@ -123,6 +148,17 @@ const operadores: Lesson = {
   body: () => (
     <>
       <Section kicker="1 · Los tres" title="Tres símbolos que deciden todo">
+        <LearnBlock
+          what={<>Los operadores lógicos <span className="mono">&&</span> (AND), <span className="mono">||</span> (OR) y <span className="mono">!</span> (NOT) combinan o invierten verdaderos y falsos.</>}
+          why="Los programas toman decisiones: «¿puedo entrar?», «¿hay helado?», «¿está logueado Y tiene permiso?». Sin estas reglas, no podrías unir condiciones."
+          how={[
+            "AND (&&): mira los dos lados. Solo dice sí si AMBOS son verdaderos.",
+            "OR (||): mira los dos lados. Dice sí si AL MENOS UNO es verdadero.",
+            "NOT (!): invierte. Si era verdadero, pasa a falso (y al revés).",
+          ]}
+          example={<>Limpiaste = verdadero, tarea = falso → <span className="mono">limpiaste && tarea</span> = falso. Con <span className="mono">||</span> sería verdadero.</>}
+          analogy="Mamá (AND): helado solo si limpias Y haces tarea. Papá (OR): helado si limpias O haces tarea. NOT es como decir «lo contrario»."
+        />
         <div className="grid md:grid-cols-3 gap-3">
           <div className="rounded-2xl hair-a p-6" style={{ background: "oklch(0.18 0.014 55)" }}>
             <div className="mono text-4xl mb-2" style={{ color: "var(--signal)" }}>&amp;&amp;</div>
@@ -222,26 +258,109 @@ const operadores: Lesson = {
 /* ============ 03 · FUNDAMENTOS ============ */
 const fundamentos: Lesson = {
   title: "Fundamentos de programación",
-  tagline: "Programar es darle instrucciones a la computadora paso a paso. Cinco piezas — variables, operadores, condicionales, bucles y funciones — bastan para casi todo.",
-  description: "Variables, operadores aritméticos y de comparación, condicionales if/else, bucles for/while y funciones — con ejemplos en JavaScript.",
+  tagline: "Aprendes por intención, no por sintaxis. ¿Qué le quiero decir al programa? → luego cómo se escribe.",
+  description: "Intención primero; fórmulas español → calculadora → JS; frases ↓ → traducir. Variables, if, bucles, funciones, clasificarIMC.",
   body: () => (
     <>
-      <Section kicker="1 · Idea base" title={<>Programar es dar <em>instrucciones.</em></>}>
-        <p>La computadora hace <strong>exactamente</strong> lo que le dices — ni más, ni menos. Como un robot muy obediente y muy tonto.</p>
-        <Callout label="Los 5 pilares">
-          Variables · Operadores · Condicionales · Bucles · Funciones. Con estos cinco, ya puedes construir cualquier programa.
+      <Section kicker="1 · Tu forma de aprender" title={<>Por <em>intención</em>, no por sintaxis</>}>
+        <LearnBlock
+          what="Tú no memorizas cómo se escribe una palabra. Primero entiendes qué le quieres decir al programa; la sintaxis solo escribe esa idea."
+          why="Si empiezas por switch o while como símbolos, se siente mágico. Si empiezas por la intención («voy a revisar este número para decidir la respuesta»), el código es solo traducción."
+          how={[
+            "Aparece una palabra nueva → pregunta: ¿Qué le quiero decir al programa?",
+            "Escribe las frases en español (↓).",
+            "Solo después: cómo se escribe en JavaScript.",
+            "Si hay fórmula: léela en español → hazla con calculadora → tradúcela a JS.",
+          ]}
+          example={'Otros ven switch (numeroMes) y memorizan. Tú piensas: «Voy a revisar el número que recibí para saber qué respuesta debo dar.»'}
+          analogy="Como pedir un favor: primero sabes qué quieres (intención); después eliges las palabras exactas (sintaxis)."
+        />
+        <IntentBlock
+          keyword="switch"
+          intention={<>«Voy a revisar el número que recibí para saber qué respuesta debo dar.»</>}
+          spanish={[
+            "Recibí un número de mes.",
+            "Voy a mirar ese número.",
+            "Según qué número sea, daré una respuesta distinta.",
+          ]}
+          code={`switch (numeroMes) {
+  case 1:
+    return "Enero";
+  case 2:
+    return "Febrero";
+  default:
+    return "Mes inválido";
+}`}
+          note="La palabra switch no se memoriza: es la forma de escribir «revisa este valor y elige la respuesta»."
+        />
+        <Callout label="Regla de oro para todo JavaScript">
+          Cada palabra nueva (switch, while, map, filter, addEventListener…) → primero{" "}
+          <strong>¿Qué le quiero decir al programa?</strong> → después cómo se escribe.
         </Callout>
       </Section>
 
-      <Section kicker="2 · Variables" title="📦 Las cajas donde guardas datos">
-        <p>Una variable es una caja con etiqueta. Guardas algo adentro y le pones un nombre para poder buscarlo después.</p>
-        <CodeBlock>{`let edad = 10;              // número
-let nombre = "Ana";         // texto (string)
-let tieneMascota = true;    // booleano (verdadero/falso)
-let frutas = ["🍎","🍐"];   // lista (array)`}</CodeBlock>
+      <Section kicker="2 · Fórmulas" title={<>Español → calculadora → <em>código</em></>}>
+        <p>
+          Cuando aparece una fórmula, el código no es un misterio: es la misma operación
+          que ya resolviste como persona.
+        </p>
+        <FormulaBlock
+          title="IMC"
+          spanish={
+            <>
+              El IMC es el <strong>peso dividido entre la altura al cuadrado</strong>.
+              Altura al cuadrado = altura × altura.
+            </>
+          }
+          calculator={
+            <>
+              <p className="mb-3">Ejemplo: peso = 70 kg, altura = 1.75 m</p>
+              <ol className="list-decimal pl-5 space-y-1">
+                <li>En la calculadora: 1.75 × 1.75 = 3.0625</li>
+                <li>Luego: 70 ÷ 3.0625 ≈ 22.86</li>
+              </ol>
+              <p className="mt-3 italic opacity-80">Ya entendiste la operación. Ahora solo la escribes en JS.</p>
+            </>
+          }
+          code={`let imc = peso / (altura * altura);
+// misma cuenta: peso ÷ (altura × altura)`}
+          symbols={[
+            { mark: "/", means: "dividido entre" },
+            { mark: "*", means: "multiplicado por" },
+            { mark: "( )", means: "primero multiplica altura × altura; después divide" },
+          ]}
+        />
       </Section>
 
-      <Section kicker="3 · Operadores" title="Las herramientas para calcular y comparar">
+      <Section kicker="3 · Variables" title="📦 Las cajas donde guardas datos">
+        <IntentBlock
+          keyword="let / const"
+          intention={<>«Quiero guardar un valor con un nombre para usarlo después.»</>}
+          spanish={[
+            "Crear una caja llamada edad.",
+            "Guardar el número 10 adentro.",
+            "Más tarde, cuando diga edad, traer ese 10.",
+          ]}
+          code={`let edad = 10;              // número (puede cambiar)
+const nombre = "Ana";       // texto (candado: no reasignar)
+let tieneMascota = true;    // verdadero/falso
+let frutas = ["🍎","🍐"];   // lista`}
+          note="let = vaso que puedes rellenar. const = frasco sellado."
+        />
+      </Section>
+
+      <Section kicker="4 · Operadores" title="Las herramientas para calcular y comparar">
+        <LearnBlock
+          what="Los operadores son símbolos que calculan (+ − * /) o comparan (== &gt; &lt;) o combinan lógica (&& || !)."
+          why="Necesitas preguntar cosas como «¿edad es mayor o igual a 18?» o «suma el precio y el impuesto». Sin operadores, solo podrías guardar datos, no trabajar con ellos."
+          how={[
+            "Aritméticos: suman, restan, multiplican, dividen, o sacan el resto (%).",
+            "Comparación: responden verdadero o falso (¿iguales? ¿mayor?).",
+            "Lógicos: unen o invierten verdaderos/falsos (AND, OR, NOT).",
+          ]}
+          example={<>Si <span className="mono">edad = 10</span>, entonces <span className="mono">edad &gt;= 18</span> es falso. <span className="mono">5 + 3</span> es 8.</>}
+          analogy="Son las herramientas de la cocina: el cuchillo corta, la báscula compara pesos. Cada símbolo hace un trabajo concreto."
+        />
         <div className="grid md:grid-cols-3 gap-4">
           <div className="rounded-2xl hair-a p-5" style={{ background: "oklch(0.18 0.014 55)" }}>
             <div className="mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--signal)" }}>Aritméticos</div>
@@ -264,9 +383,44 @@ let frutas = ["🍎","🍐"];   // lista (array)`}</CodeBlock>
         </div>
       </Section>
 
-      <Section kicker="4 · Condicionales" title="🤔 Tomar decisiones con if / else">
-        <p>Si algo se cumple → haz esto. Si no → haz otra cosa.</p>
-        <CodeBlock>{`let edad = 10;
+      <Section kicker="5 · Condicionales" title="🤔 Tomar decisiones con if / else">
+        <IntentBlock
+          keyword="if / else"
+          intention={<>«Si esto se cumple, haz A; si no, haz B.»</>}
+          spanish={[
+            "Miro la edad.",
+            "Si es mayor o igual a 18 → mayor de edad.",
+            "Si no, pero es mayor o igual a 13 → adolescente.",
+            "Si no → niño.",
+          ]}
+          code={`let edad = 10;
+
+if (edad >= 18) {
+  console.log("Eres mayor de edad 🧑");
+} else if (edad >= 13) {
+  console.log("Eres adolescente 🧒");
+} else {
+  console.log("Eres niño 👶");
+}`}
+          note="if no se memoriza: es la forma de escribir «si… entonces…»."
+        />
+        <TranslateBlock
+          title="Traducir: clasificar por edad"
+          natural={[
+            "Guardar la edad (por ejemplo 10).",
+            "Si la edad es mayor o igual a 18, decir «Eres mayor de edad».",
+            "Si no, pero es mayor o igual a 13, decir «Eres adolescente».",
+            "En cualquier otro caso, decir «Eres niño».",
+          ]}
+          pseudo={`crear variable edad = 10
+
+si edad >= 18
+    mostrar "Eres mayor de edad"
+si no, si edad >= 13
+    mostrar "Eres adolescente"
+si no
+    mostrar "Eres niño"`}
+          code={`let edad = 10;
 
 if (edad >= 18) {
   console.log("Eres mayor de edad 🧑");
@@ -275,41 +429,123 @@ if (edad >= 18) {
 } else {
   console.log("Eres niño 👶");
 }
-// → "Eres niño 👶"`}</CodeBlock>
+// → "Eres niño 👶"`}
+        />
       </Section>
 
-      <Section kicker="5 · Bucles" title="🔄 Repetir acciones sin escribirlas 100 veces">
-        <div className="grid md:grid-cols-2 gap-4">
-          <div>
-            <div className="mono text-xs uppercase tracking-widest mb-2" style={{ color: "var(--signal)" }}>for — sabes cuántas veces</div>
-            <CodeBlock>{`for (let i = 1; i <= 5; i++) {
+      <Section kicker="6 · Bucles" title="🔄 Repetir acciones sin escribirlas 100 veces">
+        <IntentBlock
+          keyword="for / while"
+          intention={<>«Repite esto mientras la condición se cumpla» / «Hazlo N veces con un contador.»</>}
+          spanish={[
+            "Empiezo un contador en 1.",
+            "Mientras sea menor o igual a 5, muestro el número.",
+            "Le sumo 1 al contador (subo un piso).",
+            "Cuando pase de 5, paro.",
+          ]}
+          code={`for (let i = 1; i <= 5; i++) {
   console.log(i);
 }
-// 1 2 3 4 5`}</CodeBlock>
-          </div>
-          <div>
-            <div className="mono text-xs uppercase tracking-widest mb-2" style={{ color: "var(--signal)" }}>while — hasta que se cumpla</div>
-            <CodeBlock>{`let n = 1;
+// i = contador · i++ = súbele 1`}
+          note="while / for = «sigue haciendo…». i++ = súbele 1 al contador (no es magia)."
+        />
+        <TranslateBlock
+          title="Traducir: contar del 1 al 5"
+          natural={[
+            "Empezar un contador en 1.",
+            "Mientras el contador sea menor o igual a 5, mostrar el contador.",
+            "Después de mostrarlo, sumarle 1 al contador.",
+            "Cuando el contador pase de 5, parar.",
+          ]}
+          pseudo={`crear contador i = 1
+
+mientras i <= 5
+    mostrar i
+    i = i + 1   (o: i++)`}
+          code={`for (let i = 1; i <= 5; i++) {
+  console.log(i);
+}
+// 1 2 3 4 5
+
+let n = 1;
 while (n <= 5) {
   console.log(n);
   n++;
-}`}</CodeBlock>
-          </div>
-        </div>
+}`}
+        />
       </Section>
 
-      <Section kicker="6 · Funciones" title="📝 Recetas que puedes reutilizar">
-        <p>Escribes una función una vez y la usas todas las veces que quieras.</p>
-        <CodeBlock>{`function saludar(nombre) {
+      <Section kicker="7 · Funciones" title="📝 Recetas que puedes reutilizar">
+        <IntentBlock
+          keyword="function"
+          intention={<>«Guarda este proceso con un nombre para usarlo cuando yo diga ese nombre.»</>}
+          spanish={[
+            "Crear una receta llamada saludar.",
+            "Recibe un nombre.",
+            "Muestra ¡Hola + ese nombre!",
+            "Usarla con Ana y con Carlos.",
+          ]}
+          code={`function saludar(nombre) {
+  console.log("¡Hola " + nombre + "! 🎉");
+}
+
+saludar("Ana");
+saludar("Carlos");`}
+          note="Los ( ) al llamar significan: «ejecuta la receta ahora, con estos ingredientes»."
+        />
+        <TranslateBlock
+          title="Traducir: saludar a alguien"
+          natural={[
+            "Crear una función llamada saludar.",
+            "Va a recibir un nombre.",
+            "Mostrar «¡Hola» + ese nombre + «!».",
+            "Usarla con «Ana» y luego con «Carlos».",
+          ]}
+          pseudo={`función saludar
+    recibe: nombre
+    mostrar "¡Hola " + nombre + "!"
+
+saludar("Ana")
+saludar("Carlos")`}
+          code={`function saludar(nombre) {
   console.log("¡Hola " + nombre + "! 🎉");
 }
 
 saludar("Ana");     // ¡Hola Ana! 🎉
-saludar("Carlos");  // ¡Hola Carlos! 🎉`}</CodeBlock>
+saludar("Carlos");  // ¡Hola Carlos! 🎉`}
+        />
       </Section>
 
-      <Section kicker="7 · Todo junto" title="🎢 Ejemplo: subir a la montaña rusa">
-        <CodeBlock>{`let edad = 10;
+      <Section kicker="8 · Todo junto" title="🎢 Ejemplo: subir a la montaña rusa">
+        <LearnBlock
+          what="Aquí ves los 5 pilares trabajando juntos en un solo proceso."
+          why="En la vida real casi nunca usas una sola pieza: guardas datos, comparas, decides y reutilizas con una función."
+          how={[
+            "Variables guardan edad, altura y boleta.",
+            "La función puedeSubir recibe esos tres datos.",
+            "El if combina tres condiciones con AND (&&): las tres deben cumplirse.",
+            "Si alguna falla → «No puede subir».",
+          ]}
+          example={<>edad 10, altura 130, boleta true → falla porque edad &lt; 12 → «No puede subir».</>}
+          analogy="La fila de la montaña rusa: debes tener edad mínima Y altura mínima Y boleta. Si te falta una, no subes (regla AND)."
+        />
+        <TranslateBlock
+          title="Traducir: ¿puede subir?"
+          natural={[
+            "Guardar edad, altura y si tiene boleta.",
+            "Crear una función que reciba esos tres datos.",
+            "Si edad ≥ 12 Y altura ≥ 120 Y tiene boleta → devolver «Puede subir».",
+            "Si no → devolver «No puede subir».",
+          ]}
+          pseudo={`crear edad, altura, tieneBoleta
+
+función puedeSubir
+    recibe: edad, altura, boleta
+    si edad >= 12 Y altura >= 120 Y boleta
+        devolver "¡Puede subir!"
+    si no
+        devolver "No puede subir"`}
+          code={`let edad = 10;
 let altura = 130;
 let tieneBoleta = true;
 
@@ -321,10 +557,97 @@ function puedeSubir(edad, altura, boleta) {
 }
 
 console.log(puedeSubir(edad, altura, tieneBoleta));
-// → "No puede subir ❌"`}</CodeBlock>
-        <Callout tone="ok" label="Fíjate">
-          Aquí ves los 5 pilares trabajando juntos: variables, operadores lógicos (&amp;&amp;),
-          un condicional (if), y una función que puedes reutilizar.
+// → "No puede subir ❌"`}
+        />
+      </Section>
+
+      <Section kicker="9 · El método completo" title={<>¿Qué quiero decirle al programa?</>}>
+        <p>
+          Intención primero. Fórmula: español → calculadora → JS.
+          Luego las frases ↓ y traducir cada una.
+        </p>
+        <SolveBlock
+          title="Ejercicio modelo: clasificarIMC"
+          lang="JavaScript"
+          ask="Una función que, con peso y altura, calcule el IMC y diga si es bajo peso, normal, sobrepeso u obesidad."
+          person={
+            <>
+              Primero como personas (matemática humana), no como código:
+              <div className="my-4 mono text-center text-xl leading-relaxed" style={{ color: "var(--signal)" }}>
+                IMC = peso ÷ altura²
+              </div>
+              Si mides 1.75 m, altura² = 1.75 × 1.75. Luego divides el peso entre ese resultado y comparas con 18.5, 25 y 30.
+            </>
+          }
+          whySymbols={
+            <>
+              <p>
+                <strong>No es</strong> <span className="mono">peso / (peso * altura)</span>.
+                <strong> Sí es</strong> <span className="mono">peso / (altura * altura)</span>.
+              </p>
+              <p>Porque esa es la fórmula matemática del IMC. Cada símbolo:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li><span className="mono">/</span> = «dividido entre»</li>
+                <li><span className="mono">altura * altura</span> = altura² (altura al cuadrado)</li>
+                <li><span className="mono">( )</span> = «haz primero la multiplicación, luego divide»</li>
+              </ul>
+              <p className="italic opacity-90">
+                En español: «El IMC es el peso dividido entre la altura multiplicada por la altura.»
+              </p>
+            </>
+          }
+          tellProgram={[
+            "Crear una función.",
+            "Recibir un peso.",
+            "Recibir una altura.",
+            "Calcular el IMC.",
+            "Si el IMC es menor que 18.5",
+            'Devolver "Bajo peso".',
+            "Si no…",
+            "Si el IMC es menor que 25…",
+            'Devolver "Peso normal".',
+            "Si no…",
+            "Si el IMC es menor que 30…",
+            'Devolver "Sobrepeso".',
+            "Si no…",
+            'Devolver "Obesidad".',
+          ]}
+          lines={[
+            { es: "Crear una función. Recibir peso y altura.", code: "function clasificarIMC(peso, altura) {" },
+            { es: "Calcular el IMC (peso ÷ altura × altura).", code: "  let imc = peso / (altura * altura);" },
+            { es: 'Si el IMC es menor que 18.5 → devolver "Bajo peso".', code: '  if (imc < 18.5) {\n    return "Bajo peso";' },
+            { es: 'Si no, si es menor que 25 → "Peso normal".', code: '  } else if (imc < 25) {\n    return "Peso normal";' },
+            { es: 'Si no, si es menor que 30 → "Sobrepeso".', code: '  } else if (imc < 30) {\n    return "Sobrepeso";' },
+            { es: 'Si no → "Obesidad". Cerrar la función.', code: '  } else {\n    return "Obesidad";\n  }\n}' },
+          ]}
+        />
+        <Callout tone="warn" label="Error típico: if (imc < 18.5); {">
+          <p className="mb-3">¿Qué le estás diciendo al programa?</p>
+          <p className="mb-3">
+            Quieres: «Si el IMC es menor que 18.5 <strong>entonces</strong> devolver Bajo peso.»
+            El bloque <span className="mono">{"{ }"}</span> forma parte del if.
+          </p>
+          <div className="grid md:grid-cols-2 gap-3 mt-3">
+            <div>
+              <div className="mono text-xs mb-1 opacity-70">Mal — el ; corta el if</div>
+              <CodeBlock>{`if (imc < 18.5); {
+  return "Bajo peso";
+}`}</CodeBlock>
+              <p className="text-sm mt-2">El <span className="mono">;</span> dice: «el if terminó aquí».</p>
+            </div>
+            <div>
+              <div className="mono text-xs mb-1 opacity-70">Bien — el bloque es del if</div>
+              <CodeBlock>{`if (imc < 18.5) {
+  return "Bajo peso";
+}`}</CodeBlock>
+              <p className="text-sm mt-2">Sin <span className="mono">;</span> entre el <span className="mono">)</span> y el <span className="mono">{"{"}</span>.</p>
+            </div>
+          </div>
+        </Callout>
+        <Callout tone="ok" label="Tu forma de trabajar">
+          Paso A: ¿Qué quiero decirle al programa? (frases con ↓).
+          Paso B: Traducir cada frase a JavaScript.
+          Con el tiempo el Paso A saldrá casi solo; el código será solo la traducción.
         </Callout>
       </Section>
     </>
@@ -339,10 +662,18 @@ const terminal: Lesson = {
   body: () => (
     <>
       <Section kicker="1 · Idea base" title="Tres sistemas, casi los mismos comandos">
-        <p>
-          Cambiar de carpeta, ver qué hay dentro, crear archivos, borrar cosas — todo se hace escribiendo.
-          Las palabras cambian un poco entre Windows y Mac/Linux, pero el <em>concepto</em> es el mismo.
-        </p>
+        <LearnBlock
+          what="La terminal es una ventana donde das órdenes a la computadora escribiendo, en vez de hacer clic."
+          why="Muchas tareas (entrar a carpetas, crear proyectos, ver errores) son más rápidas y claras por texto. Además, en programación casi todo el flujo profesional pasa por aquí."
+          how={[
+            "Escribes un comando (la acción).",
+            "A veces le das un argumento (sobre qué archivo o carpeta).",
+            "Pulsas Enter y la máquina ejecuta ese paso.",
+            "El concepto es el mismo en Windows/Mac/Linux; cambian un poco las palabras.",
+          ]}
+          example={<>Quieres ver qué hay en la carpeta: en Mac/Linux <span className="mono">ls</span>, en CMD <span className="mono">dir</span>.</>}
+          analogy="Es como pedirle cosas a un ayudante por mensajes de texto: «lista lo que hay», «entra a esta carpeta», «borra este archivo»."
+        />
         <Callout label="Truco mnemotécnico">
           <span className="mono">cd</span> = Change Directory · <span className="mono">ls</span> = List ·{" "}
           <span className="mono">mkdir</span> = Make Directory · <span className="mono">rm</span> = Remove ·{" "}
@@ -426,10 +757,18 @@ const html: Lesson = {
   body: () => (
     <>
       <Section kicker="1 · Qué es" title={<>HyperText <em>Markup</em> Language</>}>
-        <p>
-          HTML es el lenguaje que usan <strong>todas</strong> las páginas web para organizar su contenido.
-          No es programación — es <em>marcado</em>: le pone etiquetas al contenido para que el navegador sepa qué es cada cosa.
-        </p>
+        <LearnBlock
+          what="HTML es el lenguaje de marcado de todas las páginas web: pone etiquetas al contenido para decir qué es cada cosa."
+          why="El navegador necesita saber: «esto es un título», «esto es un párrafo», «esto es una imagen». Sin etiquetas, solo vería texto plano sin estructura."
+          how={[
+            "Abres una etiqueta con <…>.",
+            "Pones el contenido (texto, imagen, etc.).",
+            "Cierras con </…> (salvo etiquetas vacías como img).",
+            "El navegador lee esas marcas y arma la página.",
+          ]}
+          example={<>&lt;p&gt;Hola mundo&lt;/p&gt; = «esto es un párrafo que dice Hola mundo».</>}
+          analogy="Como etiquetar cajas en una mudanza: «cocina», «ropa», «libros». El contenido es el regalo; la etiqueta dice qué es."
+        />
         <Callout label="Recuerda">
           Las etiquetas se escriben con las <em>boquitas</em> <span className="mono">&lt; &gt;</span>. Cada bloque
           de la página es una etiqueta con contenido adentro.
@@ -519,12 +858,17 @@ const html: Lesson = {
       </Section>
 
       <Section kicker="6 · Regla de oro" title={<>Todo va dentro de <span className="mono">&lt;body&gt;</span></>}>
-        <p>
-          Si pones contenido HTML <em>fuera</em> de <span className="mono">body</span>, el flujo del código se rompe.
-          Debajo de <span className="mono">body</span> es donde va la etiqueta <span className="mono">&lt;script&gt;</span> con JavaScript
-          para dar interactividad.
-        </p>
-        <CodeBlock>{`<!DOCTYPE html>
+        <LearnBlock
+          what={<>Todo lo que el usuario debe ver va dentro de <span className="mono">&lt;body&gt;</span>.</>}
+          why="El navegador espera el contenido visible ahí. Si lo pones fuera, el flujo se rompe y la página se comporta mal."
+          how={[
+            "head = metadatos (título de pestaña, enlaces a CSS…), casi no se «ve».",
+            "body = lo visible: títulos, párrafos, imágenes, botones.",
+            "Los scripts de interacción suelen ir al final del body.",
+          ]}
+          example="Abres la página y ves el h1 y el p porque están dentro de body."
+          analogy="body es el escenario del teatro: ahí ocurre lo que el público mira. head es el backstage (preparativos)."
+          code={`<!DOCTYPE html>
 <html>
   <head>
     <title>Mi página</title>
@@ -535,7 +879,8 @@ const html: Lesson = {
 
     <script src="app.js"></script>
   </body>
-</html>`}</CodeBlock>
+</html>`}
+        />
       </Section>
     </>
   ),
@@ -549,6 +894,17 @@ const frontend: Lesson = {
   body: () => (
     <>
       <Section kicker="1 · La trinidad" title="HTML · CSS · JavaScript">
+        <LearnBlock
+          what="Frontend es lo que corre en el dispositivo del usuario: estructura (HTML), estilo (CSS) y comportamiento (JavaScript)."
+          why="Separar roles evita mezclar todo. HTML organiza, CSS viste, JS decide e interactúa. Así entiendes dónde tocar cuando algo falla."
+          how={[
+            "HTML arma el esqueleto (qué hay).",
+            "CSS pone la ropa (cómo se ve).",
+            "JavaScript es el cerebro (qué pasa al hacer clic, al escribir, etc.).",
+          ]}
+          example="Un botón: HTML lo crea, CSS lo colorea, JS dice qué hacer al pulsarlo."
+          analogy="Casa: HTML = paredes y habitaciones, CSS = pintura y muebles, JS = luces, timbre e interruptores."
+        />
         <div className="grid md:grid-cols-3 gap-3">
           {[
             ["HTML",       "El esqueleto",  "Estructura y organiza el contenido. Es marcado, no programación."],
@@ -565,35 +921,56 @@ const frontend: Lesson = {
       </Section>
 
       <Section kicker="2 · Renderizado" title="Qué significa que el navegador ‘renderice’">
-        <p>
-          Renderizar es el proceso <em>físico</em> por el cual el navegador toma tu HTML, tu CSS y tu JS y los dibuja
-          pixel a pixel en la pantalla del usuario.
-        </p>
+        <LearnBlock
+          what="Renderizar es el proceso de dibujar en pantalla lo que describe el HTML, el CSS y el JS."
+          why="Tú escribes texto y reglas; el usuario necesita píxeles. El renderizado es el puente entre «archivo» y «lo que se ve»."
+          how={[
+            "El navegador lee HTML, CSS y JS.",
+            "Calcula layout (dónde va cada cosa).",
+            "Pinta píxeles en la pantalla.",
+            "Si JS cambia algo, puede volver a pintar.",
+          ]}
+          example="Cambias el color de fondo con CSS → el navegador repinta la página con ese color."
+          analogy="Como un arquitecto (planos) y un pintor (obra terminada): el renderizado es el pintor que hace visible el plano."
+        />
       </Section>
 
       <Section kicker="3 · Precisión importante" title={<>Qué es (y qué NO es) el <em>DOM.</em></>}>
         <Callout tone="warn" label="Ajuste conceptual">
           El DOM <strong>no</strong> es el que estructura el código para hacerlo visible. Eso lo hace el motor de renderizado del navegador.
         </Callout>
-        <p>
-          El <Sig>DOM</Sig> (Document Object Model) es un <em>traductor</em> o <em>mapa interno</em>. Cuando el navegador lee tu HTML plano,
-          lo convierte en un <strong>árbol de objetos</strong> en memoria. Ese árbol es lo que le permite a JavaScript leer,
-          modificar, agregar o borrar elementos de la página <em>en tiempo real</em> mientras el usuario interactúa.
-        </p>
-        <CodeBlock>{`// Gracias al DOM, JS puede tocar la página:
+        <LearnBlock
+          what={<>El <Sig>DOM</Sig> es un árbol de objetos en memoria: la traducción del HTML a algo que JavaScript puede tocar.</>}
+          why="JS no lee el archivo HTML como texto plano para cambiar la página. Necesita un mapa vivo de elementos. Ese mapa es el DOM."
+          how={[
+            "El navegador lee el HTML.",
+            "Lo convierte en un árbol de objetos (padre → hijos).",
+            "JS usa ese árbol para leer o cambiar texto, estilos, etc.",
+            "El motor de renderizado dibuja el resultado.",
+          ]}
+          example={<><span className="mono">document.querySelector("h1").textContent = "¡Hola!"</span> cambia el título porque el h1 existe en el DOM.</>}
+          analogy="El HTML es la lista del supermercado en papel. El DOM es esa misma lista pasada a una app en el celular: ahora puedes tachar, añadir y reordenar en vivo."
+          code={`// Gracias al DOM, JS puede tocar la página:
 document.querySelector("h1").textContent = "¡Hola!";
-document.body.style.background = "black";`}</CodeBlock>
+document.body.style.background = "black";`}
+        />
       </Section>
 
       <Section kicker="4 · Segunda precisión" title={<>Qué es (y qué NO es) el <em>frontend.</em></>}>
         <Callout tone="warn" label="Ajuste conceptual">
           Frontend <strong>no</strong> es solo el código ya terminado, empaquetado y publicado en internet.
         </Callout>
-        <p>
-          Frontend es <strong>todo lo que ocurre del lado del cliente</strong> — la computadora o celular de la persona
-          que navega. Diseño, maquetación y lógica con la que el usuario interactúa directamente. Sigue siendo frontend
-          aunque lo estés programando en tu computadora sin haberlo subido a la nube.
-        </p>
+        <LearnBlock
+          what="Frontend es todo lo que ocurre del lado del cliente: la computadora o celular de quien navega."
+          why="Si crees que «solo es frontend cuando está en la nube», no entiendes dónde corre el código que el usuario toca. Corre en su dispositivo, aunque aún lo estés escribiendo en local."
+          how={[
+            "Diseñas y programas HTML/CSS/JS.",
+            "Eso se ejecuta en el navegador del usuario.",
+            "Aunque no lo hayas subido a internet, sigue siendo frontend.",
+          ]}
+          example="Abres index.html en tu PC y haces clic en un botón: eso ya es frontend."
+          analogy="El escenario de un teatro es frontend aunque el ensayo sea en tu casa: lo importante es que es lo que el público (usuario) ve e interactúa."
+        />
       </Section>
 
       <Section kicker="5 · Resumen" title="Cómo todo encaja">
@@ -617,17 +994,22 @@ const js: Lesson = {
   body: () => (
     <>
       <Section kicker="1 · typeof" title="Comparar el tipo de un valor">
-        <p>
-          <span className="mono">typeof</span> te dice <em>qué tipo</em> de dato tienes.
-          Siempre devuelve un <strong>texto en minúsculas</strong>: <span className="mono">'number'</span>,
-          <span className="mono"> 'string'</span>, <span className="mono">'boolean'</span>,
-          <span className="mono"> 'object'</span>, <span className="mono">'undefined'</span>.
-        </p>
-        <CodeBlock>{`console.log(typeof 10);        // "number"
+        <LearnBlock
+          what={<><span className="mono">typeof</span> te dice qué tipo de dato tienes: número, texto, booleano, etc.</>}
+          why="A veces un valor «parece» número pero es texto ('10'). Si no sabes el tipo, los operadores hacen cosas raras. typeof existe para preguntar: ¿qué es esto?"
+          how={[
+            "Escribes typeof delante del valor.",
+            "JS responde con un texto en minúsculas: 'number', 'string', 'boolean'…",
+            "Importante: 'Number' con mayúscula NO es la respuesta correcta.",
+          ]}
+          example={<>typeof 10 → "number". typeof "hola" → "string".</>}
+          analogy="Es como preguntarle a una caja del supermercado: «¿qué categoría eres?» — lácteos, fruta, limpieza. typeof te da la categoría del dato."
+          code={`console.log(typeof 10);        // "number"
 console.log(typeof "hola");    // "string"
 console.log(typeof true);      // "boolean"
 console.log(typeof [1,2]);     // "object"  (los arrays son objetos)
-console.log(typeof undefined); // "undefined"`}</CodeBlock>
+console.log(typeof undefined); // "undefined"`}
+        />
         <Callout tone="warn" label="Bug clásico 🐛">
           <span className="mono">typeof 10 === 'Number'</span> es <b>falso</b>. JavaScript distingue mayúsculas:
           la respuesta correcta es <span className="mono">'number'</span> con minúscula.
@@ -635,59 +1017,83 @@ console.log(typeof undefined); // "undefined"`}</CodeBlock>
       </Section>
 
       <Section kicker="2 · const vs let" title="El candado de const">
-        <p>
-          <span className="mono">let</span> es una caja normal: puedes cambiar lo que guardas.
-          <span className="mono"> const</span> le pone un <strong>candado permanente</strong>: si intentas reasignar, JS lanza
-          <span className="mono"> TypeError: Assignment to constant variable</span>.
-        </p>
-        <CodeBlock>{`const precio = 100;
+        <LearnBlock
+          what={<><span className="mono">let</span> permite cambiar el valor de la caja. <span className="mono">const</span> pone un candado: no puedes reasignar.</>}
+          why="A veces un valor NO debe cambiar (precio fijo, ID). const evita que lo pises por accidente. let existe para contadores y cosas que sí cambian."
+          how={[
+            "Con const: guardas el valor una vez.",
+            "Si intentas precio = 120, JS lanza TypeError.",
+            "Con let: puedes hacer stock = 4 sin problema.",
+            "Regla práctica: empieza con const; cambia a let solo cuando necesites reasignar.",
+          ]}
+          example="const precio = 100; luego precio = 120 → error. let stock = 5; stock = 4 → ok."
+          analogy="const es un frasco sellado: puedes mirar adentro, pero no cambiar el contenido. let es un vaso normal: lo rellenas cuando quieras."
+          code={`const precio = 100;
 precio = 120;  // ❌ TypeError
 
 let stock = 5;
-stock = 4;     // ✅ OK`}</CodeBlock>
-        <Callout label="Regla práctica">
-          Usa <span className="mono">const</span> por defecto. Cambia a <span className="mono">let</span> solo cuando sepas
-          que el valor va a cambiar.
-        </Callout>
+stock = 4;     // ✅ OK`}
+        />
       </Section>
 
       <Section kicker="3 · Coerción de tipos" title={<>Por qué <span className="mono">'3' + 10 = '310'</span></>}>
-        <p>
-          Con <span className="mono">+</span>, si un lado es texto, JS convierte el otro a texto y los <em>pega</em> (concatena).
-          Con <span className="mono">-</span>, <span className="mono">*</span>, <span className="mono">/</span> hace lo contrario:
-          convierte los textos a número y calcula.
-        </p>
-        <CodeBlock>{`'3' + 10   // "310"   (concatena)
+        <LearnBlock
+          what="Coerción es cuando JS convierte solo un tipo a otro para poder operar (texto ↔ número)."
+          why="Existe para «intentar ayudar», pero a veces te confunde. Entenderla evita bugs como '3' + 10 = '310'."
+          how={[
+            "Con +: si un lado es texto, pega (concatena) en vez de sumar.",
+            "Con - * /: intenta convertir a número y calcula.",
+            "Si quieres sumar de verdad, convierte tú: Number('3') + 10.",
+          ]}
+          example={"'3' + 10 → '310' (pegó). '3' - 10 → -7 (restó)."}
+          analogy="Es como mezclar manzanas y carteles: con + a veces pega el cartel «3» junto al «10». Con − entiende que quieres hacer cuentas."
+          code={`'3' + 10   // "310"   (concatena)
 '3' - 10   // -7      (resta numérica)
 '3' * 10   // 30      (multiplica)
-Number('3') + 10  // 13   (conversión explícita)`}</CodeBlock>
+Number('3') + 10  // 13   (conversión explícita)`}
+        />
         <Callout tone="warn" label="Cómo evitarlo">
           Convierte tú mismo con <span className="mono">Number(x)</span> o <span className="mono">parseInt(x)</span> antes de sumar.
         </Callout>
       </Section>
 
       <Section kicker="4 · Arrays" title="🍎 Listas ordenadas — el índice arranca en 0">
-        <p>Un array es una fila de casilleros numerados. La primera casilla es la <strong>0</strong>, no la 1.</p>
-        <CodeBlock>{`let frutas = ["manzana", "pera", "uva"];
+        <LearnBlock
+          what="Un array es una lista ordenada de casilleros. El primer casillero es el 0, no el 1."
+          why="Necesitas guardar varios valores juntos (frutas, notas, usuarios) y saber en qué posición está cada uno."
+          how={[
+            "Creas la lista: ['manzana', 'pera', 'uva'].",
+            "frutas[0] es el primero, frutas[1] el segundo…",
+            ".length (sin paréntesis) cuenta cuántos hay: es una propiedad, un dato.",
+            ".push('kiwi') (con paréntesis) añade al final: es un método, una acción.",
+          ]}
+          example="En una lista de 3, frutas[3] es undefined: no hay cuarto casillero."
+          analogy="Fila de casilleros del cole: el primero se numera 0. .length es el cartel «hay 3». .push() es la acción de meter otra cosa al final."
+        />
+        <TranslateBlock
+          title="Traducir: lista de frutas"
+          natural={[
+            "Crear una lista llamada frutas con manzana, pera y uva.",
+            "Leer el primer casillero (posición 0), el segundo (1) y el tercero (2).",
+            "Preguntar cuántos hay (sin hacer una acción: solo leer el dato).",
+            "Añadir kiwi al final (eso sí es una acción).",
+          ]}
+          pseudo={`crear lista frutas = ["manzana", "pera", "uva"]
+
+leer frutas[0]   → "manzana"
+leer frutas[1]   → "pera"
+leer cuantos = frutas.length   → 3
+
+añadir al final: frutas.push("kiwi")
+ahora length = 4`}
+          code={`let frutas = ["manzana", "pera", "uva"];
 
 frutas[0];   // "manzana"
 frutas[1];   // "pera"
-frutas[2];   // "uva"
-frutas[3];   // undefined  (no existe)`}</CodeBlock>
-
-        <div className="grid md:grid-cols-2 gap-4 mt-4">
-          <div className="rounded-2xl hair-a p-5" style={{ background: "oklch(0.18 0.014 55)" }}>
-            <div className="mono text-xs uppercase tracking-widest mb-2" style={{ color: "var(--signal)" }}>.length — propiedad</div>
-            <p className="text-sm mb-2">Cuenta cuántos elementos hay. Se escribe <b>sin</b> paréntesis.</p>
-            <CodeBlock>{`frutas.length   // 3`}</CodeBlock>
-          </div>
-          <div className="rounded-2xl hair-a p-5" style={{ background: "oklch(0.18 0.014 55)" }}>
-            <div className="mono text-xs uppercase tracking-widest mb-2" style={{ color: "var(--signal)" }}>.push() — método</div>
-            <p className="text-sm mb-2">Añade un elemento al final. Se escribe <b>con</b> paréntesis.</p>
-            <CodeBlock>{`frutas.push("kiwi");
-// ahora length = 4`}</CodeBlock>
-          </div>
-        </div>
+frutas.length;   // 3  ← dato (sin ())
+frutas.push("kiwi");  // acción (con ())
+// ahora length = 4`}
+        />
         <Callout label="Diferencia clave">
           <b>Propiedad</b> = dato que ya está calculado (sin <span className="mono">()</span>). <br />
           <b>Método</b> = acción que la variable puede <em>hacer</em> (siempre con <span className="mono">()</span>).
@@ -695,11 +1101,36 @@ frutas[3];   // undefined  (no existe)`}</CodeBlock>
       </Section>
 
       <Section kicker="5 · Objetos" title="📇 Fichas con etiquetas — notación de punto">
-        <p>
-          Un objeto guarda datos con <em>nombre</em> (no con número como los arrays).
-          Para leerlos usas <strong>notación de punto</strong>: <span className="mono">objeto.propiedad</span>.
-        </p>
-        <CodeBlock>{`let libro = {
+        <LearnBlock
+          what="Un objeto guarda datos con nombre (etiqueta), no con número como el array."
+          why="Una persona o un libro tienen campos con sentido: titulo, autor, paginas. Los nombres ayudan más que [0], [1], [2]."
+          how={[
+            "Escribes { clave: valor, … }.",
+            "Lees con punto: libro.titulo.",
+            "Puedes cambiar: libro.leido = false.",
+            "Array = casilleros numerados. Objeto = fichas etiquetadas.",
+          ]}
+          example={<>libro.titulo → "El Principito". libro.paginas → 96.</>}
+          analogy="Una ficha de biblioteca: no buscas «casillero 2», buscas la etiqueta «título» o «autor»."
+        />
+        <TranslateBlock
+          title="Traducir: ficha de un libro"
+          natural={[
+            "Crear una ficha llamada libro.",
+            "Guardar título, autor, páginas y si ya lo leí.",
+            "Leer el título y las páginas.",
+            "Cambiar «leído» a falso.",
+          ]}
+          pseudo={`crear ficha libro
+    titulo = "El Principito"
+    autor = "Saint-Exupéry"
+    paginas = 96
+    leido = verdadero
+
+leer libro.titulo
+leer libro.paginas
+cambiar libro.leido = falso`}
+          code={`let libro = {
   titulo: "El Principito",
   autor:  "Saint-Exupéry",
   paginas: 96,
@@ -708,10 +1139,8 @@ frutas[3];   // undefined  (no existe)`}</CodeBlock>
 
 libro.titulo;   // "El Principito"
 libro.paginas;  // 96
-libro.leido;    // true
-
-// También puedes cambiar valores:
-libro.leido = false;`}</CodeBlock>
+libro.leido = false;`}
+        />
         <Callout tone="ok" label="Array vs. Objeto">
           Array = casilleros <em>numerados</em> (<span className="mono">frutas[0]</span>). <br />
           Objeto = fichas <em>etiquetadas</em> (<span className="mono">libro.titulo</span>).
