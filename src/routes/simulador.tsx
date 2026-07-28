@@ -420,7 +420,14 @@ function Ejercicios() {
                     className="mt-2 p-2 text-[12px]"
                     style={{ background: isCorrect ? "#e6ffe6" : "#fff2e0", border: "1px solid #808080" }}
                   >
-                    <b>{isCorrect ? "¡Correcto!" : "Casi…"}</b> {ex.explain}
+                    <b>{isCorrect ? "¡Correcto!" : "Casi…"}</b>
+                    {!isCorrect && (
+                      <div className="mt-1">
+                        <div>Elegiste <b>{String.fromCharCode(65 + (chosen as number))}. {ex.options[chosen as number]}</b>.</div>
+                        <div>La correcta era <b>{String.fromCharCode(65 + ex.correct)}. {ex.options[ex.correct]}</b>.</div>
+                      </div>
+                    )}
+                    <div className="mt-1">{ex.explain}</div>
                   </div>
                 )}
                 <RulesBox tag={ex.tag} defaultOpen={done && !isCorrect} compact />
