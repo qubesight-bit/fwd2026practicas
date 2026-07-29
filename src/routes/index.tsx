@@ -32,9 +32,9 @@ function Desktop() {
   const pct = 100 - toNext;
 
   return (
-    <div className="min-h-[calc(100vh-70px)] grid md:grid-cols-[220px_1fr] gap-4 p-2">
+    <div className="min-h-[calc(100vh-140px)] grid lg:grid-cols-[minmax(0,320px)_1fr] gap-6 py-2">
       {/* Icon column */}
-      <div className="flex flex-wrap gap-1 content-start">
+      <div className="grid grid-cols-3 gap-2 content-start">
         {icons.map((i) => (
           <Link key={i.to} to={i.to} onClick={() => sfx.click()} className="w95-icon" tabIndex={0}>
             <span className="glyph">{i.glyph}</span>

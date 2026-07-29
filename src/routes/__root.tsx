@@ -105,7 +105,7 @@ function RootComponent() {
     pathname.startsWith("/lecciones/") ? "Lección" :
     pathname.startsWith("/lecciones") ? "Lecciones" :
     "Redes 95";
-  const url = `C:\\Redes95${pathname === "/" ? "\\Escritorio" : pathname.replaceAll("/", "\\")}`;
+  const url = `https://redes.os${pathname === "/" ? "" : pathname}`;
 
   return (
     <QueryClientProvider client={queryClient}>
