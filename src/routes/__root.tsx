@@ -49,7 +49,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 /** Wrapper used by error/not-found routes to give the same IE chrome. */
 function ChromeWrap({ children }: { children: ReactNode }) {
   return (
-    <div className="grain min-h-screen p-2 md:p-4 pb-[52px]" style={{ background: "var(--w95-desktop)" }}>
+    <div className="grain min-h-screen px-3 md:px-6 pt-[42px] pb-[110px]" >
       <IEBrowser title="Error" url="about:blank">{children}</IEBrowser>
       <Taskbar />
       <ToastLayer />
@@ -105,12 +105,11 @@ function RootComponent() {
     pathname.startsWith("/lecciones/") ? "Lección" :
     pathname.startsWith("/lecciones") ? "Lecciones" :
     "Redes 95";
-    "Redes 95";
-  const url = `C:\\Redes95${pathname === "/" ? "\\Escritorio" : pathname.replaceAll("/", "\\")}`;
+  const url = `https://redes.os${pathname === "/" ? "" : pathname}`;
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="grain min-h-screen p-2 md:p-4 pb-[52px]" style={{ background: "var(--w95-desktop)" }}>
+      <div className="grain min-h-screen px-3 md:px-6 pt-[42px] pb-[110px]" >
         {isDesktop ? (
           <Outlet />
         ) : (
