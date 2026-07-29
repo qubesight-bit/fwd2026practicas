@@ -208,9 +208,10 @@
   padding: 0;
   transition: filter 120ms ease, transform 120ms ease;
 }
-.w95-tb-btn:nth-child(1) { background: #febc2e; }
-.w95-tb-btn:nth-child(2) { background: #28c840; }
-.w95-tb-btn:nth-child(3) { background: #ff5f57; }
+.w95-tb-btn:nth-child(1) { background: #ff5f57; }
+.w95-tb-btn:nth-child(2) { background: #febc2e; }
+.w95-tb-btn:nth-child(3) { background: #28c840; }
+
 .w95-tb-btn:hover { filter: brightness(1.1); transform: scale(1.1); }
 
 /* --- Brand mark (Firefox-ish) --- */
