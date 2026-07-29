@@ -53,7 +53,7 @@ function Desktop() {
             <p className="text-[13px] mb-3">
               Bienvenido, jugador. Este es un mini sistema operativo para aprender
               <b> redes, HTTP, HTML, lógica</b> y <b>terminal</b>. Cada acción te da <b>XP</b>,
-              monedas 🪙 y medallas 🏅. Explora los íconos del escritorio o abre un programa desde el menú <b>Inicio</b>.
+              monedas 🪙 y medallas 🏅. Explora los íconos del escritorio o abre una app desde el <b>Dock</b> de abajo.
             </p>
             <div className="w95-inset bg-white p-3 mb-3 text-[12px]">
               <div className="mb-2 flex items-center justify-between">

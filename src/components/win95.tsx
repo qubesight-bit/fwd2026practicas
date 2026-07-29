@@ -218,7 +218,7 @@ export function ToastLayer() {
     setTimeout(() => setItems((prev) => prev.filter((x) => x.id !== t.id)), 3200);
   }), []);
   return (
-    <div className="fixed right-3 top-[38px] z-[70] flex flex-col gap-2 items-end pointer-events-none">
+    <div className="fixed right-4 bottom-[104px] z-[70] flex flex-col gap-2 items-end pointer-events-none">
       {items.map((t) => (
         <div key={t.id} className="w95-outset px-3 py-2.5 min-w-[230px] max-w-[320px] text-[12.5px] animate-w95-pop">
           <div className="flex items-center gap-2.5">
