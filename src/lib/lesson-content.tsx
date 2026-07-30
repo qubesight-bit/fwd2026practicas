@@ -1342,6 +1342,10 @@ let titulo = document.getElementById("titulo");
           <strong> Cambiar su texto</strong> (no el color ni eliminarlo). El enunciado dice: cambiar «Hola» por «Adiós».
         </Callout>
       </Section>
+    </>
+
+  ),
+};
 
 export const lessons: Record<LessonSlug, Lesson> = {
   dns, operadores, fundamentos, js, terminal, html, frontend, dom,
