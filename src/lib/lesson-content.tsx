@@ -1341,7 +1341,9 @@ let titulo = document.getElementById("titulo");
           Cuando el programa encuentra el elemento <span className="mono">mensaje</span>, ¿qué quiere hacer con él?
           <strong> Cambiar su texto</strong> (no el color ni eliminarlo). El enunciado dice: cambiar «Hola» por «Adiós».
         </Callout>
+      </Section>
     </>
+
   ),
 };
 
