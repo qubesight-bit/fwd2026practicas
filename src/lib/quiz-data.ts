@@ -97,6 +97,42 @@ export const questions: Question[] = [
     topic: "Frontend",
   },
   {
+    q: "¿Qué significa mejor la expresión `auto.color`?",
+    choices: [
+      "El auto que pertenece al color",
+      "El color que pertenece al auto",
+      "Crear un auto nuevo",
+      "Borrar el color",
+    ],
+    answer: 1,
+    explain: "El punto (.) se lee «de» / «su». Antes del punto: la cosa (auto). Después: lo que le pertenece (color). Intención: «quiero el color del auto».",
+    topic: "DOM",
+  },
+  {
+    q: "`elemento.textContent` se lee en español como…",
+    choices: [
+      "Una sola palabra mágica",
+      "El texto que pertenece a este elemento",
+      "Crear un elemento nuevo",
+      "Borrar el HTML",
+    ],
+    answer: 1,
+    explain: "elemento = el cartel. . = de/su. textContent = el texto escrito. Todo junto: «el texto de este elemento». Usalo para leer o cambiar texto.",
+    topic: "DOM",
+  },
+  {
+    q: "¿Cómo sabés qué escribir después del punto?",
+    choices: [
+      "Inventás cualquier palabra",
+      "Cada tipo de cosa ya trae herramientas; elegís según la intención (texto→textContent, estilos→style…)",
+      "Siempre es .pizza",
+      "Solo funciona .id",
+    ],
+    answer: 1,
+    explain: "Como el control remoto de la TV: no inventás botones. Preguntá: ¿qué quiero hacer? → ¿qué herramienta ya existe? textContent, style, classList, value…",
+    topic: "DOM",
+  },
+  {
     q: "¿Qué imprime `console.log(typeof 10);` en JavaScript?",
     choices: ["'Number'", "'number'", "'int'", "10"],
     answer: 1,

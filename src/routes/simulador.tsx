@@ -286,9 +286,12 @@ const EXERCISES: Ex[] = [
   { id: "js-4", tag: "JS", q: "La tabla de verdad de (true && false) da…", options: ["true", "false", "error", "null"], correct: 1, explain: "1) ¿Qué me pide? Resultado de true Y false.\n2) ¿Persona? Si falta una condición, no.\n3) Algoritmo: AND exige ambos true.\n4) Traducir: true && false → false" },
   { id: "js-5", tag: "JS", q: "!(true || false) es…", options: ["true", "false"], correct: 1, explain: "1) ¿Qué me pide? Negar (true O false).\n2) ¿Persona? Primero OR, luego lo contrario.\n3) Algoritmo: true||false → true; !true → false.\n4) Traducir: !(true || false) → false" },
 
-  { id: "dom-1", tag: "DOM", q: "El DOM es…", options: ["Un lenguaje de programación", "Un árbol con todas las etiquetas HTML de la página", "Una base de datos", "Un servidor web"], correct: 1, explain: "Qué es: árbol de objetos en memoria. Por qué: para que JS toque la página en vivo. Quien dibuja es el renderizado, no el DOM." },
-  { id: "dom-2", tag: "DOM", q: "Para cambiar el texto de un elemento usas…", options: ["element.color", "element.textContent", "element.href", "element.type"], correct: 1, explain: "Qué es: textContent = el texto que hay dentro del nodo. Por qué existe: cambiar lo que lee el usuario sin reescribir todo el HTML." },
-  { id: "dom-3", tag: "DOM", q: "document.querySelector('.card') devuelve…", options: ["Todos los .card", "El primer elemento con clase card", "Solo los ID", "Null siempre"], correct: 1, explain: "querySelector = el primero que encuentra. querySelectorAll = todos. Por qué: a veces quieres uno; a veces la lista completa." },
+  { id: "dom-1", tag: "DOM", q: "El DOM es…", options: ["Un lenguaje de programación", "Un árbol con todas las etiquetas HTML de la página", "Una base de datos", "Un servidor web"], correct: 1, explain: "1) ¿Qué me pide? Qué es el DOM.\n2) Intención: mapa vivo del HTML para que JS lo toque.\n3) Traducir: árbol de objetos en memoria (no es quien dibuja)." },
+  { id: "dom-2", tag: "DOM", q: "Para cambiar el texto de un elemento usas…", options: ["element.color", "element.textContent", "element.href", "element.type"], correct: 1, explain: "1) ¿Qué le digo? Cambiar el texto del cartel.\n2) Cosa: elemento. Característica: texto.\n3) Traducir: elemento.textContent (el punto = «de»)." },
+  { id: "dom-3", tag: "DOM", q: "document.querySelector('.card') devuelve…", options: ["Todos los .card", "El primer elemento con clase card", "Solo los ID", "Null siempre"], correct: 1, explain: "1) Intención: documento, buscá el primer .card.\n2) querySelector = el primero; querySelectorAll = todos." },
+  { id: "dom-4", tag: "DOM", q: "¿Qué significa auto.color?", options: ["El auto que pertenece al color", "El color que pertenece al auto", "Crear un auto nuevo", "Borrar el color"], correct: 1, explain: "1) El punto = «de» / «su».\n2) Antes: auto (la cosa). Después: color (lo que le pertenece).\n3) «El color del auto»." },
+  { id: "dom-5", tag: "DOM", q: "Si getElementById no encuentra el id, ¿qué devuelve?", options: ["undefined", "false", "null", "\"\""], correct: 2, explain: "1) Intención: buscar por id.\n2) Si no existe → null (no hay elemento).\n3) Por eso a veces la consola muestra null." },
+  { id: "dom-6", tag: "DOM", q: "Quiero agregar la clase 'activo' a un elemento. ¿Qué usas?", options: ["elemento.class = 'activo'", "elemento.classList.add('activo')", "elemento.style.add('activo')", "elemento.textContent = 'activo'"], correct: 1, explain: "1) ¿Qué le digo? Pegale la calcomanía activo.\n2) Herramienta de clases: classList. Acción: add.\n3) elemento.classList.add('activo')." },
 
   { id: "red-1", tag: "RED", q: "El DNS traduce…", options: ["HTML a CSS", "Nombre de dominio a dirección IP", "IP a MAC", "URL a HTTPS"], correct: 1, explain: "Qué es: nombre bonito → IP. Analogía: guía telefónica. Tú das google.com; el DNS te da el número." },
   { id: "red-2", tag: "RED", q: "El código 404 significa…", options: ["Sin permiso", "Servidor caído", "Recurso no encontrado", "Todo OK"], correct: 2, explain: "Qué es: 404 = esa URL no existe en el servidor. Importante: sí llegaste (es HTTP, no DNS). Analogía: la casa existe, pero esa habitación no." },
@@ -463,7 +466,7 @@ function Node({ title, sub, children, active, disabled }: { title: string; sub: 
 
 type CodeEx = {
   id: string;
-  tag: "HTML" | "CSS" | "JS" | "TERMINAL";
+  tag: "HTML" | "CSS" | "JS" | "TERMINAL" | "DOM";
   q: string;
   hint?: string;
   placeholder: string;
@@ -715,16 +718,50 @@ const CODE_EXERCISES: CodeEx[] = [
     accept: [[/^\s*biblioteca\.push\s*\(\s*libro\s*\)\s*;?\s*$/i]],
     explain: "1) ¿Qué me pide? Meter la ficha libro al final de la lista biblioteca.\n2) ¿Persona? Poner esa ficha al final del estante/lista.\n3) Algoritmo: push libro en biblioteca.\n4) Traducir: biblioteca.push(libro);",
   },
+
+  /* ===== DOM · punto, textContent, getElementById ===== */
+  {
+    id: "c-dom-1", tag: "DOM",
+    q: "Busca el elemento con id 'titulo' y guárdalo en una variable llamada titulo.",
+    hint: "document.getElementById('…')",
+    placeholder: 'let titulo = document.getElementById("titulo");',
+    accept: [[/let\s+titulo\s*=\s*document\.getElementById\s*\(\s*['"`]titulo['"`]\s*\)\s*;?/i]],
+    explain: "1) ¿Qué le digo? Documento, buscá el id titulo y guardalo.\n2) Cosa: document. Herramienta: getElementById.\n3) Traducir: let titulo = document.getElementById(\"titulo\");",
+  },
+  {
+    id: "c-dom-2", tag: "DOM",
+    q: "El elemento ya está en la variable mensaje. Cambia su texto a Adiós.",
+    hint: "mensaje.textContent = …",
+    placeholder: 'mensaje.textContent = "Adiós";',
+    accept: [[/^\s*mensaje\.textContent\s*=\s*['"`]adiós['"`]\s*;?\s*$/i]],
+    explain: "1) ¿Qué le digo? Al mensaje, cambiale el texto a Adiós.\n2) Cosa: mensaje. Característica: textContent.\n3) mensaje.textContent = \"Adiós\";",
+  },
+  {
+    id: "c-dom-3", tag: "DOM",
+    q: "Al elemento caja, agregale la clase activo.",
+    hint: "classList.add",
+    placeholder: 'caja.classList.add("activo");',
+    accept: [[/^\s*caja\.classList\.add\s*\(\s*['"`]activo['"`]\s*\)\s*;?\s*$/i]],
+    explain: "1) ¿Qué le digo? Pegale la calcomanía activo.\n2) classList = lista de clases. add = agregar.\n3) caja.classList.add(\"activo\");",
+  },
+  {
+    id: "c-dom-4", tag: "DOM",
+    q: "Cambia el color del texto del elemento titulo a red (rojo).",
+    hint: "titulo.style.color",
+    placeholder: 'titulo.style.color = "red";',
+    accept: [[/^\s*titulo\.style\.color\s*=\s*['"`]red['"`]\s*;?\s*$/i]],
+    explain: "1) ¿Qué le digo? Al título, en sus estilos, el color = rojo.\n2) Cadena: titulo → style → color.\n3) titulo.style.color = \"red\";",
+  },
 ];
 
 function EjerciciosCodigo() {
-  const tags: Array<"ALL" | CodeEx["tag"]> = ["ALL", "HTML", "CSS", "JS", "TERMINAL"];
+  const tags: Array<"ALL" | CodeEx["tag"]> = ["ALL", "HTML", "CSS", "JS", "DOM", "TERMINAL"];
   const [filter, setFilter] = useState<"ALL" | CodeEx["tag"]>("ALL");
   const [rewarded, setRewarded] = useState<Record<string, true>>({});
   const list = filter === "ALL" ? CODE_EXERCISES : CODE_EXERCISES.filter((e) => e.tag === filter);
 
   const tagColor: Record<CodeEx["tag"], string> = {
-    HTML: "#e34c26", CSS: "#264de4", JS: "#b8860b", TERMINAL: "#000000",
+    HTML: "#e34c26", CSS: "#264de4", JS: "#b8860b", DOM: "#008080", TERMINAL: "#000000",
   };
 
   return (

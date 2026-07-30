@@ -56,8 +56,11 @@ const RULES: Record<RuleTag, string[]> = {
   CSS: COMMON_CSS,
   DOM: [
     ...COMMON_JS.slice(0, 4),
-    "querySelector('…') = el PRIMERO que encuentra. querySelectorAll = TODOS. Por qué: a veces quieres uno, a veces la lista.",
-    "textContent = cambiar texto. innerHTML = meter HTML (con cuidado). Son acciones sobre el árbol DOM.",
+    "El punto (.) se lee «de» / «su»: elemento.textContent = el texto DE ese elemento.",
+    "No inventés lo que va después del punto: textContent, style, classList, value ya existen.",
+    "getElementById('…') busca por id. Si no existe → null.",
+    "textContent = leer/cambiar texto. style = estilos. classList.add('…') = agregar clase.",
+    "querySelector('…') = el PRIMERO. querySelectorAll = TODOS.",
   ],
   TERMINAL: COMMON_TERMINAL,
   LOGICA: COMMON_LOGICA,

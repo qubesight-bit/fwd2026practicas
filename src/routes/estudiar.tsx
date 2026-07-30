@@ -86,11 +86,12 @@ const TOPICS: Topic[] = [
   },
   {
     slug: "dom",
-    title: "DOM · El árbol de la página",
-    desc: "Cómo JS ve y modifica el HTML: querySelector, textContent…",
+    title: "DOM · El punto y textContent",
+    desc: "Cómo leer cosa.característica, getElementById, style, classList — por intención.",
     icon: "🌳",
     actions: [
-      { kind: "lesson", label: "Frontend & DOM", icon: "📖", target: "frontend" },
+      { kind: "lesson", label: "Lección DOM (el punto)", icon: "📖", target: "dom" },
+      { kind: "lesson", label: "Frontend & renderizado", icon: "📖", target: "frontend" },
       { kind: "sim-ej", label: "Ejercicios de DOM", icon: "🧠", target: "DOM" },
     ],
   },

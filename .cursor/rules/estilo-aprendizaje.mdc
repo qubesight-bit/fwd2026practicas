@@ -47,9 +47,19 @@ Antes: ¿Qué me pide? / ¿Cómo lo haría una persona?
 Pregunta: ¿Qué estás intentando decirle?
 Ej.: `if (x); {` — el `;` dice «el if terminó»; las `{ }` ya no le pertenecen.
 
+## El punto (.) en JavaScript / DOM
+
+El punto se lee «de» / «su». No es una sola palabra rara:
+`elemento.textContent` = «el texto de este elemento».
+`document.getElementById("x")` = «documento, buscá el elemento con id x».
+
+¿Qué escribir después del punto? No te lo inventás: cada cosa trae herramientas ya definidas
+(textContent, style, classList, value…). Empieza por la intención en español.
+
 ## En chat y app
 
 - Intención primero; sintaxis después.
 - Fórmulas: español → calculadora → código.
+- Punto `.`: cosa + característica; cartilla «si quiero… uso…».
 - `SolveBlock` / `IntentBlock` / `FormulaBlock` según el caso.
 - Nunca pegues la solución sin las frases de intención.

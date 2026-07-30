@@ -35,7 +35,7 @@ export const Route = createFileRoute("/lecciones/$topic")({
 function LessonPage() {
   const { slug } = Route.useLoaderData() as { slug: LessonSlug };
   const lesson = lessons[slug];
-  const order: LessonSlug[] = ["dns", "operadores", "fundamentos", "js", "terminal", "html", "frontend"];
+  const order: LessonSlug[] = ["dns", "operadores", "fundamentos", "js", "terminal", "html", "frontend", "dom"];
   const idx = order.indexOf(slug);
   const prev = idx > 0 ? order[idx - 1] : null;
   const next = idx < order.length - 1 ? order[idx + 1] : null;

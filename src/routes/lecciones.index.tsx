@@ -5,7 +5,7 @@ export const Route = createFileRoute("/lecciones/")({
   head: () => ({
     meta: [
       { title: "Lecciones — Redes 95" },
-      { name: "description", content: "Índice de lecciones: DNS, operadores lógicos, fundamentos de programación, terminal, HTML y frontend." },
+      { name: "description", content: "Índice de lecciones: DNS, operadores, fundamentos, JS, terminal, HTML, frontend y DOM (el punto, textContent)." },
     ],
   }),
   component: Index,
@@ -14,11 +14,12 @@ export const Route = createFileRoute("/lecciones/")({
 const topics = [
   { slug: "dns",         num: "01", title: "DNS y cómo viaja una URL",           desc: "La guía telefónica de internet. Comandos, errores y flujo completo.", icon: "📞" },
   { slug: "operadores",  num: "02", title: "Operadores lógicos y tabla de verdad", desc: "AND, OR, NOT — tablas, ejemplos y un evaluador interactivo.", icon: "🍦" },
-  { slug: "fundamentos", num: "03", title: "Fundamentos de programación",         desc: "Variables, operadores, condicionales, bucles y funciones.", icon: "📝" },
+  { slug: "fundamentos", num: "03", title: "Fundamentos de programación",         desc: "Intención → código. Variables, if, bucles, funciones.", icon: "📝" },
   { slug: "js",          num: "04", title: "JavaScript en detalle",               desc: "typeof, const vs let, coerción '3'+10, arrays (índice 0, .length, .push), objetos.", icon: "⚙️" },
   { slug: "terminal",    num: "05", title: "Comandos de la terminal",             desc: "Comparativa Windows · Mac · Linux, tabla navegable.", icon: "💻" },
   { slug: "html",        num: "06", title: "HTML — el esqueleto de la web",       desc: "Etiquetas, atributos, listas y por qué todo va dentro de body.", icon: "📄" },
   { slug: "frontend",    num: "07", title: "Frontend, DOM y renderizado",         desc: "HTML + CSS + JS, qué es el DOM y qué NO es frontend.", icon: "🎨" },
+  { slug: "dom",         num: "08", title: "DOM — el punto y textContent",        desc: "Cómo leer cosa.característica, getElementById, style, classList.", icon: "🌳" },
 ];
 
 function Index() {

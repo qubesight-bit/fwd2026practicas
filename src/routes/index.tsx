@@ -23,6 +23,7 @@ const icons = [
   { to: "/lecciones/terminal",    glyph: "💻", label: "MS-DOS" },
   { to: "/lecciones/html",        glyph: "📄", label: "HTML.htm" },
   { to: "/lecciones/frontend",    glyph: "🎨", label: "Frontend" },
+  { to: "/lecciones/dom",         glyph: "🌳", label: "DOM.punto" },
 ];
 
 function Desktop() {

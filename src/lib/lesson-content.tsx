@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Section, Callout, CodeBlock, Sig, LearnBlock, TranslateBlock, SolveBlock, IntentBlock, FormulaBlock } from "@/components/lesson-ui";
 import BoolPlayground from "@/components/BoolPlayground";
 
-export type LessonSlug = "dns" | "operadores" | "fundamentos" | "js" | "terminal" | "html" | "frontend";
+export type LessonSlug = "dns" | "operadores" | "fundamentos" | "js" | "terminal" | "html" | "frontend" | "dom";
 
 type Lesson = { title: string; tagline: string; description: string; body: () => ReactNode };
 
@@ -1180,6 +1180,255 @@ libro.leido = false;`}
   ),
 };
 
+/* ============ 08 · DOM — el punto, textContent, getElementById ============ */
+const dom: Lesson = {
+  title: "DOM — el punto, textContent y buscar elementos",
+  tagline: "No memorizas textContent: aprendes a leer el punto (.). Cosa + característica. Intención primero.",
+  description: "Cómo leer elemento.textContent, document.getElementById, style y classList — por intención, no por sintaxis. Fases del ejercicio y cartilla «qué escribir después del punto».",
+  body: () => (
+    <>
+      <Section kicker="1 · La traba" title={<>No es textContent: es el <em>punto.</em></>}>
+        <LearnBlock
+          what={<>Cuando ves <span className="mono">elemento.textContent</span> o algo raro como <span className="mono">lorem.ipsumDolorSitAmet</span>, no lo leas como una sola palabra. Sepáralo por el punto.</>}
+          why="Lo que frena no es memorizar nombres: es no saber leer «cosa . característica». Cuando entiendes el punto, sabes qué pedirle al programa."
+          how={[
+            "Mira qué hay ANTES del punto (la cosa).",
+            "Mira qué hay DESPUÉS (la característica o herramienta).",
+            "Lee en español: «el texto DE ese elemento», «el color DEL auto».",
+            "Pregunta: ¿qué le quiero decir al programa? → luego traduce.",
+          ]}
+          example={<>elemento.textContent = «del elemento, quiero su contenido de texto».</>}
+          analogy="Como una ficha: persona.nombre = el nombre de la persona. El punto es «de» / «su»."
+        />
+      </Section>
+
+      <Section kicker="2 · El punto" title={<>. = «de» / «su» / «pertenece a»</>}>
+        <IntentBlock
+          keyword="."
+          intention={<>«Quiero acceder a una característica o herramienta que pertenece a algo.»</>}
+          spanish={[
+            "Tengo una cosa (persona, auto, elemento).",
+            "Quiero algo que le pertenece (nombre, color, texto).",
+            "Lo escribo: cosa.característica",
+          ]}
+          code={`persona.nombre     // el nombre de la persona
+auto.color         // el color del auto
+usuario.correo     // el correo del usuario
+titulo.textContent // el texto del título`}
+          note={<>lorem.ipsumDolorSitAmet también se lee «ipsumDolorSitAmet de lorem» — pero esos nombres no significan nada especiales: alguien los inventó. persona.nombre sí tiene sentido.</>}
+        />
+        <Callout label="Comprueba">
+          <span className="mono">auto.color</span> significa…{" "}
+          <strong>B. El color que pertenece al auto</strong> (no «el auto del color»).
+        </Callout>
+      </Section>
+
+      <Section kicker="3 · textContent" title="El texto del cartel">
+        <IntentBlock
+          keyword="textContent"
+          intention={<>«Quiero leer o cambiar el texto que está dentro de este elemento HTML.»</>}
+          spanish={[
+            "Encontré un cartel (el elemento).",
+            "Quiero el texto escrito en ese cartel.",
+            "O: quiero borrar ese texto y poner otro.",
+          ]}
+          code={`// HTML: <p id="mensaje">Hola mundo</p>
+
+let mensaje = document.getElementById("mensaje");
+console.log(mensaje.textContent);  // "Hola mundo"
+mensaje.textContent = "Adiós";     // ahora dice Adiós`}
+          note={
+            <>
+              <span className="mono">mensaje</span> = el elemento completo (la caja).{" "}
+              <span className="mono">mensaje.textContent</span> = solo el texto adentro.
+            </>
+          }
+        />
+        <Callout tone="ok" label="¿Por qué la consola muestra «Hola mundo»?">
+          <ol className="list-decimal pl-5 space-y-1">
+            <li>JS busca el elemento con <span className="mono">id=&quot;mensaje&quot;</span>.</li>
+            <li>Lo encuentra: <span className="mono">&lt;p id=&quot;mensaje&quot;&gt;Hola mundo&lt;/p&gt;</span>.</li>
+            <li><span className="mono">textContent</span> lee el texto dentro del &lt;p&gt;.</li>
+            <li><span className="mono">console.log()</span> lo muestra en la consola.</li>
+          </ol>
+        </Callout>
+      </Section>
+
+      <Section kicker="4 · getElementById" title="Documento, buscá este id">
+        <IntentBlock
+          keyword="document.getElementById"
+          intention={<>«Documento, buscá el elemento cuyo identificador es …»</>}
+          spanish={[
+            "document = el documento HTML completo.",
+            "getElementById = la herramienta para buscar por id.",
+            '("titulo") = el id que quiero encontrar.',
+          ]}
+          code={`document.getElementById("titulo")
+// Documento, buscá el elemento cuyo id es "titulo"
+
+let titulo = document.getElementById("titulo");
+// Guardar el resultado en una caja llamada titulo`}
+          note="Si el id no existe, getElementById() devuelve null. Por eso a veces la consola muestra null."
+        />
+        <Callout label="Ideas clave">
+          <ul className="list-disc pl-5 space-y-1">
+            <li><span className="mono">getElementById()</span> busca un elemento por su id.</li>
+            <li><span className="mono">textContent</span> lee o cambia el texto de ese elemento.</li>
+            <li>Si el id no existe → <span className="mono">null</span>.</li>
+          </ul>
+        </Callout>
+      </Section>
+
+      <Section kicker="5 · Ejemplo guiado" title={<>Cambiar el texto de un <em>título</em></>}>
+        <p className="mono text-sm opacity-70 mb-2">HTML de partida:</p>
+        <CodeBlock>{`<h1 id="titulo">Bienvenido</h1>`}</CodeBlock>
+        <SolveBlock
+          title="Cambiar «Bienvenido» por «Hola»"
+          lang="JavaScript"
+          ask="Buscar el título y cambiar lo que dice."
+          person="Buscaría el cartel llamado titulo. Borraría su texto. Escribiría un texto nuevo."
+          tellProgram={[
+            "Buscar el elemento cuyo identificador es titulo.",
+            "Guardarlo en una caja llamada titulo.",
+            "Acceder al texto de ese elemento.",
+            'Cambiarlo por "Hola".',
+          ]}
+          lines={[
+            { es: "Buscar por id.", code: 'document.getElementById("titulo")' },
+            { es: "Guardar el resultado.", code: 'let titulo = document.getElementById("titulo");' },
+            { es: "Acceder a su texto.", code: "titulo.textContent" },
+            { es: 'Cambiar el texto a "Hola".', code: 'titulo.textContent = "Hola";' },
+          ]}
+        />
+        <p className="italic opacity-80">
+          La frase completa: «El texto del título ahora será igual a Hola.»
+        </p>
+      </Section>
+
+      <Section kicker="6 · Ejercicio 2" title="Texto, color y clase — por fases">
+        <SolveBlock
+          title="mensaje + caja"
+          lang="JavaScript"
+          ask={
+            <>
+              Buscar <span className="mono">mensaje</span>, cambiar «Hola» por «Adiós».
+              Buscar <span className="mono">caja</span>, fondo amarillo, agregar clase <span className="mono">activo</span>.
+            </>
+          }
+          person={
+            <>
+              Tenés una caja con etiqueta «Hola». Buscás esa caja, borrás Hola y escribís Adiós.
+              Luego buscás otra caja, la pintás de amarillo y le pegás la calcomanía «activo».
+              Eso es exactamente lo que JS hará con el HTML.
+            </>
+          }
+          tellProgram={[
+            "Buscar el elemento cuyo id es mensaje.",
+            "Cambiar su texto a Adiós.",
+            "Buscar el elemento con id caja.",
+            "Cambiar el color de fondo a amarillo.",
+            "Agregarle la clase activo.",
+          ]}
+          lines={[
+            { es: "Buscar mensaje y guardar.", code: 'let mensaje = document.getElementById("mensaje");' },
+            { es: "Cambiar su texto.", code: 'mensaje.textContent = "Adiós";' },
+            { es: "Buscar caja.", code: 'let caja = document.getElementById("caja");' },
+            { es: "Pintar el fondo de amarillo.", code: 'caja.style.backgroundColor = "yellow";' },
+            { es: "Agregar la clase activo.", code: 'caja.classList.add("activo");' },
+          ]}
+        />
+        <Callout label="Antes de completar espacios — comprueba">
+          Cuando el programa encuentra el elemento <span className="mono">mensaje</span>, ¿qué quiere hacer con él?
+          <strong> Cambiar su texto</strong> (no el color ni eliminarlo). El enunciado dice: cambiar «Hola» por «Adiós».
+        </Callout>
+      </Section>
+
+      <Section kicker="7 · ¿Qué escribir después del punto?" title="No te lo inventás">
+        <LearnBlock
+          what="Cada tipo de cosa en JavaScript ya trae sus herramientas. Vos no inventás botones: elegís el que ya existe."
+          why="Si escribís elemento.pizza, no funciona: un elemento HTML no tiene una propiedad llamada pizza. Igual que un control remoto de TV no tiene botón «hacer palomitas»."
+          how={[
+            "Primero: ¿qué cosa tengo? (documento, párrafo, input…)",
+            "Después: ¿qué quiero hacer? (texto, color, clase…)",
+            "Buscá la herramienta que YA existe para eso.",
+            "Encadená: cosa.parte.detalle — siempre intención → código.",
+          ]}
+          example="Quiero cambiar el color → elemento.style → dentro, .color → elemento.style.color"
+          analogy="Televisión: encender, volumen, canal. No inventás botones; elegís el correcto según lo que querés hacer."
+        />
+        <div className="overflow-x-auto rounded-2xl hair-a my-6" style={{ background: "oklch(0.16 0.012 55)" }}>
+          <table className="w-full text-sm">
+            <thead className="hair-b opacity-70">
+              <tr>
+                <th className="text-left px-4 py-3">Si quiero…</th>
+                <th className="text-left px-4 py-3">Uso</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Leer o cambiar el texto", "elemento.textContent"],
+                ["Meter HTML adentro", "elemento.innerHTML"],
+                ["Cambiar estilos", "elemento.style"],
+                ["Color del texto", "elemento.style.color"],
+                ["Fondo", "elemento.style.backgroundColor"],
+                ["Agregar / quitar clases", "elemento.classList"],
+                ["Agregar una clase", 'elemento.classList.add("activo")'],
+                ["Valor de un <input>", "elemento.value"],
+                ["Buscar por id", 'document.getElementById("…")'],
+              ].map(([a, b]) => (
+                <tr key={b} className="hair-b last:border-b-0">
+                  <td className="px-4 py-2.5">{a}</td>
+                  <td className="px-4 py-2.5 mono" style={{ color: "var(--signal)" }}>{b}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <Callout tone="ok" label="Cartilla">
+          <ol className="list-decimal pl-5 space-y-2">
+            <li>¿Qué quiero decirle al programa?</li>
+            <li>¿Cuál es la cosa? (documento, párrafo…)</li>
+            <li>¿Qué quiero de esa cosa? (texto, estilo, clases…)</li>
+            <li>Traducir: <span className="mono">cosa.herramienta</span></li>
+          </ol>
+        </Callout>
+      </Section>
+
+      <Section kicker="8 · Cadenas de ideas" title="Siempre el mismo patrón">
+        <div className="space-y-4">
+          {[
+            ["document.getElementById(...)", "Cosa: document. Acción: buscar por id."],
+            ["titulo.textContent", "Cosa: titulo. Característica: su texto."],
+            ["titulo.style.color", "Cosa: titulo → estilos → color."],
+            ['titulo.classList.add("activo")', "Cosa: titulo → lista de clases → agregar."],
+          ].map(([code, meaning]) => (
+            <div key={code} className="rounded-2xl hair-a p-5" style={{ background: "oklch(0.18 0.014 55)" }}>
+              <div className="mono text-sm mb-2" style={{ color: "var(--signal)" }}>{code}</div>
+              <div className="text-sm">{meaning}</div>
+            </div>
+          ))}
+        </div>
+        <Callout label="Analogía de la caja">
+          Un elemento es una caja con compartimentos:
+          <ul className="list-disc pl-5 mt-2 space-y-1">
+            <li><span className="mono">.textContent</span> — el texto</li>
+            <li><span className="mono">.style</span> — los estilos</li>
+            <li><span className="mono">.classList</span> — la lista de clases (calcomanías)</li>
+          </ul>
+        </Callout>
+        <Callout tone="ok" label="Práctica en español (antes del código)">
+          Si pensás: «Quiero cambiar el color de un párrafo.»
+          <ol className="list-decimal pl-5 mt-2 space-y-1">
+            <li>La cosa: el párrafo (el elemento).</li>
+            <li>Qué modificar: su color (estilos → color).</li>
+            <li>Traducción: <span className="mono">parrafo.style.color = &quot;…&quot;;</span></li>
+          </ol>
+        </Callout>
+      </Section>
+    </>
+  ),
+};
+
 export const lessons: Record<LessonSlug, Lesson> = {
-  dns, operadores, fundamentos, js, terminal, html, frontend,
+  dns, operadores, fundamentos, js, terminal, html, frontend, dom,
 };
