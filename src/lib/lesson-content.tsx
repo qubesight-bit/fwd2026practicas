@@ -1342,10 +1342,7 @@ let titulo = document.getElementById("titulo");
           <strong> Cambiar su texto</strong> (no el color ni eliminarlo). El enunciado dice: cambiar «Hola» por «Adiós».
         </Callout>
       </Section>
-    </>
 
-  ),
-};
 
       <Section kicker="7 · ¿Qué escribir después del punto?" title="No te lo inventás">
         <Callout label="La pregunta de todos los principiantes">
