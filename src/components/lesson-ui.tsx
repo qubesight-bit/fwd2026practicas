@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 /* ---------- Shared primitives used across lessons ---------- */
 
@@ -413,6 +413,167 @@ export function LearnBlock({
           {typeof code === "string" ? <CodeBlock>{code}</CodeBlock> : code}
         </div>
       )}
+    </div>
+  );
+}
+
+/** Flashcards: toca para voltear pregunta ↔ respuesta */
+export function FlashcardDeck({
+  cards,
+}: {
+  cards: Array<{ q: string; a: string }>;
+}) {
+  const [i, setI] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const card = cards[i];
+  if (!card) return null;
+
+  const go = (dir: -1 | 1) => {
+    setFlipped(false);
+    setI((v) => Math.min(cards.length - 1, Math.max(0, v + dir)));
+  };
+
+  return (
+    <div className="my-6">
+      <button
+        type="button"
+        onClick={() => setFlipped((v) => !v)}
+        className="w-full text-left rounded-2xl hair-a p-6 md:p-8 min-h-[180px] transition-colors"
+        style={{ background: flipped ? "oklch(0.22 0.03 145)" : "oklch(0.18 0.014 55)" }}
+      >
+        <div className="mono text-[11px] uppercase tracking-[0.2em] mb-3" style={{ color: "var(--signal)" }}>
+          {flipped ? "Respuesta · toca para volver" : "Pregunta · toca para revelar"} · {i + 1}/{cards.length}
+        </div>
+        <div className="text-xl md:text-2xl leading-snug">{flipped ? card.a : card.q}</div>
+      </button>
+      <div className="flex gap-2 mt-3">
+        <button type="button" className="w95-btn" disabled={i === 0} onClick={() => go(-1)}>← Anterior</button>
+        <button type="button" className="w95-btn" onClick={() => setFlipped((v) => !v)}>
+          {flipped ? "Ocultar" : "Voltear"}
+        </button>
+        <button type="button" className="w95-btn" disabled={i >= cards.length - 1} onClick={() => go(1)}>Siguiente →</button>
+      </div>
+    </div>
+  );
+}
+
+type ExamItem =
+  | { kind: "mc"; q: string; choices: string[]; answer: number; explain: string }
+  | { kind: "tf"; q: string; answer: boolean; explain: string };
+
+/** Mini examen interactivo dentro de una lección */
+export function MiniExam({ items }: { items: ExamItem[] }) {
+  const [picks, setPicks] = useState<(number | boolean | null)[]>(() => items.map(() => null));
+  const [revealed, setRevealed] = useState(false);
+
+  const score = items.reduce((acc, item, idx) => {
+    const pick = picks[idx];
+    if (pick === null) return acc;
+    if (item.kind === "mc") return acc + (pick === item.answer ? 1 : 0);
+    return acc + (pick === item.answer ? 1 : 0);
+  }, 0);
+
+  return (
+    <div className="my-6 space-y-5">
+      {items.map((item, idx) => (
+        <div key={idx} className="rounded-2xl hair-a p-5" style={{ background: "oklch(0.18 0.014 55)" }}>
+          <div className="mono text-[11px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--signal)" }}>
+            Pregunta {idx + 1}
+          </div>
+          <p className="mb-3 text-base md:text-lg font-medium">{item.q}</p>
+          {item.kind === "mc" ? (
+            <div className="space-y-2">
+              {item.choices.map((c, ci) => {
+                const selected = picks[idx] === ci;
+                const isCorrect = revealed && ci === item.answer;
+                const isWrong = revealed && selected && ci !== item.answer;
+                return (
+                  <button
+                    key={ci}
+                    type="button"
+                    disabled={revealed}
+                    onClick={() =>
+                      setPicks((prev) => {
+                        const next = [...prev];
+                        next[idx] = ci;
+                        return next;
+                      })
+                    }
+                    className="w-full text-left rounded-xl px-3 py-2 text-sm border transition-colors"
+                    style={{
+                      borderColor: isCorrect ? "var(--mint)" : isWrong ? "var(--signal)" : selected ? "var(--signal)" : "oklch(0.3 0.02 55)",
+                      background: isCorrect ? "oklch(0.22 0.04 145)" : isWrong ? "oklch(0.22 0.05 30)" : selected ? "oklch(0.2 0.02 55)" : "transparent",
+                    }}
+                  >
+                    {String.fromCharCode(65 + ci)}) {c}
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              {[true, false].map((val) => {
+                const selected = picks[idx] === val;
+                const isCorrect = revealed && val === item.answer;
+                const isWrong = revealed && selected && val !== item.answer;
+                return (
+                  <button
+                    key={String(val)}
+                    type="button"
+                    disabled={revealed}
+                    onClick={() =>
+                      setPicks((prev) => {
+                        const next = [...prev];
+                        next[idx] = val;
+                        return next;
+                      })
+                    }
+                    className="rounded-xl px-4 py-2 text-sm border"
+                    style={{
+                      borderColor: isCorrect ? "var(--mint)" : isWrong ? "var(--signal)" : selected ? "var(--signal)" : "oklch(0.3 0.02 55)",
+                      background: isCorrect ? "oklch(0.22 0.04 145)" : isWrong ? "oklch(0.22 0.05 30)" : selected ? "oklch(0.2 0.02 55)" : "transparent",
+                    }}
+                  >
+                    {val ? "Verdadero" : "Falso"}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          {revealed && (
+            <p className="mt-3 text-sm opacity-90">
+              <strong>Por qué:</strong> {item.explain}
+            </p>
+          )}
+        </div>
+      ))}
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          className="w95-btn"
+          onClick={() => setRevealed(true)}
+          disabled={revealed || picks.some((p) => p === null)}
+        >
+          Corregir examen
+        </button>
+        {revealed && (
+          <span className="text-sm">
+            Resultado: <strong>{score}/{items.length}</strong>
+          </span>
+        )}
+        {revealed && (
+          <button
+            type="button"
+            className="w95-btn"
+            onClick={() => {
+              setPicks(items.map(() => null));
+              setRevealed(false);
+            }}
+          >
+            Reintentar
+          </button>
+        )}
+      </div>
     </div>
   );
 }

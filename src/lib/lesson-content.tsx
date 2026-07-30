@@ -1,8 +1,18 @@
 import type { ReactNode } from "react";
 import { Section, Callout, CodeBlock, Sig, LearnBlock, TranslateBlock, SolveBlock, IntentBlock, FormulaBlock } from "@/components/lesson-ui";
 import BoolPlayground from "@/components/BoolPlayground";
+import { contexto } from "@/lib/lessons/contexto";
 
-export type LessonSlug = "dns" | "operadores" | "fundamentos" | "js" | "terminal" | "html" | "frontend" | "dom";
+export type LessonSlug =
+  | "dns"
+  | "operadores"
+  | "fundamentos"
+  | "js"
+  | "terminal"
+  | "html"
+  | "frontend"
+  | "dom"
+  | "contexto";
 
 type Lesson = { title: string; tagline: string; description: string; body: () => ReactNode };
 
@@ -1522,5 +1532,5 @@ elemento.classList.add("activo"); // método: agregar clase`}
 };
 
 export const lessons: Record<LessonSlug, Lesson> = {
-  dns, operadores, fundamentos, js, terminal, html, frontend, dom,
+  dns, operadores, fundamentos, js, terminal, html, frontend, dom, contexto,
 };

@@ -5,6 +5,7 @@ export type Badge =
   | "first_step"       // primer XP
   | "dns_master"       // completó lección DNS
   | "logic_wizard"     // completó lección operadores
+  | "context_engineer" // completó lección contexto/deploy
   | "quiz_perfect"     // 100% en quiz
   | "quiz_streak5"     // 5 aciertos seguidos
   | "explorer"         // usó el simulador
@@ -137,7 +138,8 @@ export function markLessonComplete(slug: string) {
   addCoins(5, "Recompensa de lección");
   if (slug === "dns") awardBadge("dns_master", "Maestro del DNS");
   if (slug === "operadores") awardBadge("logic_wizard", "Mago de la lógica");
-  if (state.lessonsCompleted.length >= 6) awardBadge("scholar", "Erudito — todas las lecciones");
+  if (slug === "contexto") awardBadge("context_engineer", "Ingeniero de contexto");
+  if (state.lessonsCompleted.length >= 9) awardBadge("scholar", "Erudito — todas las lecciones");
 }
 
 export function recordQuizResult(score: number, total: number) {
@@ -178,6 +180,7 @@ export const BADGE_META: Record<Badge, { icon: string; label: string; desc: stri
   first_step:      { icon: "🌱", label: "Primer paso",       desc: "Ganaste tu primer XP." },
   dns_master:      { icon: "📞", label: "Maestro del DNS",   desc: "Completaste la lección de DNS." },
   logic_wizard:    { icon: "🧙", label: "Mago de la lógica", desc: "Dominaste operadores lógicos." },
+  context_engineer:{ icon: "🧠", label: "Ingeniero contexto", desc: "Completaste Contexto y Deploy." },
   quiz_perfect:    { icon: "💯", label: "Quiz perfecto",     desc: "100% en el quiz." },
   quiz_streak5:    { icon: "🔥", label: "Racha x5",           desc: "5 aciertos seguidos." },
   explorer:        { icon: "🌐", label: "Explorador",        desc: "Usaste el simulador." },

@@ -314,6 +314,7 @@ function Ejercicios() {
   const [filter, setFilter] = useState<"ALL" | Ex["tag"]>("ALL");
   const [answered, setAnswered] = useState<Record<string, number>>({});
   const [rewarded, setRewarded] = useState<Record<string, true>>({});
+  const [openExplain, setOpenExplain] = useState<Record<string, boolean>>({});
 
   // Read ?ej=<TAG> from the URL on mount and scroll into view.
   useEffect(() => {
@@ -441,6 +442,34 @@ function Ejercicios() {
                       "rompe alguna de las reglas del tema listadas abajo",
                     ]}
                   />
+                )}
+                <div className="mt-2 flex flex-wrap gap-1">
+                  <W95Button
+                    onClick={() =>
+                      setOpenExplain((m) => ({ ...m, [ex.id]: !m[ex.id] }))
+                    }
+                  >
+                    {openExplain[ex.id] ? "Ocultar explicación" : "🧠 Explicación"}
+                  </W95Button>
+                </div>
+                {openExplain[ex.id] && (
+                  <div className="mt-2 p-2 text-[12px]" style={{ background: "#eef4ff", border: "1px solid #808080" }}>
+                    <div className="font-bold mb-2">🧠 Explicación de la pregunta y la respuesta</div>
+                    <div className="mb-2">
+                      <div className="mono text-[10px] uppercase opacity-70 mb-0.5">La pregunta pide</div>
+                      <div className="font-medium">{ex.q}</div>
+                    </div>
+                    <div className="mb-2">
+                      <div className="mono text-[10px] uppercase opacity-70 mb-0.5">Cómo pensarlo</div>
+                      <div className="whitespace-pre-line">{ex.explain}</div>
+                    </div>
+                    <div>
+                      <div className="mono text-[10px] uppercase opacity-70 mb-0.5">Respuesta correcta</div>
+                      <div className="font-medium">
+                        {String.fromCharCode(65 + ex.correct)}. {ex.options[ex.correct]}
+                      </div>
+                    </div>
+                  </div>
                 )}
                 <RulesBox tag={ex.tag} defaultOpen={done && !isCorrect} compact />
               </div>
@@ -892,6 +921,7 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
   const [value, setValue] = useState(ex.starter ?? "");
   const [status, setStatus] = useState<"idle" | "ok" | "bad">("idle");
   const [showHint, setShowHint] = useState(false);
+  const [showExplain, setShowExplain] = useState(false);
   const [tips, setTips] = useState<string[]>([]);
   const [attempts, setAttempts] = useState(0);
   const [revealed, setRevealed] = useState(false);
@@ -929,6 +959,9 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
         <W95Button onClick={check}>▶ Comprobar</W95Button>
         <W95Button onClick={() => { setValue(ex.placeholder); setStatus("idle"); setTips([]); }}>Ver ejemplo</W95Button>
         {ex.hint && <W95Button onClick={() => setShowHint((v) => !v)}>{showHint ? "Ocultar pista" : "💡 Pista"}</W95Button>}
+        <W95Button onClick={() => setShowExplain((v) => !v)}>
+          {showExplain ? "Ocultar explicación" : "🧠 Explicación"}
+        </W95Button>
         {attempts >= 2 && !revealed && status !== "ok" && (
           <W95Button onClick={() => setRevealed(true)}>👀 Ver solución</W95Button>
         )}
@@ -938,6 +971,24 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
       </div>
       {showHint && ex.hint && (
         <div className="mt-2 p-2 text-[12px]" style={{ background: "#ffffcc", border: "1px solid #808080" }}>💡 {ex.hint}</div>
+      )}
+      {showExplain && (
+        <div className="mt-2 p-2 text-[12px]" style={{ background: "#eef4ff", border: "1px solid #808080" }}>
+          <div className="font-bold mb-2">🧠 Explicación de la pregunta y la respuesta</div>
+          <div className="mb-2">
+            <div className="mono text-[10px] uppercase opacity-70 mb-0.5">La pregunta pide</div>
+            <div className="font-medium">{ex.q}</div>
+          </div>
+          <div className="mb-2">
+            <div className="mono text-[10px] uppercase opacity-70 mb-0.5">Cómo pensarlo (paso a paso)</div>
+            <div className="whitespace-pre-line opacity-95">{ex.explain}</div>
+          </div>
+          <div>
+            <div className="mono text-[10px] uppercase opacity-70 mb-0.5">Respuesta correcta</div>
+            <pre className="w95-inset bg-white p-2 mono text-[11px] whitespace-pre-wrap break-words">{ex.placeholder}</pre>
+          </div>
+          <RulesBox tag={ex.tag} defaultOpen compact />
+        </div>
       )}
       {status === "bad" && tips.length > 0 && (
         <div className="mt-2 p-2 text-[12px]" style={{ background: "#ffe6e6", border: "1px solid #808080" }}>

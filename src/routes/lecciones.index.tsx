@@ -5,7 +5,7 @@ export const Route = createFileRoute("/lecciones/")({
   head: () => ({
     meta: [
       { title: "Lecciones — Redes 95" },
-      { name: "description", content: "Índice de lecciones: DNS, operadores, fundamentos, JS, terminal, HTML, frontend y DOM (el punto, textContent)." },
+      { name: "description", content: "Índice de lecciones: DNS, operadores, fundamentos, JS, terminal, HTML, frontend, DOM e Ingeniería de Contexto / Deploy." },
     ],
   }),
   component: Index,
@@ -20,6 +20,7 @@ const topics = [
   { slug: "html",        num: "06", title: "HTML — el esqueleto de la web",       desc: "Etiquetas, atributos, listas y por qué todo va dentro de body.", icon: "📄" },
   { slug: "frontend",    num: "07", title: "Frontend, DOM y renderizado",         desc: "HTML + CSS + JS, qué es el DOM y qué NO es frontend.", icon: "🎨" },
   { slug: "dom",         num: "08", title: "DOM — el punto y textContent",        desc: "Cómo leer cosa.característica, getElementById, style, classList.", icon: "🌳" },
+  { slug: "contexto",    num: "09", title: "Ingeniería de Contexto y Deploy",     desc: "Contexto para IA, RAG, errores, entornos DEV→PROD, Blue-Green, Canary, .env y HTTPS.", icon: "🧠" },
 ];
 
 function Index() {

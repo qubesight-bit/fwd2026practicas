@@ -5,7 +5,7 @@ export const Route = createFileRoute("/estudiar")({
   head: () => ({
     meta: [
       { title: "¿Qué quieres hacer? — Redes 95" },
-      { name: "description", content: "Elige un tema (DNS, HTTP, HTML, CSS, JS, DOM, Terminal, Lógica) y decide si repasar la lección, practicar en el simulador o hacer un quiz." },
+      { name: "description", content: "Elige un tema (DNS, HTTP, HTML, CSS, JS, DOM, Terminal, Lógica, Contexto/Deploy) y decide si repasar la lección, practicar en el simulador o hacer un quiz." },
     ],
   }),
   component: Estudiar,
@@ -126,6 +126,16 @@ const TOPICS: Topic[] = [
       { kind: "sim-ej", label: "Ejercicios de JS", icon: "🧠", target: "JS" },
     ],
   },
+  {
+    slug: "contexto",
+    title: "IA · Contexto y Deploy",
+    desc: "Ingeniería de contexto, RAG, entornos DEV→PROD, Blue-Green, Canary, .env y HTTPS.",
+    icon: "🧠",
+    actions: [
+      { kind: "lesson", label: "Estudiar la lección completa", icon: "📖", target: "contexto" },
+      { kind: "quiz", label: "Quiz general (incluye contexto)", icon: "🎯" },
+    ],
+  },
 ];
 
 function ActionLink({ action }: { action: Action }) {
@@ -178,6 +188,7 @@ function Estudiar() {
         <span className="text-[12px] font-bold">Acceso rápido:</span>
         <Link to="/lecciones"  className="w95-btn text-[12px]">📚 Todas las lecciones</Link>
         <Link to="/diccionario" className="w95-btn text-[12px]">📖 Diccionario JS</Link>
+        <Link to="/lecciones/$topic" params={{ topic: "contexto" }} className="w95-btn text-[12px]">🧠 Contexto + Deploy</Link>
         <Link to="/simulador"  className="w95-btn text-[12px]">🌐 Simulador completo</Link>
         <a href="/simulador#ejercicios" className="w95-btn text-[12px]">🧠 Todos los ejercicios</a>
         <Link to="/quiz"       className="w95-btn text-[12px]">🎯 Quiz general</Link>

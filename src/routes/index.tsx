@@ -25,6 +25,7 @@ const icons = [
   { to: "/lecciones/html",        glyph: "📄", label: "HTML.htm" },
   { to: "/lecciones/frontend",    glyph: "🎨", label: "Frontend" },
   { to: "/lecciones/dom",         glyph: "🌳", label: "DOM.punto" },
+  { to: "/lecciones/contexto",    glyph: "🧠", label: "Contexto\n+ Deploy" },
 ];
 
 function Desktop() {
