@@ -915,15 +915,16 @@ function CodeCard({ ex, tagColor, rewarded, onSolve }: { ex: CodeEx; tagColor: s
         {rewarded && <span title="Ya premiado">🏆</span>}
       </div>
       <RulesBox tag={ex.tag} defaultOpen={status === "bad"} compact />
-      <textarea
+      <CodeEditor
+        tag={ex.tag}
         value={value}
-        onChange={(e) => { setValue(e.target.value); if (status !== "idle") { setStatus("idle"); setTips([]); } }}
-        spellCheck={false}
+        onChange={(v) => { setValue(v); if (status !== "idle") { setStatus("idle"); setTips([]); } }}
         rows={rows}
         placeholder={ex.placeholder}
         className="w-full w95-inset bg-white p-2 mono text-[12px] outline-none resize-y"
         style={{ minHeight: 56 }}
       />
+
       <div className="flex flex-wrap items-center gap-1 mt-2">
         <W95Button onClick={check}>▶ Comprobar</W95Button>
         <W95Button onClick={() => { setValue(ex.placeholder); setStatus("idle"); setTips([]); }}>Ver ejemplo</W95Button>
