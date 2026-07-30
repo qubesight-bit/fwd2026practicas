@@ -56,6 +56,10 @@ El punto se lee «de» / «su». No es una sola palabra rara:
 ¿Qué escribir después del punto? No te lo inventás: cada cosa trae herramientas ya definidas
 (textContent, style, classList, value…). Empieza por la intención en español.
 
+Después del punto hay dos nombres:
+- **Propiedad** = qué tiene / cómo es (sin `()`): `elemento.textContent`
+- **Método** = qué puede hacer (con `()`): `classList.add("activo")`
+
 ## En chat y app
 
 - Intención primero; sintaxis después.

@@ -57,6 +57,7 @@ const RULES: Record<RuleTag, string[]> = {
   DOM: [
     ...COMMON_JS.slice(0, 4),
     "El punto (.) se lee «de» / «su»: elemento.textContent = el texto DE ese elemento.",
+    "Después del punto: PROPIEDAD = qué tiene (sin ()); MÉTODO = qué hace (con ()).",
     "No inventés lo que va después del punto: textContent, style, classList, value ya existen.",
     "getElementById('…') busca por id. Si no existe → null.",
     "textContent = leer/cambiar texto. style = estilos. classList.add('…') = agregar clase.",

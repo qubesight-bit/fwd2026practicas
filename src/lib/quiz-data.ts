@@ -133,6 +133,18 @@ export const questions: Question[] = [
     topic: "DOM",
   },
   {
+    q: "En `caja.classList.add('activo')`, ¿qué es `add`?",
+    choices: [
+      "Una propiedad (características)",
+      "Un método (acción) — por eso lleva ()",
+      "Un error de sintaxis",
+      "El id del elemento",
+    ],
+    answer: 1,
+    explain: "Propiedad = qué tiene (textContent, sin ()). Método = qué puede hacer (add, con ()). add() es una acción: agregar la clase.",
+    topic: "DOM",
+  },
+  {
     q: "¿Qué imprime `console.log(typeof 10);` en JavaScript?",
     choices: ["'Number'", "'number'", "'int'", "10"],
     answer: 1,
