@@ -19,7 +19,7 @@ const topics = [
   { slug: "terminal",    num: "05", title: "Comandos de la terminal",             desc: "Comparativa Windows · Mac · Linux, tabla navegable.", icon: "💻" },
   { slug: "html",        num: "06", title: "HTML — el esqueleto de la web",       desc: "Etiquetas, atributos, listas y por qué todo va dentro de body.", icon: "📄" },
   { slug: "frontend",    num: "07", title: "Frontend, DOM y renderizado",         desc: "HTML + CSS + JS, qué es el DOM y qué NO es frontend.", icon: "🎨" },
-  { slug: "dom",         num: "08", title: "DOM — el punto y textContent",        desc: "Cómo leer cosa.característica, getElementById, style, classList.", icon: "🌳" },
+  { slug: "dom",         num: "08", title: "DOM — el punto, textContent y eventos", desc: "Punto, getElementById, style, classList + práctica FWD: addEventListener, preventDefault, lista de tareas.", icon: "🌳" },
   { slug: "contexto",    num: "09", title: "Ingeniería de Contexto y Deploy",     desc: "Contexto para IA, RAG, errores, entornos DEV→PROD, Blue-Green, Canary, .env y HTTPS.", icon: "🧠" },
 ];
 

@@ -293,6 +293,35 @@ const TEMAS_LECCION: KnowledgeEntry[] = [
     source: { kind: "leccion", href: "/lecciones/dom", label: "Lección DOM" },
   },
   {
+    id: "lec-dom-eventos",
+    topic: "DOM",
+    title: "Eventos: addEventListener, event y preventDefault",
+    keywords: [
+      "evento", "eventos", "addeventlistener", "click", "submit", "input",
+      "preventdefault", "target", "listener", "formulario", "onclick",
+    ],
+    intention: "Cuando ocurra algo en la página (clic, escribir, enviar), quiero que JS reaccione.",
+    what: "Un evento es una señal. addEventListener conecta un elemento con una función. event.target es quién disparó. preventDefault cancela el comportamiento automático (ej. recargar en submit).",
+    why: "Sin eventos la página solo se ve; con eventos responde a la persona. Separar HTML de JS (sin onclick) mantiene el código claro.",
+    how: [
+      "Guardá el elemento con getElementById (una vez, en una variable).",
+      "elemento.addEventListener('tipo', función).",
+      "Dentro: usá event.target si necesitás quién disparó.",
+      "En submit: event.preventDefault() si no querés recargar.",
+      "Para listas: createElement + textContent + appendChild.",
+    ],
+    solve:
+      "boton.addEventListener('click', () => { … });\nform.addEventListener('submit', (event) => { event.preventDefault(); });",
+    whyThatWay: "Primero la intención («cuando hagan clic…»), después el tipo de evento y la función. preventDefault solo cuando el default molesta.",
+    analogy: "Portero en la puerta: el timbre es el evento; vos decidís qué hacer al sonar.",
+    code: `let form = document.getElementById("miForm");
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  console.log("Formulario enviado");
+});`,
+    source: { kind: "leccion", href: "/lecciones/dom", label: "Lección DOM · Eventos" },
+  },
+  {
     id: "lec-html-body",
     topic: "HTML",
     title: "HTML: etiquetas y body",
@@ -560,6 +589,8 @@ const SUGGESTIONS = [
   "Error DNS vs HTTP",
   "¿Qué es un array y length?",
   "propiedad vs método",
+  "¿Qué es addEventListener?",
+  "¿Para qué sirve preventDefault?",
   "códigos HTTP 404 y 500",
 ];
 

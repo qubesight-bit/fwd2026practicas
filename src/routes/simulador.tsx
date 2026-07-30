@@ -294,6 +294,9 @@ const EXERCISES: Ex[] = [
   { id: "dom-4", tag: "DOM", q: "¿Qué significa auto.color?", options: ["El auto que pertenece al color", "El color que pertenece al auto", "Crear un auto nuevo", "Borrar el color"], correct: 1, explain: "1) El punto = «de» / «su».\n2) Antes: auto (la cosa). Después: color (lo que le pertenece).\n3) «El color del auto»." },
   { id: "dom-5", tag: "DOM", q: "Si getElementById no encuentra el id, ¿qué devuelve?", options: ["undefined", "false", "null", "\"\""], correct: 2, explain: "1) Intención: buscar por id.\n2) Si no existe → null (no hay elemento).\n3) Por eso a veces la consola muestra null." },
   { id: "dom-7", tag: "DOM", q: "En caja.classList.add('activo'), ¿add es…?", options: ["Una propiedad (característica)", "Un método (acción) — lleva ()", "El id de la caja", "Un error"], correct: 1, explain: "1) Propiedad = qué tiene (sin ()).\n2) Método = qué hace (con ()).\n3) add() = acción «agregar» → método." },
+  { id: "dom-8", tag: "DOM", q: "¿Qué hace addEventListener('click', fn)?", options: ["Cambia el color del botón", "Conecta el elemento con una función que corre al hacer clic", "Borra el HTML", "Solo funciona con formularios"], correct: 1, explain: "1) Intención: cuando hagan clic, ejecutá fn.\n2) addEventListener = escuchar un tipo de evento.\n3) Preferido frente a onclick en el HTML." },
+  { id: "dom-9", tag: "DOM", q: "event.preventDefault() en un submit sirve para…", options: ["Enviar más rápido el formulario", "Cancelar el comportamiento por defecto (ej. recargar)", "Crear un li nuevo", "Leer event.key"], correct: 1, explain: "1) Intención: «no hagas lo automático».\n2) En submit, el default suele recargar.\n3) preventDefault() lo cancela para que vos manejes el envío." },
+  { id: "dom-10", tag: "DOM", q: "event.target dentro del manejador es…", options: ["Siempre el document", "El elemento que disparó el evento", "Solo la tecla", "Un error de sintaxis"], correct: 1, explain: "1) Intención: ¿quién provocó esto?\n2) target = ese elemento.\n3) Luego: event.target.value en un input." },
 
   { id: "red-1", tag: "RED", q: "El DNS traduce…", options: ["HTML a CSS", "Nombre de dominio a dirección IP", "IP a MAC", "URL a HTTPS"], correct: 1, explain: "Qué es: nombre bonito → IP. Analogía: guía telefónica. Tú das google.com; el DNS te da el número." },
   { id: "red-2", tag: "RED", q: "El código 404 significa…", options: ["Sin permiso", "Servidor caído", "Recurso no encontrado", "Todo OK"], correct: 2, explain: "Qué es: 404 = esa URL no existe en el servidor. Importante: sí llegaste (es HTTP, no DNS). Analogía: la casa existe, pero esa habitación no." },
@@ -782,6 +785,38 @@ const CODE_EXERCISES: CodeEx[] = [
     placeholder: 'titulo.style.color = "red";',
     accept: [[/^\s*titulo\.style\.color\s*=\s*['"`]red['"`]\s*;?\s*$/i]],
     explain: "1) ¿Qué le digo? Al título, en sus estilos, el color = rojo.\n2) Cadena: titulo → style → color.\n3) titulo.style.color = \"red\";",
+  },
+  {
+    id: "c-dom-5", tag: "DOM",
+    q: "Al botón 'boton', agregá un listener de click que haga console.log('ok').",
+    hint: "boton.addEventListener('click', …)",
+    placeholder: "boton.addEventListener('click', () => { console.log('ok'); });",
+    accept: [[/boton\.addEventListener\s*\(\s*['"`]click['"`]\s*,\s*(?:\([^)]*\)\s*=>|function\s*\([^)]*\))\s*\{[^}]*console\.log\s*\(\s*['"`]ok['"`]\s*\)[^}]*\}\s*\)\s*;?/i]],
+    explain: "1) Intención: cuando hagan clic en boton, mostrá ok.\n2) addEventListener = escuchar.\n3) boton.addEventListener('click', () => { console.log('ok'); });",
+  },
+  {
+    id: "c-dom-6", tag: "DOM",
+    q: "En un manejador de 'submit' del form 'form', cancelá el default y logueá 'Formulario enviado'.",
+    hint: "event.preventDefault()",
+    placeholder: "form.addEventListener('submit', (event) => {\n  event.preventDefault();\n  console.log('Formulario enviado');\n});",
+    accept: [[/form\.addEventListener\s*\(\s*['"`]submit['"`]\s*,\s*\(?\s*event\s*\)?\s*=>\s*\{[^}]*event\.preventDefault\s*\(\s*\)\s*;?[^}]*console\.log\s*\(\s*['"`]formulario\s+enviado['"`]\s*\)/i]],
+    explain: "1) Escuchar submit.\n2) preventDefault = no recargar.\n3) console.log del mensaje.",
+  },
+  {
+    id: "c-dom-7", tag: "DOM",
+    q: "Completá la idea: leer el value del input que disparó el evento (variable event).",
+    hint: "event.target.value",
+    placeholder: "let texto = event.target.value;",
+    accept: [[/^\s*(?:let|const)\s+texto\s*=\s*event\.target\.value\s*;?\s*$/i]],
+    explain: "1) ¿Quién disparó? event.target.\n2) ¿Qué escribió? .value.\n3) let texto = event.target.value;",
+  },
+  {
+    id: "c-dom-8", tag: "DOM",
+    q: "Creá un <li>, ponéle textContent 'Hola' y agregalo a 'lista' con appendChild.",
+    hint: "createElement + appendChild",
+    placeholder: 'let li = document.createElement("li");\nli.textContent = "Hola";\nlista.appendChild(li);',
+    accept: [[/document\.createElement\s*\(\s*['"`]li['"`]\s*\)/i, /li\.textContent\s*=\s*['"`]hola['"`]/i, /lista\.appendChild\s*\(\s*li\s*\)/i]],
+    explain: "1) Fabricar li.\n2) Escribir texto.\n3) Pegarlo al final de la lista.",
   },
 ];
 

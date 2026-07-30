@@ -87,13 +87,14 @@ const TOPICS: Topic[] = [
   },
   {
     slug: "dom",
-    title: "DOM · El punto y textContent",
-    desc: "Cómo leer cosa.característica, getElementById, style, classList — por intención.",
+    title: "DOM · El punto y eventos",
+    desc: "textContent, getElementById, y práctica FWD: addEventListener, event, preventDefault, lista de tareas.",
     icon: "🌳",
     actions: [
-      { kind: "lesson", label: "Lección DOM (el punto)", icon: "📖", target: "dom" },
+      { kind: "lesson", label: "Lección DOM + Eventos", icon: "📖", target: "dom" },
       { kind: "lesson", label: "Frontend & renderizado", icon: "📖", target: "frontend" },
       { kind: "sim-ej", label: "Ejercicios de DOM", icon: "🧠", target: "DOM" },
+      { kind: "diccionario", label: "Diccionario (Eventos)", icon: "📚" },
     ],
   },
   {

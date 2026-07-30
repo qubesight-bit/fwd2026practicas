@@ -1192,9 +1192,9 @@ libro.leido = false;`}
 
 /* ============ 08 · DOM — el punto, textContent, getElementById ============ */
 const dom: Lesson = {
-  title: "DOM — el punto, textContent y buscar elementos",
-  tagline: "No memorizas textContent: aprendes a leer el punto (.). Cosa + característica. Intención primero.",
-  description: "Cómo leer elemento.textContent, document.getElementById, style y classList — por intención, no por sintaxis. Fases del ejercicio y cartilla «qué escribir después del punto».",
+  title: "DOM — el punto, textContent y eventos",
+  tagline: "Primero el punto (cosa.característica). Después: cuando pase algo en la página, reaccioná (addEventListener).",
+  description: "DOM por intención: textContent, getElementById, style, classList. Práctica FWD: eventos, addEventListener, event, preventDefault y lista de tareas.",
   body: () => (
     <>
       <Section kicker="1 · La traba" title={<>No es textContent: es el <em>punto.</em></>}>
@@ -1526,6 +1526,258 @@ elemento.classList.add("activo"); // método: agregar clase`}
             { es: "El texto del elemento.", code: "elemento.textContent" },
           ]}
         />
+      </Section>
+
+      {/* ===== EVENTOS · FWD Costa Rica diapositivas 26–32 ===== */}
+      <Section kicker="10 · Eventos" title={<>Cuando algo <em>ocurre</em> en la página</>}>
+        <LearnBlock
+          what={
+            <>
+              Un <Sig>evento</Sig> es una señal de que algo pasó: un clic, una tecla, enviar un formulario, cargar la página…
+              JavaScript la «escucha» con <span className="mono">addEventListener()</span>.
+            </>
+          }
+          why="Sin eventos, la página solo se ve. Con eventos, reacciona a lo que hace la persona."
+          how={[
+            "Elegís el elemento (el botón, el formulario…).",
+            "Le decís: cuando ocurra ESTE tipo de evento…",
+            "…ejecutá ESTA función (lo que querés que pase).",
+          ]}
+          analogy="Poner un portero en la puerta: cuando alguien toca el timbre (evento), te avisa y vos reaccionás."
+        />
+        <IntentBlock
+          keyword="addEventListener"
+          intention="«Cuando pase esto en este elemento, hacé aquella acción.»"
+          spanish={[
+            "Tengo un botón.",
+            "Cuando hagan clic…",
+            "…cambiá el texto / mostrá un mensaje / etc.",
+          ]}
+          code={`boton.addEventListener("click", () => {
+  // lo que querés que ocurra
+});`}
+          note="Es un MÉTODO (acción): lleva (). Primer argumento = tipo de evento. Segundo = la función."
+        />
+        <div className="overflow-x-auto my-6">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="text-left mono text-[11px] uppercase tracking-widest opacity-70">
+                <th className="p-2 hair-a">Elemento</th>
+                <th className="p-2 hair-a">¿Qué hace?</th>
+                <th className="p-2 hair-a">Detalle clave</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["addEventListener()", "Conecta un elemento con una función", "Se ejecuta cada vez que ocurre el evento"],
+                ["click / dblclick", "Eventos de mouse", "También mouseover, mouseout"],
+                ["keydown / keyup", "Eventos de teclado", "Al presionar / soltar teclas"],
+                ["submit / input / change", "Eventos de formulario", "También focus, blur"],
+                ["load / DOMContentLoaded", "Ventana / documento", "También resize, scroll"],
+                ["event.target", "El elemento que disparó el evento", "Disponible dentro de la función manejadora"],
+                ["event.key", "La tecla presionada", "Solo en eventos de teclado"],
+                ["event.preventDefault()", "Cancela el comportamiento por defecto", "Ej.: evitar que el formulario se envíe y recargue"],
+              ].map(([a, b, c]) => (
+                <tr key={a} className="hair-a">
+                  <td className="p-2 mono align-top" style={{ color: "var(--signal)" }}>{a}</td>
+                  <td className="p-2 align-top">{b}</td>
+                  <td className="p-2 align-top opacity-90">{c}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <Callout tone="ok" label="Preferido del curso">
+          Usá <span className="mono">addEventListener()</span> en el JS. Evitá <span className="mono">onclick=&quot;…&quot;</span> en el HTML:
+          mezcla estructura con comportamiento y es más difícil de mantener.
+        </Callout>
+      </Section>
+
+      <Section kicker="11 · Práctica 1" title={<>Predecí el <em>resultado</em></>}>
+        <p className="mb-3">HTML + JS. ¿Qué pasa al hacer clic en el botón?</p>
+        <CodeBlock>{`<button id="btn">Saludar</button>
+<p id="salida">Esperando...</p>
+
+let boton = document.getElementById("btn");
+let salida = document.getElementById("salida");
+
+boton.addEventListener("click", () => {
+  salida.textContent = "¡Hiciste clic!";
+  console.log("Evento detectado");
+});`}</CodeBlock>
+        <Callout tone="ok" label="Respuesta (intención → efecto)">
+          <ol className="list-decimal pl-5 space-y-1">
+            <li>En pantalla, el párrafo deja de decir «Esperando...» y pasa a <b>¡Hiciste clic!</b></li>
+            <li>En la consola aparece <span className="mono">Evento detectado</span>.</li>
+            <li>¿Por qué? El botón escuchaba <span className="mono">click</span>; al ocurrir, corrió la función.</li>
+          </ol>
+        </Callout>
+        <SolveBlock
+          title="Leer el clic en español"
+          lang="JavaScript"
+          ask="Cuando hagan clic en el botón, cambiá el texto del párrafo y avisá en consola."
+          person="Esperaría el clic. Cambiaría el cartel. Anotaría en un papel (consola) que hubo evento."
+          tellProgram={[
+            "Buscar el botón y el párrafo.",
+            "Al botón: cuando ocurra click…",
+            "…el texto del párrafo = ¡Hiciste clic!",
+            "…mostrar en consola «Evento detectado».",
+          ]}
+          lines={[
+            { es: "Buscar botón y salida.", code: 'let boton = document.getElementById("btn");\nlet salida = document.getElementById("salida");' },
+            { es: "Cuando hagan clic…", code: 'boton.addEventListener("click", () => {' },
+            { es: "Cambiar el texto del párrafo.", code: '  salida.textContent = "¡Hiciste clic!";' },
+            { es: "Avisar en consola.", code: '  console.log("Evento detectado");\n});' },
+          ]}
+        />
+      </Section>
+
+      <Section kicker="12 · Práctica 2" title={<>Completá el <em>código</em> (input)</>}>
+        <p className="mb-3">Contar caracteres mientras se escribe.</p>
+        <CodeBlock>{`<input id="campo" type="text">
+<p id="contador">0 caracteres</p>
+
+let campo = document.getElementById("campo");
+let contador = document.getElementById("contador");
+
+// Escuchar mientras se escribe
+campo.____("input", (event) => {
+  // Leer el elemento que disparó el evento
+  let texto = event.____.value;
+  contador.textContent = texto.length + " caracteres";
+});`}</CodeBlock>
+        <IntentBlock
+          keyword="input + event.target"
+          intention="«Mientras escriben en el campo, actualizá el contador con cuántas letras hay.»"
+          spanish={[
+            "Escuchar el evento input (cada vez que cambia lo escrito).",
+            "event.target = el elemento que disparó (el input).",
+            "Leer .value → contar .length → mostrar en el párrafo.",
+          ]}
+          code={`campo.addEventListener("input", (event) => {
+  let texto = event.target.value;
+  contador.textContent = texto.length + " caracteres";
+});`}
+          note="Los ____ se completan con: addEventListener  y  target"
+        />
+        <Callout label="Solución de los espacios">
+          <span className="mono">campo.addEventListener(&quot;input&quot;, …)</span>
+          <br />
+          <span className="mono">let texto = event.target.value;</span>
+        </Callout>
+      </Section>
+
+      <Section kicker="13 · Práctica 3" title={<>Formulario sin <em>recargar</em></>}>
+        <p className="mb-3">HTML de partida:</p>
+        <CodeBlock>{`<form id="miForm">
+  <input id="correo" type="text">
+  <button type="submit">Enviar</button>
+</form>`}</CodeBlock>
+        <SolveBlock
+          title="submit + preventDefault"
+          lang="JavaScript"
+          ask="Al enviar el formulario, no recargar la página y mostrar en consola «Formulario enviado»."
+          person="Cuando pulsen Enviar, frenaría el envío normal (que recarga) y anotaría el mensaje."
+          tellProgram={[
+            "Guardar el formulario (id miForm).",
+            "Cuando ocurra submit…",
+            "…cancelar el comportamiento por defecto.",
+            "…mostrar en consola «Formulario enviado».",
+          ]}
+          lines={[
+            { es: "1. Guardar el form.", code: 'let form = document.getElementById("miForm");' },
+            { es: "2. Escuchar submit.", code: 'form.addEventListener("submit", (event) => {' },
+            { es: "3. No recargar.", code: "  event.preventDefault();" },
+            { es: "4. Avisar en consola.", code: '  console.log("Formulario enviado");\n});' },
+          ]}
+        />
+        <IntentBlock
+          keyword="preventDefault"
+          intention="«No hagas lo que harías por defecto (enviar y recargar). Yo me encargo.»"
+          spanish={[
+            "El navegador, al submit, quiere recargar / navegar.",
+            "Vos cancelás eso con preventDefault().",
+            "Después hacés lo que necesites (validar, mostrar mensaje, etc.).",
+          ]}
+          code="event.preventDefault();"
+          note="Es un MÉTODO del objeto event → lleva ()."
+        />
+      </Section>
+
+      <Section kicker="14 · Práctica 4" title={<>Reto: lista de <em>tareas</em></>}>
+        <CodeBlock>{`<input id="tarea" type="text">
+<button id="agregar">Agregar</button>
+<ul id="lista"></ul>`}</CodeBlock>
+        <SolveBlock
+          title="Agregar ítems a la lista"
+          lang="JavaScript"
+          ask="Al clic en Agregar: si hay texto, crear un li, ponerlo en la lista y limpiar el input."
+          person="Leería la caja. Si está vacía, no haría nada. Si hay texto, escribiría un renglón nuevo en la lista y vaciaría la caja."
+          tellProgram={[
+            "Guardar input, botón y lista.",
+            "Cuando hagan clic en el botón…",
+            "…si el input está vacío → return (salir).",
+            "…crear un li, ponerle el texto, agregarlo a la lista.",
+            "…limpiar el input.",
+          ]}
+          lines={[
+            {
+              es: "Guardar los tres elementos.",
+              code: `let input = document.getElementById("tarea");
+let boton = document.getElementById("agregar");
+let lista = document.getElementById("lista");`,
+            },
+            { es: "Escuchar el clic.", code: 'boton.addEventListener("click", () => {' },
+            { es: "Si está vacío, no hacer nada.", code: "  if (input.value === \"\") return;" },
+            {
+              es: "Crear li, texto, agregarlo.",
+              code: `  let li = document.createElement("li");
+  li.textContent = input.value;
+  lista.appendChild(li);`,
+            },
+            { es: "Limpiar el input.", code: '  input.value = "";\n});' },
+          ]}
+        />
+        <Callout label="Palabras nuevas del reto">
+          <ul className="list-disc pl-5 space-y-1">
+            <li><span className="mono">createElement(&quot;li&quot;)</span> → «creá un elemento lista-ítem» (método).</li>
+            <li><span className="mono">appendChild(li)</span> → «agregalo como hijo al final de la lista» (método).</li>
+            <li><span className="mono">return</span> → «salí de la función ahora; no sigas».</li>
+          </ul>
+        </Callout>
+      </Section>
+
+      <Section kicker="15 · Práctica 5" title={<>Buenas prácticas y <em>onclick</em></>}>
+        <Callout tone="ok" label="a) ¿Por qué guardar getElementById en una variable?">
+          Porque buscar en el documento <strong>cuesta trabajo</strong>. Si lo guardás una vez en una caja (
+          <span className="mono">let boton = …</span>), después solo usás la caja. Más claro, más rápido y menos errores
+          tipográficos al repetir el id.
+        </Callout>
+        <p className="mb-2"><strong>b)</strong> Reescribí el onclick del HTML con addEventListener:</p>
+        <CodeBlock>{`<!-- Original (evitar) -->
+<button onclick="miFuncion()">Click aquí</button>
+
+<!-- Preferido: HTML limpio + JS -->
+<button id="miBoton">Click aquí</button>
+
+<script>
+  let miBoton = document.getElementById("miBoton");
+  miBoton.addEventListener("click", miFuncion);
+  // o:
+  // miBoton.addEventListener("click", () => { … });
+</script>`}</CodeBlock>
+        <Callout tone="warn" label="¿Por qué así?">
+          HTML describe la estructura. JS describe el comportamiento. Separarlos facilita leer, probar y reutilizar.
+        </Callout>
+        <Callout label="Checklist mental (eventos)">
+          <ol className="list-decimal pl-5 space-y-1">
+            <li>¿Qué elemento escucha?</li>
+            <li>¿Qué evento? (click, input, submit…)</li>
+            <li>¿Qué quiero que haga cuando ocurra?</li>
+            <li>¿Hay que cancelar el default? → preventDefault</li>
+            <li>¿Necesito saber quién disparó? → event.target</li>
+          </ol>
+        </Callout>
       </Section>
     </>
   ),

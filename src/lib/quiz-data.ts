@@ -312,4 +312,52 @@ export const questions: Question[] = [
     explain: "HTTPS usa TLS/SSL para cifrar. HTTP manda datos en claro. Analogía: carta en sobre cerrado vs carta abierta.",
     topic: "Deploy",
   },
+  {
+    q: "¿Qué hace addEventListener('click', fn) sobre un botón?",
+    choices: [
+      "Cambia el color del botón al cargar",
+      "Conecta el botón con una función que se ejecuta al hacer clic",
+      "Borra el botón del DOM",
+      "Solo funciona con teclado",
+    ],
+    answer: 1,
+    explain: "Intención: «cuando hagan clic, ejecutá fn». addEventListener escucha un tipo de evento. Preferido frente a onclick en el HTML.",
+    topic: "DOM",
+  },
+  {
+    q: "En un formulario, ¿para qué usás event.preventDefault() en el submit?",
+    choices: [
+      "Para enviar el formulario más rápido",
+      "Para cancelar el comportamiento por defecto (evitar recargar) y manejarlo vos",
+      "Para crear un elemento li",
+      "Para leer event.key",
+    ],
+    answer: 1,
+    explain: "Intención: «no hagas lo automático». El submit suele recargar; preventDefault() lo frena. Después podés validar o mostrar un mensaje.",
+    topic: "DOM",
+  },
+  {
+    q: "¿Qué es event.target dentro de la función del listener?",
+    choices: [
+      "Siempre el document",
+      "El elemento que disparó el evento",
+      "Solo la tecla presionada",
+      "El nombre del archivo HTML",
+    ],
+    answer: 1,
+    explain: "Intención: ¿quién provocó esto? target = ese elemento. En un input: event.target.value es lo escrito.",
+    topic: "DOM",
+  },
+  {
+    q: "¿Por qué se recomienda guardar getElementById en una variable?",
+    choices: [
+      "Porque si no, el HTML se borra",
+      "Para no buscar el mismo elemento muchas veces: más claro y eficiente",
+      "Porque addEventListener no acepta getElementById directo",
+      "Solo sirve en Internet Explorer",
+    ],
+    answer: 1,
+    explain: "Buscar en el documento cuesta. Guardás una vez (let boton = …) y reutilizás la caja. Buena práctica del curso FWD.",
+    topic: "DOM",
+  },
 ];
