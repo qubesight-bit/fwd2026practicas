@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import { W95Button } from "@/components/win95";
 import { RulesBox } from "@/components/RulesBox";
 import { WhyBox } from "@/components/WhyBox";
+import CodeEditor from "@/components/CodeAutocomplete";
+
 import { recordSimPrediction, recordSimUse, useStats, sfx, addXP, addCoins } from "@/lib/gamification";
 
 export const Route = createFileRoute("/simulador")({
