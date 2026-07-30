@@ -119,6 +119,7 @@ const DOCK = [
   { to: "/",            label: "Escritorio", icon: "🏠" },
   { to: "/estudiar",    label: "¿Qué estudiar?", icon: "🎓" },
   { to: "/lecciones",   label: "Lecciones", icon: "📚" },
+  { to: "/profesor",    label: "Profesor", icon: "👨‍🏫" },
   { to: "/diccionario", label: "Diccionario JS", icon: "📖" },
   { to: "/simulador",   label: "Simulador", icon: "🌐" },
   { to: "/quiz",        label: "Quiz", icon: "🎯" },
@@ -189,6 +190,7 @@ function AppleMenu({ onClose }: { onClose: () => void }) {
         <MenuLink to="/"           icon="🏠" title="Escritorio" onClose={onClose} />
         <MenuLink to="/estudiar"   icon="🎓" title="¿Qué estudiar?" onClose={onClose} />
         <MenuLink to="/lecciones"  icon="📚" title="Lecciones" onClose={onClose} />
+        <MenuLink to="/profesor"   icon="👨‍🏫" title="Profesor local" onClose={onClose} />
         <MenuLink to="/diccionario" icon="📖" title="Diccionario JS" onClose={onClose} />
         <MenuLink to="/simulador"  icon="🌐" title="Simulador" onClose={onClose} />
         <MenuLink to="/quiz"       icon="🎯" title="Quiz" onClose={onClose} />

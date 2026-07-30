@@ -188,6 +188,7 @@ function Estudiar() {
         <span className="text-[12px] font-bold">Acceso rápido:</span>
         <Link to="/lecciones"  className="w95-btn text-[12px]">📚 Todas las lecciones</Link>
         <Link to="/diccionario" className="w95-btn text-[12px]">📖 Diccionario JS</Link>
+        <Link to="/profesor" className="w95-btn text-[12px]">👨‍🏫 Profesor local</Link>
         <Link to="/lecciones/$topic" params={{ topic: "contexto" }} className="w95-btn text-[12px]">🧠 Contexto + Deploy</Link>
         <Link to="/simulador"  className="w95-btn text-[12px]">🌐 Simulador completo</Link>
         <a href="/simulador#ejercicios" className="w95-btn text-[12px]">🧠 Todos los ejercicios</a>

@@ -102,6 +102,7 @@ function RootComponent() {
   const title =
     pathname === "/" ? "Escritorio" :
     pathname.startsWith("/diccionario") ? "Diccionario JS" :
+    pathname.startsWith("/profesor") ? "Profesor local" :
     pathname.startsWith("/estudiar") ? "¿Qué estudiar?" :
     pathname.startsWith("/quiz") ? "Quiz — Juegos" :
     pathname.startsWith("/simulador") ? "Simulador de red" :

@@ -14,6 +14,7 @@ import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as LeccionesRouteImport } from './routes/lecciones'
 import { Route as EstudiarRouteImport } from './routes/estudiar'
 import { Route as DiccionarioRouteImport } from './routes/diccionario'
+import { Route as ProfesorRouteImport } from './routes/profesor'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LeccionesIndexRouteImport } from './routes/lecciones.index'
 import { Route as LeccionesTopicRouteImport } from './routes/lecciones.$topic'
@@ -43,6 +44,11 @@ const DiccionarioRoute = DiccionarioRouteImport.update({
   path: '/diccionario',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfesorRoute = ProfesorRouteImport.update({
+  id: '/profesor',
+  path: '/profesor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -62,6 +68,7 @@ const LeccionesTopicRoute = LeccionesTopicRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/diccionario': typeof DiccionarioRoute
+  '/profesor': typeof ProfesorRoute
   '/estudiar': typeof EstudiarRoute
   '/lecciones': typeof LeccionesRouteWithChildren
   '/quiz': typeof QuizRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/diccionario': typeof DiccionarioRoute
+  '/profesor': typeof ProfesorRoute
   '/estudiar': typeof EstudiarRoute
   '/quiz': typeof QuizRoute
   '/simulador': typeof SimuladorRoute
@@ -82,6 +90,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/diccionario': typeof DiccionarioRoute
+  '/profesor': typeof ProfesorRoute
   '/estudiar': typeof EstudiarRoute
   '/lecciones': typeof LeccionesRouteWithChildren
   '/quiz': typeof QuizRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/diccionario'
+    | '/profesor'
     | '/estudiar'
     | '/lecciones'
     | '/quiz'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/diccionario'
+    | '/profesor'
     | '/estudiar'
     | '/quiz'
     | '/simulador'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/diccionario'
+    | '/profesor'
     | '/estudiar'
     | '/lecciones'
     | '/quiz'
@@ -124,6 +136,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DiccionarioRoute: typeof DiccionarioRoute
+  ProfesorRoute: typeof ProfesorRoute
   EstudiarRoute: typeof EstudiarRoute
   LeccionesRoute: typeof LeccionesRouteWithChildren
   QuizRoute: typeof QuizRoute
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiccionarioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profesor': {
+      id: '/profesor'
+      path: '/profesor'
+      fullPath: '/profesor'
+      preLoaderRoute: typeof ProfesorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -208,6 +228,7 @@ const LeccionesRouteWithChildren = LeccionesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DiccionarioRoute: DiccionarioRoute,
+  ProfesorRoute: ProfesorRoute,
   EstudiarRoute: EstudiarRoute,
   LeccionesRoute: LeccionesRouteWithChildren,
   QuizRoute: QuizRoute,
