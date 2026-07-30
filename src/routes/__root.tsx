@@ -97,8 +97,11 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isDesktop = pathname === "/";
+  const isDiccionario = pathname.startsWith("/diccionario");
+  const skipChrome = isDesktop || isDiccionario;
   const title =
     pathname === "/" ? "Escritorio" :
+    pathname.startsWith("/diccionario") ? "Diccionario JS" :
     pathname.startsWith("/estudiar") ? "¿Qué estudiar?" :
     pathname.startsWith("/quiz") ? "Quiz — Juegos" :
     pathname.startsWith("/simulador") ? "Simulador de red" :
@@ -109,16 +112,26 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="grain min-h-screen px-3 md:px-6 pt-[42px] pb-[110px]" >
-        {isDesktop ? (
+      <div
+        className={
+          isDiccionario
+            ? "min-h-screen"
+            : "grain min-h-screen px-3 md:px-6 pt-[42px] pb-[110px]"
+        }
+      >
+        {skipChrome ? (
           <Outlet />
         ) : (
           <IEBrowser title={title} url={url}>
             <Outlet />
           </IEBrowser>
         )}
-        <Taskbar />
-        <ToastLayer />
+        {!isDiccionario && (
+          <>
+            <Taskbar />
+            <ToastLayer />
+          </>
+        )}
       </div>
     </QueryClientProvider>
   );

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/estudiar")({
 });
 
 type Action = {
-  kind: "lesson" | "sim" | "sim-ej" | "quiz";
+  kind: "lesson" | "sim" | "sim-ej" | "quiz" | "diccionario";
   label: string;
   icon: string;
   /** For "lesson": lecciones slug. For "sim-ej": tag filter. Ignored otherwise. */
@@ -80,6 +80,7 @@ const TOPICS: Topic[] = [
     actions: [
       { kind: "lesson", label: "JavaScript en detalle", icon: "📖", target: "js" },
       { kind: "lesson", label: "Fundamentos (variables, if, bucles)", icon: "📖", target: "fundamentos" },
+      { kind: "diccionario", label: "Diccionario en lenguaje humano", icon: "📚" },
       { kind: "sim-ej", label: "Ejercicios de JS", icon: "🧠", target: "JS" },
       { kind: "quiz",   label: "Hacer quiz general", icon: "🎯" },
     ],
@@ -146,6 +147,13 @@ function ActionLink({ action }: { action: Action }) {
       </a>
     );
   }
+  if (action.kind === "diccionario") {
+    return (
+      <Link to="/diccionario" className={base}>
+        <span className="mr-1">{action.icon}</span> {action.label}
+      </Link>
+    );
+  }
   return <Link to="/quiz" className={base}><span className="mr-1">{action.icon}</span> {action.label}</Link>;
 }
 
@@ -169,6 +177,7 @@ function Estudiar() {
       <div className="w95-outset p-2 mb-4 flex flex-wrap gap-2 items-center" style={{ background: "#ffffcc" }}>
         <span className="text-[12px] font-bold">Acceso rápido:</span>
         <Link to="/lecciones"  className="w95-btn text-[12px]">📚 Todas las lecciones</Link>
+        <Link to="/diccionario" className="w95-btn text-[12px]">📖 Diccionario JS</Link>
         <Link to="/simulador"  className="w95-btn text-[12px]">🌐 Simulador completo</Link>
         <a href="/simulador#ejercicios" className="w95-btn text-[12px]">🧠 Todos los ejercicios</a>
         <Link to="/quiz"       className="w95-btn text-[12px]">🎯 Quiz general</Link>

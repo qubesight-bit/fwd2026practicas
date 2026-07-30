@@ -116,11 +116,12 @@ function useClock() {
 }
 
 const DOCK = [
-  { to: "/",           label: "Escritorio", icon: "🏠" },
-  { to: "/estudiar",   label: "¿Qué estudiar?", icon: "🎓" },
-  { to: "/lecciones",  label: "Lecciones", icon: "📚" },
-  { to: "/simulador",  label: "Simulador", icon: "🌐" },
-  { to: "/quiz",       label: "Quiz", icon: "🎯" },
+  { to: "/",            label: "Escritorio", icon: "🏠" },
+  { to: "/estudiar",    label: "¿Qué estudiar?", icon: "🎓" },
+  { to: "/lecciones",   label: "Lecciones", icon: "📚" },
+  { to: "/diccionario", label: "Diccionario JS", icon: "📖" },
+  { to: "/simulador",   label: "Simulador", icon: "🌐" },
+  { to: "/quiz",        label: "Quiz", icon: "🎯" },
 ];
 
 export function Taskbar() {
@@ -185,11 +186,12 @@ function AppleMenu({ onClose }: { onClose: () => void }) {
     <>
       <div className="fixed inset-0 z-[55]" onClick={onClose} />
       <div className="fixed left-2 top-[34px] z-[60] w-[280px] w95-outset p-1.5 animate-w95-pop">
-        <MenuLink to="/"          icon="🏠" title="Escritorio" onClose={onClose} />
-        <MenuLink to="/estudiar"  icon="🎓" title="¿Qué estudiar?" onClose={onClose} />
-        <MenuLink to="/lecciones" icon="📚" title="Lecciones" onClose={onClose} />
-        <MenuLink to="/simulador" icon="🌐" title="Simulador" onClose={onClose} />
-        <MenuLink to="/quiz"      icon="🎯" title="Quiz" onClose={onClose} />
+        <MenuLink to="/"           icon="🏠" title="Escritorio" onClose={onClose} />
+        <MenuLink to="/estudiar"   icon="🎓" title="¿Qué estudiar?" onClose={onClose} />
+        <MenuLink to="/lecciones"  icon="📚" title="Lecciones" onClose={onClose} />
+        <MenuLink to="/diccionario" icon="📖" title="Diccionario JS" onClose={onClose} />
+        <MenuLink to="/simulador"  icon="🌐" title="Simulador" onClose={onClose} />
+        <MenuLink to="/quiz"       icon="🎯" title="Quiz" onClose={onClose} />
         <hr className="my-1.5 border-0 border-t border-[color:var(--stroke)]" />
         <div className="px-3 py-2 text-[12px] text-[color:var(--muted-foreground)]">
           <div><b className="text-[color:var(--foreground)]">Jugador</b> · Nv {levelFor(stats.xp)} · {stats.xp} XP</div>
