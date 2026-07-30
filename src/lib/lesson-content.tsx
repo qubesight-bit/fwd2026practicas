@@ -1347,6 +1347,183 @@ let titulo = document.getElementById("titulo");
   ),
 };
 
+      <Section kicker="7 · ¿Qué escribir después del punto?" title="No te lo inventás">
+        <Callout label="La pregunta de todos los principiantes">
+          No se trata de memorizar que existen <span className="mono">textContent</span>,{" "}
+          <span className="mono">style</span> o <span className="mono">classList</span>.
+          La pregunta real es: <strong>¿Cómo sé qué escribir después del punto (.)?</strong>
+        </Callout>
+        <LearnBlock
+          what="No te lo inventás. Cada tipo de «cosa» en JavaScript ya trae sus propias herramientas y características."
+          why="Cuando hacés let titulo = document.getElementById('titulo'), titulo guarda un elemento HTML. Ese elemento ya viene con botones incorporados — vos no los creaste."
+          how={[
+            "Empezás en español: «Quiero cambiar el texto.»",
+            "Preguntás: ¿qué herramienta sirve para el texto? → textContent",
+            "«Quiero cambiar el color.» → estilos → style → color → elemento.style.color",
+            "«Quiero la etiqueta activo.» → clases → classList → add → elemento.classList.add('activo')",
+          ]}
+          example="Cadena de ideas: tengo un elemento → quiero sus estilos → dentro, el color. No salió de la nada."
+          analogy="Comprás una TV. El control tiene Encender, Volumen, Canal. No inventás el botón «hacerPalomitas»: ese botón no existe. Con un elemento HTML pasa igual."
+        />
+        <div className="overflow-x-auto rounded-2xl hair-a my-6" style={{ background: "oklch(0.16 0.012 55)" }}>
+          <table className="w-full text-sm">
+            <thead className="hair-b opacity-70">
+              <tr>
+                <th className="text-left px-4 py-3">Si quiero…</th>
+                <th className="text-left px-4 py-3">Uso</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Leer o cambiar el texto", "elemento.textContent"],
+                ["Meter HTML adentro", "elemento.innerHTML"],
+                ["Cambiar estilos", "elemento.style"],
+                ["Color del texto", "elemento.style.color"],
+                ["Fondo", "elemento.style.backgroundColor"],
+                ["Agregar / quitar clases", "elemento.classList"],
+                ["Agregar una clase", 'elemento.classList.add("activo")'],
+                ["Valor de un <input>", "elemento.value"],
+                ["Buscar por id", 'document.getElementById("…")'],
+              ].map(([a, b]) => (
+                <tr key={b} className="hair-b last:border-b-0">
+                  <td className="px-4 py-2.5">{a}</td>
+                  <td className="px-4 py-2.5 mono" style={{ color: "var(--signal)" }}>{b}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-sm opacity-80 mb-4">
+          Al principio no las sabés todas — igual que un celular nuevo. Se aprenden poco a poco.
+          El navegador ya las definió; vos elegís según la intención.
+        </p>
+        <Callout tone="warn" label="Error común">
+          Pensar que cualquier palabra funciona después del punto.{" "}
+          <span className="mono">elemento.pizza</span> no tiene sentido:
+          un elemento HTML no tiene una propiedad llamada pizza.
+        </Callout>
+        <Callout tone="ok" label="Cartilla">
+          <ol className="list-decimal pl-5 space-y-2">
+            <li>¿Qué quiero decirle al programa?</li>
+            <li>¿Cuál es la cosa? (documento, párrafo…)</li>
+            <li>¿Qué quiero hacer con esa cosa?</li>
+            <li>¿Qué herramienta ya existe para eso?</li>
+            <li>Traducir: <span className="mono">cosa.herramienta</span></li>
+          </ol>
+        </Callout>
+        <Callout label="Práctica en español (antes del código)">
+          Si pensás: «Quiero cambiar el color de un párrafo.»
+          <ol className="list-decimal pl-5 mt-2 space-y-1">
+            <li>La cosa: el párrafo (el elemento).</li>
+            <li>Qué modificar: su color (estilos → color).</li>
+            <li>Después traducís: <span className="mono">parrafo.style.color = &quot;…&quot;;</span></li>
+          </ol>
+        </Callout>
+      </Section>
+
+      <Section kicker="8 · Cadenas de ideas" title="Siempre el mismo patrón">
+        <p className="mb-4">Primero pensás en la cosa. Después en qué querés hacer con esa cosa.</p>
+        <div className="space-y-4">
+          {[
+            ["document.getElementById(...)", "Cosa: document. Acción: buscar un elemento por id."],
+            ["titulo.textContent", "Cosa: titulo. Característica: su texto."],
+            ["titulo.style.color", "Cosa: titulo → estilos → color."],
+            ['titulo.classList.add("activo")', "Cosa: titulo → lista de clases → agregar. En español: «Al elemento, en su lista de clases, agregale activo.»"],
+          ].map(([code, meaning]) => (
+            <div key={code} className="rounded-2xl hair-a p-5" style={{ background: "oklch(0.18 0.014 55)" }}>
+              <div className="mono text-sm mb-2" style={{ color: "var(--signal)" }}>{code}</div>
+              <div className="text-sm">{meaning}</div>
+            </div>
+          ))}
+        </div>
+        <Callout label="Analogía de la caja">
+          Un elemento es una caja con compartimentos:
+          <ul className="list-disc pl-5 mt-2 space-y-1">
+            <li><span className="mono">.textContent</span> — el texto</li>
+            <li><span className="mono">.style</span> — los estilos</li>
+            <li><span className="mono">.classList</span> — la lista de clases (calcomanías)</li>
+          </ul>
+        </Callout>
+      </Section>
+
+      <Section kicker="9 · ¿Cómo se llama lo del punto?" title={<>Propiedad vs <em>método</em></>}>
+        <p>
+          Lo que está <strong>después del punto</strong> no se llama todo igual.
+          Puede ser una <strong>propiedad</strong> o un <strong>método</strong>.
+        </p>
+        <div className="grid md:grid-cols-2 gap-4 my-6">
+          <div className="rounded-2xl hair-a p-6" style={{ background: "oklch(0.18 0.014 55)" }}>
+            <div className="mono text-xs uppercase tracking-widest mb-2" style={{ color: "var(--signal)" }}>Propiedad</div>
+            <p className="italic mb-3">«Quiero saber algo de esta cosa» / qué tiene o cómo es.</p>
+            <ul className="text-sm space-y-1 mb-3">
+              <li>el color del auto</li>
+              <li>el nombre de una persona</li>
+              <li>el texto de un elemento</li>
+            </ul>
+            <CodeBlock>{`auto.color
+persona.nombre
+elemento.textContent`}</CodeBlock>
+            <p className="text-sm mt-2">Se lee: «el texto <strong>del</strong> elemento». Suele ir <strong>sin</strong> ().</p>
+          </div>
+          <div className="rounded-2xl p-6" style={{ background: "var(--signal)", color: "var(--ink)" }}>
+            <div className="mono text-xs uppercase tracking-widest mb-2">Método</div>
+            <p className="italic mb-3">«Quiero pedirle a esta cosa que <strong>haga</strong> algo» / qué puede hacer.</p>
+            <ul className="text-sm space-y-1 mb-3">
+              <li>agregar una clase</li>
+              <li>buscar por id</li>
+              <li>caminar, llamar, encender…</li>
+            </ul>
+            <CodeBlock>{`classList.add("activo")
+getElementById("titulo")
+persona.caminar()`}</CodeBlock>
+            <p className="text-sm mt-2">Los métodos llevan <strong>paréntesis ( )</strong>: add(), remove(), toggle()…</p>
+          </div>
+        </div>
+        <IntentBlock
+          keyword="propiedad · método"
+          intention={<>«Quiero acceder a una característica O pedirle una acción.»</>}
+          spanish={[
+            "Una persona tiene características: nombre, edad, altura.",
+            "También puede hacer acciones: caminar, hablar, correr.",
+            "Propiedad = qué tiene. Método = qué puede hacer.",
+          ]}
+          code={`persona.nombre      // propiedad: el nombre de la persona
+persona.caminar();  // método: pedirle que camine
+
+elemento.textContent           // propiedad: el texto
+elemento.classList.add("activo"); // método: agregar clase`}
+          note="Teléfono: propiedades = color, batería, volumen. Acciones = encender, apagar, llamar."
+        />
+        <Callout tone="warn" label="Error común">
+          Pensar que todo lo del punto se llama igual. Si describe una característica →{" "}
+          <strong>propiedad</strong>. Si realiza una acción → <strong>método</strong>.
+        </Callout>
+        <Callout tone="ok" label="Comprueba">
+          En <span className="mono">caja.classList.add(&quot;activo&quot;)</span>, ¿add() es una característica o una acción?
+          <br />
+          <strong>Una acción</strong> (método): «agregar». Por eso lleva <span className="mono">()</span>.
+          <br />
+          <span className="mono">textContent</span> sería la característica (propiedad): el texto.
+        </Callout>
+        <SolveBlock
+          title="Mini: acceder al texto"
+          lang="JavaScript"
+          ask="Quiero acceder al texto de un elemento."
+          person="Dame el texto del elemento."
+          tellProgram={[
+            "Tengo un elemento.",
+            "Quiero su texto (característica, no una acción).",
+            "Usar la propiedad textContent.",
+          ]}
+          lines={[
+            { es: "El texto del elemento.", code: "elemento.textContent" },
+          ]}
+        />
+      </Section>
+    </>
+  ),
+};
+
 export const lessons: Record<LessonSlug, Lesson> = {
   dns, operadores, fundamentos, js, terminal, html, frontend, dom,
 };
