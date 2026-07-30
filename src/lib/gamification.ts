@@ -189,6 +189,10 @@ export const BADGE_META: Record<Badge, { icon: string; label: string; desc: stri
 /* ---- React hook ---- */
 export function useStats(): Stats {
   const [, setTick] = useState(0);
-  useEffect(() => subscribe(() => setTick((t) => t + 1)), []);
-  return state;
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    setHydrated(true);
+    return subscribe(() => setTick((t) => t + 1));
+  }, []);
+  return hydrated ? state : DEFAULT;
 }
